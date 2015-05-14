@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.github.tiiime.citybox.ui.fragment.DrawerFragment">
+
+
+    <!-- header -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_image_height">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/drawer_header"
+            android:scaleType="fitStart" />
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/drawer_avatar_size"
+            android:layout_height="@dimen/drawer_avatar_size"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/drawer_margin_left"
+            android:layout_marginTop="@dimen/drawer_avat_margin_top"
+            android:src="@drawable/default_avatar"
+            app:border_color="#FFF"
+            app:border_width="2dp" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/avatar"
+            android:layout_marginRight="@dimen/drawer_margin_left"
+            android:layout_marginTop="5dip"
+            android:gravity="right"
+            android:text="康佳星"
+            android:textSize="18.0sp" />
+
+    </RelativeLayout>
+
+    <!--底部按钮-->
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_footer_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/drawer_footer_bg"
+        android:orientation="vertical">
+
+        <include layout="@layout/button_diver" />
+
+        <TextView
+            android:id="@+id/action_setting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:background="@drawable/selectable_textview"
+            android:drawableLeft="@drawable/ic_settings_grey600_24dp"
+            android:drawablePadding="@dimen/drawer_margin_left"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/drawer_margin_left"
+            android:text="@string/action_settings"
+            android:textColor="@color/drawer_text_color" />
+
+        <include layout="@layout/button_diver" />
+
+        <TextView
+            android:id="@+id/action_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_textview"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_mail_grey600_24dp"
+            android:drawablePadding="@dimen/drawer_margin_left"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/drawer_margin_left"
+            android:text="@string/action_feedback"
+            android:textColor="@color/drawer_text_color" />
+    </LinearLayout>
+
+    <!--nav_list-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/nav_list"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/header" />
+</RelativeLayout>

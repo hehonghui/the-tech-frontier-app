@@ -7,4 +7,11 @@
 
     <dimen name="action_bar_height">56dp</dimen>
 
+    <dimen name="drawer_width">304.0dip</dimen>
+    <dimen name="drawer_avatar_size">75.0dip</dimen>
+    <dimen name="drawer_image_height">150.0dip</dimen>
+    <dimen name="drawer_margin_left">21.0dip</dimen>
+    <dimen name="drawer_footer_height">90dip</dimen>
+    <dimen name="drawer_avat_margin_top">41.0dip</dimen>
+
 </resources>

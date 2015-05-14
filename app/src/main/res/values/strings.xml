@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">the-tech-frontier-app</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
+    <string name="action_feedback">反馈</string>
 
     <string name="title_second">Second Activity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_contain">container</string>
+
+    <drawable name="selector_textview_normal">@color/drawer_footer_bg</drawable>
+    <drawable name="selector_textview_pressed">#ffc3c8c8</drawable>
+    <drawable name="selector_nav_item_pressed">#ffd7d7d7</drawable>
 </resources>
