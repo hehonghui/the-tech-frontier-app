@@ -15,6 +15,11 @@
 [数据库文档](document/db.md)
 
 
+## 引用的库
+
+* [picasso](https://github.com/square/picasso)
+
+
 ## 界面版式图
 
 | ![](document/images/material.png) | ![](document/images/material-menu.png) |
