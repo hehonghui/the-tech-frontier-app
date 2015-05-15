@@ -27,7 +27,7 @@
 
 http://www.devtf.cn/tech.php?page=0&count=30&category=2
 
-参数说明 :
+参数说明 :       
 page : 用于数据分页( 加载更多 )，0代表第一页；     
 count : 请求返回的数据量;     
 category : 数据分类，2为android,3为iOS。    
