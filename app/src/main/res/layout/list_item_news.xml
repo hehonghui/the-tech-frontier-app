@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+<!--
+TODO : 搞定item样式
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/cardview_margin"
+    android:layout_marginRight="@dimen/cardview_margin"
+    android:layout_marginTop="@dimen/cardview_margin"
+    app:cardCornerRadius="2dp">
+
+    <RelativeLayout
+        android:padding="@dimen/cardview_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:alpha="222"
+            android:singleLine="true"
+            android:textColor="@color/abc_primary_text_disable_only_material_light"
+            android:id="@+id/book_name"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="book_name" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:alpha="138"
+            android:singleLine="true"
+            android:textColor="@color/material_blue_grey_800"
+            android:layout_below="@id/book_name"
+            android:id="@+id/book_author"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="book_author" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:alpha="138"
+            android:singleLine="true"
+            android:textColor="@color/abc_primary_text_disable_only_material_light"
+            android:layout_below="@id/book_author"
+            android:id="@+id/book_press"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_press" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:alpha="138"
+            android:singleLine="true"
+            android:textColor="@color/material_blue_grey_800"
+            android:layout_toRightOf="@id/book_press"
+            android:layout_alignBottom="@id/book_press"
+            android:gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:textSize="12sp"
+            android:id="@+id/book_publish_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_publish_date" />
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:alpha="138"
+            android:singleLine="true"
+            android:textColor="@color/abc_primary_text_disable_only_material_light"
+            android:layout_below="@id/book_press"
+            android:id="@+id/book_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="book_location" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:alpha="138"
+            android:singleLine="true"
+            android:textColor="@color/abc_primary_text_disable_only_material_light"
+            android:layout_below="@id/book_press"
+            android:layout_toRightOf="@id/book_location"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/book_call_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_call_number" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+
+-->

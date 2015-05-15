@@ -1,19 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <!-- toolbar（actionbar）颜色 -->
-        <item name="colorPrimary">@color/theme_green</item>
+        <item name="colorPrimary">#4876FF</item>
         <item name="colorAccent">@color/accent_material_dark</item>
-        <!-- 窗口的背景颜色 -->
 
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@color/background_material_light</item>
     </style>
-
 
     <style name="AppTheme.Translucent" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
     </style>
-
 </resources>
