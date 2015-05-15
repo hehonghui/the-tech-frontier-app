@@ -19,6 +19,9 @@
 
 * [picasso](https://github.com/square/picasso)
 
+## 第三方SDK接入
+
+* 新浪微博SDK;
 
 ## 界面版式图
 
