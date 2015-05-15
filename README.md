@@ -23,6 +23,15 @@
 
 * 新浪微博SDK;
 
+## 服务端接口说明 
+
+http://www.devtf.cn/tech.php?page=0&count=30&category=2
+
+参数说明 :
+page : 用于数据分页( 加载更多 )，0代表第一页；     
+count : 请求返回的数据量;     
+category : 数据分类，2为android,3为iOS。    
+
 ## 界面版式图
 
 | ![](document/images/material.png) | ![](document/images/material-menu.png) |
