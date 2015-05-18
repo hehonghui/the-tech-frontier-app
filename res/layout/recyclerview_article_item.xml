@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/article_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Android Mvp实战"
+        android:paddingBottom="5dp"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/article_author_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/article_title_tv"
+        android:text="Mr.Simple"
+        android:textColor="#aaaaaa" />
+
+    <TextView
+        android:id="@+id/article_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/article_title_tv"
+        android:layout_marginRight="5dp"
+        android:text="2015-5-18"
+        android:textColor="#aaaaaa" />
+
+</RelativeLayout>
