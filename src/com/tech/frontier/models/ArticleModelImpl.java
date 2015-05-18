@@ -30,6 +30,11 @@ import com.tech.frontier.listeners.DataListener;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 数据存储在内存
+ * 
+ * @author mrsimple
+ */
 public class ArticleModelImpl implements ArticleModel {
     List<Article> mCachedArticles = new LinkedList<Article>();
 
