@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 数据存储在内存
+ * 数据存储在内存,TODO : 修改为存储到数据库
  * 
  * @author mrsimple
  */

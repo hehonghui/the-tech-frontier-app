@@ -24,10 +24,16 @@
 
 package com.tech.frontier.models.entities;
 
-public class Article {
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
-    public int category ;
+public class MenuItem {
+    public int iconResId;
+    public String text;
+
+    public MenuItem() {
+    }
+
+    public MenuItem(String text, int resId) {
+        this.text = text;
+        iconResId = resId;
+    }
+
 }

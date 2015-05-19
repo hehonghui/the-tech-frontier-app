@@ -52,8 +52,9 @@ public class ArticlesHandler implements ResponseHandler<List<Article>, JSONArray
             articleItem.title = itemObject.optString("title");
             articleItem.author = itemObject.optString("author");
             articleItem.post_id = itemObject.optString("post_id");
+            articleItem.category = Integer.valueOf(itemObject.optString("category"));
             articleItem.publishTime = formatDate(dateformat, itemObject.optString("date"));
-            Log.d("", "title : " + articleItem.title + ", id = " + articleItem.post_id) ;
+            Log.d("", "title : " + articleItem.title + ", id = " + articleItem.post_id);
             articleLists.add(articleItem);
         }
         return articleLists;

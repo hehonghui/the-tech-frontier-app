@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp" >
+
+    <!-- 用户头像界面 -->
+
+    <ImageView
+        android:id="@+id/menu_icon_imageview"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/user_default" />
+
+    <TextView
+        android:id="@+id/menu_text_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/menu_icon_imageview"
+        android:layout_toRightOf="@+id/menu_icon_imageview"
+        android:gravity="center"
+        android:text="Username"
+        android:textSize="18sp" />
+
+</RelativeLayout>

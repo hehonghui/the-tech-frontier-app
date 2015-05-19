@@ -46,6 +46,9 @@ public class AutoLoadRecyclerView extends RecyclerView {
 
     public AutoLoadRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        if ( isInEditMode() ) {
+            return ;
+        }
         init();
     }
 
