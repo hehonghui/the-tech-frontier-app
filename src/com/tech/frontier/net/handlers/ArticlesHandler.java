@@ -22,11 +22,12 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.network.handler;
+package com.tech.frontier.net.handlers;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
-import com.tech.frontier.entities.Article;
+import com.tech.frontier.models.entities.Article;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,7 +38,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ArticleJsonArrayHandler implements ResponseHandler<List<Article>, JSONArray> {
+public class ArticlesHandler implements ResponseHandler<List<Article>, JSONArray> {
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -52,6 +53,7 @@ public class ArticleJsonArrayHandler implements ResponseHandler<List<Article>, J
             articleItem.author = itemObject.optString("author");
             articleItem.post_id = itemObject.optString("post_id");
             articleItem.publishTime = formatDate(dateformat, itemObject.optString("date"));
+            Log.d("", "title : " + articleItem.title + ", id = " + articleItem.post_id) ;
             articleLists.add(articleItem);
         }
         return articleLists;

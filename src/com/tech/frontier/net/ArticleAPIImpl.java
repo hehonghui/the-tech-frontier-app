@@ -22,14 +22,14 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.network;
+package com.tech.frontier.net;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.network.handler.ArticleJsonArrayHandler;
-import com.tech.frontier.network.mgr.RequestQueueMgr;
+import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.net.handlers.ArticlesHandler;
+import com.tech.frontier.net.mgr.RequestQueueMgr;
 
 import org.json.JSONArray;
 
@@ -37,21 +37,32 @@ import java.util.List;
 
 public class ArticleAPIImpl implements ArticleAPI {
 
+    private int mPage = 0;
+    ArticlesHandler mJsonHandler = new ArticlesHandler();
+
     @Override
     public void fetchArticles(final DataListener<List<Article>> listener) {
+        performRequest(0, listener);
+    }
+
+    @Override
+    public void loadMode(DataListener<List<Article>> listener) {
+        performRequest(++mPage, listener);
+    }
+
+    private void performRequest(final int page, final DataListener<List<Article>> listener) {
         JsonArrayRequest request = new JsonArrayRequest(
-                "http://www.devtf.cn/tech.php?page=0&count=20", new Listener<JSONArray>() {
+                "http://www.devtf.cn/tech.php?page=" + page + "&count=20",
+                new Listener<JSONArray>() {
 
                     @Override
                     public void onResponse(JSONArray jsonArray) {
                         if (listener != null) {
-                            ArticleJsonArrayHandler handler = new ArticleJsonArrayHandler();
                             // 解析结果
-                            listener.onComplete(handler.parse(jsonArray));
+                            listener.onComplete(mJsonHandler.parse(jsonArray));
                         }
                     }
                 }, null);
         RequestQueueMgr.getRequestQueue().add(request);
     }
-
 }

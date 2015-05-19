@@ -22,27 +22,11 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.network.mgr;
+package com.tech.frontier.models.entities;
 
-import android.content.Context;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
-public class RequestQueueMgr {
-    static RequestQueue mRequestQueue;
-
-    private RequestQueueMgr() {
-    }
-
-    public static void init(Context context) {
-        if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(context);
-        }
-
-    }
-
-    public static RequestQueue getRequestQueue() {
-        return mRequestQueue;
-    }
+public class Article {
+    public String title;
+    public String publishTime;
+    public String author;
+    public String post_id;
 }

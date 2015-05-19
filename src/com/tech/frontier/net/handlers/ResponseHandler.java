@@ -22,11 +22,9 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.entities;
+package com.tech.frontier.net.handlers;
 
-public class Article {
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
+
+public interface ResponseHandler<T,D> {
+    public T parse(D data);
 }

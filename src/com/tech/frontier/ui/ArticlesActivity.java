@@ -1,31 +1,37 @@
 
-package com.tech.frontier;
+package com.tech.frontier.ui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ProgressBar;
 
+import com.tech.frontier.R;
 import com.tech.frontier.adapters.ArticleAdapter;
 import com.tech.frontier.adapters.ArticleAdapter.OnItemClickListener;
-import com.tech.frontier.entities.Article;
-import com.tech.frontier.network.mgr.RequestQueueMgr;
+import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.net.mgr.RequestQueueMgr;
 import com.tech.frontier.presenters.ArticlePresenter;
+import com.tech.frontier.ui.interfaces.ArticleViewInterface;
+import com.tech.frontier.widgets.AutoLoadRecyclerView;
+import com.tech.frontier.widgets.AutoLoadRecyclerView.OnLoadListener;
 
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 文章列表首页,上拉刷新获取最新的20篇文章，每次加载更多获取20篇文章.
+ * 
+ * @author mrsimple
+ */
 public class ArticlesActivity extends Activity implements ArticleViewInterface {
 
-    RecyclerView mRecyclerView;
-    ProgressBar mProgressBar;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    AutoLoadRecyclerView mRecyclerView;
     List<Article> mArticles = new LinkedList<Article>();
-
     ArticleAdapter mAdapter;
-
     ArticlePresenter mPresenter;
 
     @Override
@@ -40,7 +46,16 @@ public class ArticlesActivity extends Activity implements ArticleViewInterface {
     }
 
     private void initViews() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.articles_recycler_view);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                mPresenter.fetchArticles();
+            }
+        });
+
+        mRecyclerView = (AutoLoadRecyclerView) findViewById(R.id.articles_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new ArticleAdapter(mArticles);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -51,24 +66,32 @@ public class ArticlesActivity extends Activity implements ArticleViewInterface {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setOnLoadListener(new OnLoadListener() {
 
-        mProgressBar = (ProgressBar) findViewById(R.id.loading_progressbar);
+            @Override
+            public void onLoad() {
+                mPresenter.loadModeArticles();
+            }
+        });
     }
 
     @Override
     public void showArticles(List<Article> result) {
+        mArticles.clear();
         mArticles.addAll(result);
         mAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
+        mRecyclerView.setLoading(false);
     }
 
     @Override
     public void showLoading() {
-        mProgressBar.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideLoading() {
-        mProgressBar.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void clickArticle(Article article) {

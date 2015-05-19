@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.ArticleAdapter.ArticleViewHolder;
-import com.tech.frontier.entities.Article;
+import com.tech.frontier.models.entities.Article;
 
 import java.util.List;
 

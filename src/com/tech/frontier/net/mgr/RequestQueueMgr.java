@@ -22,16 +22,27 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier;
+package com.tech.frontier.net.mgr;
 
-import com.tech.frontier.entities.Article;
+import android.content.Context;
 
-import java.util.List;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 
-public interface ArticleViewInterface {
-    public void showArticles(List<Article> articles);
+public class RequestQueueMgr {
+    static RequestQueue mRequestQueue;
 
-    public void showLoading();
+    private RequestQueueMgr() {
+    }
 
-    public void hideLoading();
+    public static void init(Context context) {
+        if (mRequestQueue == null) {
+            mRequestQueue = Volley.newRequestQueue(context);
+        }
+
+    }
+
+    public static RequestQueue getRequestQueue() {
+        return mRequestQueue;
+    }
 }

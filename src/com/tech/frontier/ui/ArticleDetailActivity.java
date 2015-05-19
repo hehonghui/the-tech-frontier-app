@@ -22,18 +22,27 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier;
+package com.tech.frontier.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
+import com.tech.frontier.R;
+
+/**
+ * 文章阅读页面,使用WebView加载文章。
+ * 
+ * @author mrsimple
+ */
 public class ArticleDetailActivity extends Activity {
 
+    ProgressBar mProgressBar;
     WebView mWebView;
     String devtfUrl = "http://www.devtf.cn/?p=";
 
@@ -41,8 +50,15 @@ public class ArticleDetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        mWebView = (WebView) findViewById(R.id.articles_webview);
+        initViews();
+        initArticleUrl();
+        loadWebSite();
+    }
 
+    private void initViews() {
+        mProgressBar = (ProgressBar) findViewById(R.id.loading_progressbar);
+
+        mWebView = (WebView) findViewById(R.id.articles_webview);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -56,12 +72,13 @@ public class ArticleDetailActivity extends Activity {
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                // 进度条
-                Log.d("", "### 加载进度 --> " + newProgress);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    mProgressBar.setVisibility(View.GONE);
+                }
             }
         });
-        initArticleUrl();
-        loadWebSite();
     }
 
     private void initArticleUrl() {

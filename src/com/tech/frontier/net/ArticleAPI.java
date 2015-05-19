@@ -22,9 +22,15 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.network.handler;
+package com.tech.frontier.net;
 
+import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.Article;
 
-public interface ResponseHandler<T,D> {
-    public T parse(D data);
+import java.util.List;
+
+public interface ArticleAPI {
+    public void fetchArticles(DataListener<List<Article>> listener);
+
+    public void loadMode(DataListener<List<Article>> listener);
 }

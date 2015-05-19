@@ -22,13 +22,16 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.network;
+package com.tech.frontier.ui.interfaces;
 
-import com.tech.frontier.entities.Article;
-import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.Article;
 
 import java.util.List;
 
-public interface ArticleAPI {
-    public void fetchArticles(DataListener<List<Article>> listener);
+public interface ArticleViewInterface {
+    public void showArticles(List<Article> articles);
+
+    public void showLoading();
+
+    public void hideLoading();
 }

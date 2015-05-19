@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ArticlesActivity"
+            android:name="com.tech.frontier.ui.ArticlesActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ArticleDetailActivity" />
+        <activity android:name="com.tech.frontier.ui.ArticleDetailActivity" />
     </application>
 
 </manifest>
