@@ -28,7 +28,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class ArticleDetailActivity extends Activity {
 
@@ -40,11 +42,22 @@ public class ArticleDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         mWebView = (WebView) findViewById(R.id.articles_webview);
+
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                WebSettings settings = mWebView.getSettings();
+                settings.setBuiltInZoomControls(true);
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 // 进度条
-                Log.d("", "### 加载进度 --> " + newProgress) ;
+                Log.d("", "### 加载进度 --> " + newProgress);
             }
         });
         initArticleUrl();
