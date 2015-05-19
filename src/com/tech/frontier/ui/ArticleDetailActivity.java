@@ -24,7 +24,6 @@
 
 package com.tech.frontier.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -40,7 +39,7 @@ import com.tech.frontier.R;
  * 
  * @author mrsimple
  */
-public class ArticleDetailActivity extends Activity {
+public class ArticleDetailActivity extends BaseActionBarActivity {
 
     ProgressBar mProgressBar;
     WebView mWebView;
@@ -50,6 +49,7 @@ public class ArticleDetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        setupToolbar();
         initViews();
         initArticleUrl();
         loadWebSite();
@@ -57,7 +57,6 @@ public class ArticleDetailActivity extends Activity {
 
     private void initViews() {
         mProgressBar = (ProgressBar) findViewById(R.id.loading_progressbar);
-
         mWebView = (WebView) findViewById(R.id.articles_webview);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override

@@ -1,11 +1,12 @@
 
 package com.tech.frontier.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.tech.frontier.R;
@@ -26,24 +27,27 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticlesActivity extends Activity implements ArticleViewInterface, OnRefreshListener,
+public class ArticlesActivity extends BaseActionBarActivity implements ArticleViewInterface,
+        OnRefreshListener,
         OnLoadListener {
 
+    private DrawerLayout mDrawerLayout;
     SwipeRefreshLayout mSwipeRefreshLayout;
     AutoLoadRecyclerView mRecyclerView;
     List<Article> mArticles = new LinkedList<Article>();
     ArticleAdapter mAdapter;
     ArticlePresenter mPresenter;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initViews();
         RequestQueueMgr.init(getApplicationContext());
         mPresenter = new ArticlePresenter(this);
         mPresenter.fetchArticles();
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     private void initViews() {
@@ -62,6 +66,14 @@ public class ArticlesActivity extends Activity implements ArticleViewInterface, 
         });
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnLoadListener(this);
+        setupToolbar();
+        /* findView */
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.drawer_open,
+                R.string.drawer_close);
+        mDrawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
