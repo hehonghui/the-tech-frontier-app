@@ -40,7 +40,7 @@ public class ArticleAPIImpl implements ArticleAPI {
     @Override
     public void fetchArticles(final DataListener<List<Article>> listener) {
         JsonArrayRequest request = new JsonArrayRequest(
-                "http://www.devtf.cn/tech.php?page=1&count=20", new Listener<JSONArray>() {
+                "http://www.devtf.cn/tech.php?page=0&count=20", new Listener<JSONArray>() {
 
                     @Override
                     public void onResponse(JSONArray jsonArray) {
