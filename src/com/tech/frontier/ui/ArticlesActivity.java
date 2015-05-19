@@ -26,7 +26,8 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticlesActivity extends Activity implements ArticleViewInterface {
+public class ArticlesActivity extends Activity implements ArticleViewInterface, OnRefreshListener,
+        OnLoadListener {
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     AutoLoadRecyclerView mRecyclerView;
@@ -47,13 +48,7 @@ public class ArticlesActivity extends Activity implements ArticleViewInterface {
 
     private void initViews() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-
-            @Override
-            public void onRefresh() {
-                mPresenter.fetchArticles();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = (AutoLoadRecyclerView) findViewById(R.id.articles_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -66,13 +61,17 @@ public class ArticlesActivity extends Activity implements ArticleViewInterface {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setOnLoadListener(new OnLoadListener() {
+        mRecyclerView.setOnLoadListener(this);
+    }
 
-            @Override
-            public void onLoad() {
-                mPresenter.loadModeArticles();
-            }
-        });
+    @Override
+    public void onRefresh() {
+        mPresenter.fetchArticles();
+    }
+
+    @Override
+    public void onLoad() {
+        mPresenter.loadModeArticles();
     }
 
     @Override
@@ -105,4 +104,5 @@ public class ArticlesActivity extends Activity implements ArticleViewInterface {
         super.onDestroy();
         RequestQueueMgr.getRequestQueue().stop();
     }
+
 }

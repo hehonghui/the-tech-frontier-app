@@ -52,7 +52,7 @@ public class ArticleAPIImpl implements ArticleAPI {
 
     private void performRequest(final int page, final DataListener<List<Article>> listener) {
         JsonArrayRequest request = new JsonArrayRequest(
-                "http://www.devtf.cn/tech.php?page=" + page + "&count=20",
+                "http://www.devtf.cn/tech.php?page=" + page + "&count=50",
                 new Listener<JSONArray>() {
 
                     @Override
