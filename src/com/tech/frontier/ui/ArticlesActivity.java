@@ -72,6 +72,7 @@ public class ArticlesActivity extends BaseActionBarActivity implements
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRecyclerView.setOnLoadListener(this);
         setupToolbar();
