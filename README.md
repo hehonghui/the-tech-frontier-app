@@ -44,12 +44,20 @@
 
 ## 服务端接口说明 
 
+### 获取文章概要信息列表
 http://www.devtf.cn/articles.php?page=0&count=30&category=2
 
 参数说明 :       
 page : 用于数据分页( 加载更多 )，0代表第一页；     
 count : 请求返回的数据量;     
 category : 数据分类，2为android,3为iOS。    
+
+### 获取文章内容
+http://www.devtf.cn/article_content.php?post_id=499
+
+参数说明 :     
+post_id : 文章的唯一id;
+
 
 ## 未处理的问题
 
