@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.ArticleAdapter;
 import com.tech.frontier.adapters.ArticleAdapter.OnItemClickListener;
+import com.tech.frontier.adapters.ImagePagerAdapter;
 import com.tech.frontier.adapters.MenuAdapter;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.models.entities.MenuItem;
@@ -23,6 +24,7 @@ import com.tech.frontier.presenters.ArticlePresenter;
 import com.tech.frontier.ui.interfaces.ArticleViewInterface;
 import com.tech.frontier.widgets.AutoLoadRecyclerView;
 import com.tech.frontier.widgets.AutoLoadRecyclerView.OnLoadListener;
+import com.tech.frontier.widgets.AutoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
