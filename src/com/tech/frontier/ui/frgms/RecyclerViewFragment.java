@@ -69,14 +69,6 @@ public abstract class RecyclerViewFragment<T> extends Fragment implements OnRefr
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        if (mDataSet.size() == 0) {
-//            fetchDatas();
-//        }
-    }
-
     protected abstract void initPresenter();
 
     protected abstract void initAdapter();

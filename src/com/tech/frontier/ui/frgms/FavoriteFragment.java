@@ -26,7 +26,11 @@ package com.tech.frontier.ui.frgms;
 
 import com.tech.frontier.adapters.ArticleAdapter;
 
-// load from db
+/**
+ * 文章收藏页面
+ * 
+ * @author mrsimple
+ */
 public class FavoriteFragment extends ArticlesFragment {
 
     @Override

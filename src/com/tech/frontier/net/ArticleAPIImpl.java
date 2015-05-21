@@ -36,6 +36,11 @@ import org.json.JSONArray;
 
 import java.util.List;
 
+/**
+ * 文章相关的网络API实现类
+ * 
+ * @author mrsimple
+ */
 public class ArticleAPIImpl implements ArticleAPI {
 
     private int mPage = 1;

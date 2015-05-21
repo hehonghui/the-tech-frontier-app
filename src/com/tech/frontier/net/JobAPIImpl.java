@@ -35,6 +35,11 @@ import org.json.JSONArray;
 
 import java.util.List;
 
+/**
+ * 招聘信息相关的网络API实现类
+ * @author mrsimple
+ *
+ */
 public class JobAPIImpl implements JobAPI {
 
     JobHander mHandler = new JobHander();

@@ -29,6 +29,11 @@ import com.tech.frontier.models.entities.Article;
 
 import java.util.List;
 
+/**
+ * 文章相关的网络API接口
+ * 
+ * @author mrsimple
+ */
 public interface ArticleAPI {
     public void fetchArticles(int category, DataListener<List<Article>> listener);
 

@@ -39,6 +39,11 @@ import com.tech.frontier.models.entities.MenuItem;
 
 import java.util.List;
 
+/**
+ * 菜单列表Adapter
+ * 
+ * @author mrsimple
+ */
 public class MenuAdapter extends Adapter<MenuViewHolder> {
 
     List<MenuItem> mMenus;

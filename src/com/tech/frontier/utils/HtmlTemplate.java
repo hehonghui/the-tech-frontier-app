@@ -26,6 +26,11 @@ package com.tech.frontier.utils;
 
 import android.util.Log;
 
+/**
+ * html内容模板工具类,对返回的文章内容添加css样式等
+ * 
+ * @author mrsimple
+ */
 public class HtmlTemplate {
     public static String wrap(String title, String content) {
 

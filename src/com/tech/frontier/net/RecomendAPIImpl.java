@@ -35,6 +35,11 @@ import org.json.JSONArray;
 
 import java.util.List;
 
+/**
+ * 推荐API实现类
+ * 
+ * @author mrsimple
+ */
 public class RecomendAPIImpl implements RecomendAPI {
 
     RecommendHandler mHandler = new RecommendHandler();

@@ -37,6 +37,11 @@ import com.tech.frontier.models.entities.Job;
 
 import java.util.List;
 
+/**
+ * 招聘信息Adapter
+ * 
+ * @author mrsimple
+ */
 public class JobAdapter extends Adapter<JobViewHolder> {
 
     List<Job> mJobs;

@@ -29,6 +29,11 @@ import com.tech.frontier.models.entities.Job;
 
 import java.util.List;
 
+/**
+ * 招聘信息相关的网络API接口
+ * 
+ * @author mrsimple
+ */
 public interface JobAPI {
     public void fetchJobs(DataListener<List<Job>> listener);
 }

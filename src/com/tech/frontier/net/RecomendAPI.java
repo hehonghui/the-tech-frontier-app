@@ -29,6 +29,11 @@ import com.tech.frontier.models.entities.Recommend;
 
 import java.util.List;
 
+/**
+ * 推荐接口
+ * 
+ * @author mrsimple
+ */
 public interface RecomendAPI {
     public void fetchRecomends(DataListener<List<Recommend>> listener);
 }

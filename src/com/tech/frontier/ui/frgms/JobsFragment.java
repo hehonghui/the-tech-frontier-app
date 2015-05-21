@@ -31,6 +31,11 @@ import com.tech.frontier.ui.interfaces.JobViewInterface;
 
 import java.util.List;
 
+/**
+ * 招聘信息页面
+ * 
+ * @author mrsimple
+ */
 public class JobsFragment extends RecyclerViewFragment<Job> implements JobViewInterface {
 
     JobAdapter mAdapter;

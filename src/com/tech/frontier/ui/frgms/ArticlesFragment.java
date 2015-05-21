@@ -39,6 +39,11 @@ import com.tech.frontier.ui.interfaces.ArticleViewInterface;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * 文章列表主界面,包含自动滚动广告栏、文章列表
+ * 
+ * @author mrsimple
+ */
 public class ArticlesFragment extends RecyclerViewFragment<Article> implements
         ArticleViewInterface {
     protected ArticleAdapter mAdapter;
