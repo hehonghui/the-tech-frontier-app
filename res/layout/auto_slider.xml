@@ -1,5 +1,20 @@
-<com.tech.frontier.widgets.AutoScrollViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#aaaaaa"
-    android:layout_height="160dp" />
+    android:layout_height="160dp" >
+
+<!--     <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/recommend_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ff0000"
+        android:layout_alignParentTop="true"
+        android:padding="10dip" />
+ -->
+    <com.tech.frontier.widgets.AutoScrollViewPager
+        android:id="@+id/slide_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#aaaaaa" />
+
+</RelativeLayout>

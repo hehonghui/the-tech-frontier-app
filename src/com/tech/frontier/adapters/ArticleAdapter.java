@@ -85,18 +85,18 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
 
     private void bindViewForHeader(HeaderViewHolder headerViewHolder) {
         List<Recomend> imageIdList = new ArrayList<Recomend>();
-        imageIdList.add(new Recomend("标题1", "",
+        imageIdList.add(new Recomend("Android MVP架构实战", "",
                 "http://eimg.smzdm.com/201505/20/555be97c655018318.jpg"));
         imageIdList
-                .add(new Recomend("标题2", "",
+                .add(new Recomend("Android单元测试难在哪", "",
                         "http://img30.360buyimg.com/da/jfs/t1381/329/75656553/70834/9e68b206/55558b04N3bb2033a.jpg"));
-        imageIdList.add(new Recomend("标题3", "",
+        imageIdList.add(new Recomend("Kotlin自定义View", "",
                 "http://img.my.csdn.net/uploads/201407/26/1406383219_5806.jpg"));
-        imageIdList.add(new Recomend("标题3", "",
+        imageIdList.add(new Recomend("Swift的响应式编程", "",
                 "http://am.zdmimg.com/201505/20/555be975c74701880.jpg_e600.jpg"));
 
         AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
-        viewPager.setAdapter(new ImagePagerAdapter(viewPager.getContext(), imageIdList)
+        viewPager.setAdapter(new ImagePagerAdapter(viewPager, imageIdList)
                 .setInfiniteLoop(true));
 
         viewPager.setInterval(15000);
@@ -117,7 +117,7 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
     }
 
     private HeaderViewHolder createHeaderViewHolder(ViewGroup viewGroup) {
-        AutoScrollViewPager headerView = (AutoScrollViewPager) LayoutInflater.from(
+        View headerView = LayoutInflater.from(
                 viewGroup.getContext()).inflate(R.layout.auto_slider, viewGroup, false);
         return new HeaderViewHolder(headerView);
     }
@@ -158,9 +158,9 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
         AutoScrollViewPager autoScrollViewPager;
 
-        public HeaderViewHolder(AutoScrollViewPager view) {
+        public HeaderViewHolder(View view) {
             super(view);
-            autoScrollViewPager = view;
+            autoScrollViewPager = (AutoScrollViewPager) view.findViewById(R.id.slide_viewpager);
         }
     }
 

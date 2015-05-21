@@ -25,12 +25,16 @@
 package com.tech.frontier.adapters;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jakewharton.utils.RecyclingPagerAdapter;
 import com.squareup.picasso.Picasso;
+import com.tech.frontier.R;
 import com.tech.frontier.models.entities.Recomend;
 
 import java.util.List;
@@ -42,9 +46,11 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
 
     private int size;
     private boolean isInfiniteLoop;
+    ViewPager mViewPager;
 
-    public ImagePagerAdapter(Context context, List<Recomend> imageIdList) {
-        this.context = context;
+    public ImagePagerAdapter(ViewPager viewPager, List<Recomend> imageIdList) {
+        mViewPager = viewPager;
+        this.context = mViewPager.getContext();
         this.imageIdList = imageIdList;
         this.size = imageIdList.size();
         isInfiniteLoop = false;
@@ -53,7 +59,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
     @Override
     public int getCount() {
         // Infinite loop
-        return isInfiniteLoop ? Integer.MAX_VALUE : imageIdList.size();
+        return isInfiniteLoop ? Integer.MAX_VALUE : size;
     }
 
     /**
@@ -71,18 +77,20 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
         ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
-            view = holder.imageView = new ImageView(context);
+            view = LayoutInflater.from(context).inflate(R.layout.recommend_item, container, false);
+            holder.imageView = (ImageView) view.findViewById(R.id.recommand_imageview);
+            holder.titleTextView = (TextView) view.findViewById(R.id.recommend_title_tv);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        // holder.imageView.setImageResource(imageIdList.get(getPosition(position)));
+
         Recomend item = getItem(position);
+        holder.titleTextView.setText(item.title);
         Picasso.with(container.getContext())
                 .load(item.imgUrl)
                 .fit()
                 .into(holder.imageView);
-        ;
         return view;
     }
 
@@ -91,8 +99,8 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
     }
 
     private static class ViewHolder {
-
         ImageView imageView;
+        TextView titleTextView;
     }
 
     /**
