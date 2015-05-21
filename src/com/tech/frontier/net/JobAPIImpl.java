@@ -24,15 +24,40 @@
 
 package com.tech.frontier.net;
 
+import com.android.volley.Response.Listener;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.net.handlers.JobHander;
+import com.tech.frontier.net.mgr.RequestQueueMgr;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
-public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
+public class JobAPIImpl implements JobAPI {
 
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
+    JobHander mHandler = new JobHander();
 
-    public void loadMode(int category, DataListener<List<Article>> listener);
+    private void performRequest(final DataListener<List<Job>> listener) {
+        JsonArrayRequest request = new JsonArrayRequest(
+                "http://www.devtf.cn/api/v1/?type=jobs",
+                new Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray jsonArray) {
+                        if (listener != null) {
+                            // 解析结果
+                            listener.onComplete(mHandler.parse(jsonArray));
+                        }
+                    }
+                }, null);
+        RequestQueueMgr.getRequestQueue().add(request);
+    }
+
+    @Override
+    public void fetchJobs(DataListener<List<Job>> listener) {
+        performRequest(listener);
+    }
+
 }

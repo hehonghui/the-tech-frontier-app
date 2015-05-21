@@ -67,9 +67,9 @@ public class ArticlePresenter {
     }
 
     // 获取文章
-    public void fetchArticles() {
+    public void fetchArticles(int category) {
         mArticleView.showLoading();
-        mArticleApi.fetchArticles(new DataListener<List<Article>>() {
+        mArticleApi.fetchArticles(category, new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {
@@ -78,12 +78,12 @@ public class ArticlePresenter {
         });
     }
 
-    public void loadModeArticles() {
+    public void loadModeArticles(int category) {
         if (isNoMoreArticles) {
             return;
         }
         mArticleView.showLoading();
-        mArticleApi.loadMode(new DataListener<List<Article>>() {
+        mArticleApi.loadMode(category, new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {

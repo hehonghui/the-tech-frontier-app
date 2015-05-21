@@ -5,5 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="drawer_open">打开</string>
     <string name="drawer_close">关闭</string>
-
+    <string name="about">开发技术前线 (www.devtd.cn) 是一个高质量移动技术文章的聚合网站。邮箱 : dev.tech.frontier@gmail.com。</string>
+	<string name="not_login">未登录</string>
 </resources>

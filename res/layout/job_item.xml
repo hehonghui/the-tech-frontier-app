@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:padding="5dp" >
+
+    <!-- 用户头像界面 -->
+
+    <TextView
+        android:id="@+id/company_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="公司名"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/job_text_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/company_tv"
+        android:layout_toRightOf="@+id/company_tv"
+        android:singleLine="true"
+        android:text="岗位"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/job_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/company_tv"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:singleLine="true"
+        android:text="岗位一句话诱惑"
+        android:textColor="#cc5555"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/job_email_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_desc_tv"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="联系邮件"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/devider_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/job_email_tv"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="10dp"
+        android:background="#000000" />
+
+</RelativeLayout>

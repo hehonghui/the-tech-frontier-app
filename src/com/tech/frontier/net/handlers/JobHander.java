@@ -22,17 +22,34 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.net.handlers;
 
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.models.entities.Job;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
+public class JobHander implements ResponseHandler<List<Job>, JSONArray> {
 
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
+    @Override
+    public List<Job> parse(JSONArray data) {
+        List<Job> jobs = new ArrayList<Job>();
+        int length = data.length();
+        for (int i = 0; i < length; i++) {
+            JSONObject jsonObject = data.optJSONObject(i);
+            Job jobItem = new Job();
+            jobItem.company = jsonObject.optString("company");
+            jobItem.type = Integer.valueOf(jsonObject.optInt("type"));
+            jobItem.job = jsonObject.optString("job");
+            jobItem.desc = jsonObject.optString("job_desc");
+            jobItem.email = jsonObject.optString("email");
+            // 
+            jobs.add(jobItem);
+        }
+        return jobs;
+    }
 
-    public void loadMode(int category, DataListener<List<Article>> listener);
 }

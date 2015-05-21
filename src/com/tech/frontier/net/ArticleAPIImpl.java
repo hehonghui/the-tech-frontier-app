@@ -42,18 +42,19 @@ public class ArticleAPIImpl implements ArticleAPI {
     ArticlesHandler mJsonHandler = new ArticlesHandler();
 
     @Override
-    public void fetchArticles(final DataListener<List<Article>> listener) {
-        performRequest(0, listener);
+    public void fetchArticles(int category, final DataListener<List<Article>> listener) {
+        performRequest(0, category, listener);
     }
 
     @Override
-    public void loadMode(DataListener<List<Article>> listener) {
-        performRequest(++mPage, listener);
+    public void loadMode(int category, DataListener<List<Article>> listener) {
+        performRequest(++mPage, category, listener);
     }
 
-    private void performRequest(final int page, final DataListener<List<Article>> listener) {
+    private void performRequest(final int page, int category,
+            final DataListener<List<Article>> listener) {
         JsonArrayRequest request = new JsonArrayRequest(
-                "http://www.devtf.cn/articles.php?page=" + page + "&count=50",
+                "http://www.devtf.cn/articles.php?page=" + page + "&count=50&category=" + category,
                 new Listener<JSONArray>() {
 
                     @Override

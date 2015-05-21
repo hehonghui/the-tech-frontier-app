@@ -22,17 +22,17 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.ui.frgms;
 
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.adapters.ArticleAdapter;
 
-import java.util.List;
+// load from db
+public class FavoriteFragment extends ArticlesFragment {
 
-public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
+    @Override
+    protected void initAdapter() {
+        mAdapter = new ArticleAdapter(mDataSet);
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
-
-    public void loadMode(int category, DataListener<List<Article>> listener);
 }

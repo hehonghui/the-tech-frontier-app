@@ -25,14 +25,10 @@
 package com.tech.frontier.net;
 
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.models.entities.Job;
 
 import java.util.List;
 
-public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
-
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
-
-    public void loadMode(int category, DataListener<List<Article>> listener);
+public interface JobAPI {
+    public void fetchJobs(DataListener<List<Job>> listener);
 }

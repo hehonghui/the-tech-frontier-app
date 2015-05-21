@@ -24,15 +24,61 @@
 
 package com.tech.frontier.ui.frgms;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.tech.frontier.adapters.JobAdapter;
+import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.presenters.JobPresenter;
+import com.tech.frontier.ui.interfaces.JobViewInterface;
 
-public class JobsFragment extends Fragment {
+import java.util.List;
+
+public class JobsFragment extends RecyclerViewFragment<Job> implements JobViewInterface {
+
+    JobAdapter mAdapter;
+    JobPresenter mJonPresenter;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public void onRefresh() {
+        mJonPresenter.fetchJobs();
     }
+
+    @Override
+    public void onLoad() {
+
+    }
+
+    @Override
+    protected void initPresenter() {
+        mJonPresenter = new JobPresenter(this);
+    }
+
+    @Override
+    public void fetchDatas() {
+        mJonPresenter.fetchJobs();
+    }
+
+    @Override
+    protected void initAdapter() {
+        mAdapter = new JobAdapter(mDataSet);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void showJobs(List<Job> jobs) {
+        mDataSet.clear();
+        mDataSet.addAll(jobs);
+        mAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
+        mRecyclerView.setLoading(false);
+    }
+
+    @Override
+    public void showLoading() {
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
 }

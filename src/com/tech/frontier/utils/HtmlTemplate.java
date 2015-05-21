@@ -24,14 +24,18 @@
 
 package com.tech.frontier.utils;
 
+import android.util.Log;
+
 public class HtmlTemplate {
     public static String wrap(String title, String content) {
+
         final StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>");
         sb.append("<html dir=\"ltr\" lang=\"zh\">");
         sb.append("<head>");
         sb.append("<meta name=\"viewport\" content=\"width=100%; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\" />");
         sb.append("<link rel=\"stylesheet\" href='file:///android_asset/style.css' type=\"text/css\" media=\"screen\" />");
+        sb.append("<link rel=\"stylesheet\" href='file:///android_asset/default.min.css' type=\"text/css\" media=\"screen\" />");
         sb.append("</head>");
         sb.append("<body style=\"padding:0px 8px 8px 8px;\">");
         sb.append("<div id=\"pagewrapper\">");
@@ -54,8 +58,11 @@ public class HtmlTemplate {
         sb.append("</div>");
         sb.append("</div>");
         sb.append("</div>");
+        sb.append("<script src=\'file:///android_asset/highlight.pack.js\'></script>");
+        sb.append("<script>hljs.initHighlightingOnLoad();</script>");
         sb.append("</body>");
         sb.append("</html>");
+        Log.e("", "html : " + sb.toString());
         return sb.toString();
     }
 }

@@ -24,6 +24,7 @@
 
 package com.tech.frontier.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -31,7 +32,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-
 import com.tech.frontier.R;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
@@ -59,9 +59,11 @@ public class ArticleDetailActivity extends BaseActionBarActivity implements Arti
         loadWebSite();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initViews() {
         mProgressBar = (ProgressBar) findViewById(R.id.loading_progressbar);
         mWebView = (WebView) findViewById(R.id.articles_webview);
+        mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

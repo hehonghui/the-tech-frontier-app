@@ -24,7 +24,6 @@
 
 package com.tech.frontier.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -36,10 +35,7 @@ import android.widget.TextView;
 
 import com.tech.frontier.R;
 import com.tech.frontier.models.entities.Article;
-import com.tech.frontier.models.entities.Recomend;
-import com.tech.frontier.widgets.AutoScrollViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleAdapter extends Adapter<ViewHolder> {
@@ -52,22 +48,14 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
     }
 
     @Override
-    public int getItemCount() {
-        return mArticles == null ? 1 : mArticles.size() + 1;
-    }
-
-    @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         if (viewHolder instanceof ArticleViewHolder) {
-            ArticleViewHolder articleViewHolder = (ArticleViewHolder) viewHolder;
-            bindViewForArticle(articleViewHolder, position);
-        } else {
-            HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
-            bindViewForHeader(headerViewHolder);
+            bindViewForArticle(viewHolder, position);
         }
     }
 
-    private void bindViewForArticle(ArticleViewHolder articleViewHolder, int position) {
+    protected void bindViewForArticle(ViewHolder viewHolder, int position) {
+        ArticleViewHolder articleViewHolder = (ArticleViewHolder) viewHolder;
         final Article article = getItem(position);
         articleViewHolder.titleTv.setText(article.title);
         articleViewHolder.publishTimeTv.setText(article.publishTime);
@@ -83,58 +71,24 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
         });
     }
 
-    private void bindViewForHeader(HeaderViewHolder headerViewHolder) {
-        List<Recomend> imageIdList = new ArrayList<Recomend>();
-        imageIdList.add(new Recomend("Android MVP架构实战", "",
-                "http://eimg.smzdm.com/201505/20/555be97c655018318.jpg"));
-        imageIdList
-                .add(new Recomend("Android单元测试难在哪", "",
-                        "http://img30.360buyimg.com/da/jfs/t1381/329/75656553/70834/9e68b206/55558b04N3bb2033a.jpg"));
-        imageIdList.add(new Recomend("Kotlin自定义View", "",
-                "http://img.my.csdn.net/uploads/201407/26/1406383219_5806.jpg"));
-        imageIdList.add(new Recomend("Swift的响应式编程", "",
-                "http://am.zdmimg.com/201505/20/555be975c74701880.jpg_e600.jpg"));
-
-        AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
-        viewPager.setAdapter(new ImagePagerAdapter(viewPager, imageIdList)
-                .setInfiniteLoop(true));
-
-        viewPager.setInterval(15000);
-        viewPager.startAutoScroll();
-        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2
-                % imageIdList.size());
-    }
-
-    static final int HEADER = 0;
-
     @Override
-    public int getItemViewType(int position) {
-        if (0 == position) {
-            return 0;
-        }
-
-        return 1;
-    }
-
-    private HeaderViewHolder createHeaderViewHolder(ViewGroup viewGroup) {
-        View headerView = LayoutInflater.from(
-                viewGroup.getContext()).inflate(R.layout.auto_slider, viewGroup, false);
-        return new HeaderViewHolder(headerView);
+    public int getItemCount() {
+        return mArticles.size();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        final Context context = viewGroup.getContext();
-        if (viewType == HEADER) {
-            return createHeaderViewHolder(viewGroup);
-        }
-        View itemView = LayoutInflater.from(context).inflate(
+        return createArticleViewHolder(viewGroup);
+    }
+
+    protected ViewHolder createArticleViewHolder(ViewGroup viewGroup) {
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.recyclerview_article_item, viewGroup, false);
         return new ArticleViewHolder(itemView);
     }
 
-    public Article getItem(int position) {
-        return mArticles.get(position - 1);
+    protected Article getItem(int position) {
+        return mArticles.get(position);
     }
 
     public void setOnItemClickListener(OnItemClickListener mClickListener) {
@@ -152,15 +106,6 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
             titleTv = (TextView) itemView.findViewById(R.id.article_title_tv);
             publishTimeTv = (TextView) itemView.findViewById(R.id.article_time_tv);
             authorTv = (TextView) itemView.findViewById(R.id.article_author_tv);
-        }
-    }
-
-    static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        AutoScrollViewPager autoScrollViewPager;
-
-        public HeaderViewHolder(View view) {
-            super(view);
-            autoScrollViewPager = (AutoScrollViewPager) view.findViewById(R.id.slide_viewpager);
         }
     }
 

@@ -22,17 +22,12 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.models.entities;
 
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
-
-import java.util.List;
-
-public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
-
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
-
-    public void loadMode(int category, DataListener<List<Article>> listener);
+public class Job {
+    public int type ;
+    public String company;
+    public String job;
+    public String desc;
+    public String email;
 }

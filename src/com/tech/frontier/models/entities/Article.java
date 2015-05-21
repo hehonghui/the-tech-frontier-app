@@ -25,9 +25,12 @@
 package com.tech.frontier.models.entities;
 
 public class Article {
+    public static final int ALL = 1;
+    public static final int ANDROID = 2;
+    public static final int iOS = 3;
     public String title;
     public String publishTime;
     public String author;
     public String post_id;
-    public int category ;
+    public int category;
 }

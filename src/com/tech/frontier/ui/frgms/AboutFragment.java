@@ -22,17 +22,19 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.ui.frgms;
 
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import java.util.List;
+import com.tech.frontier.R;
 
-public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
-
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
-
-    public void loadMode(int category, DataListener<List<Article>> listener);
+public class AboutFragment extends Fragment {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_about, container, false);
+    }
 }

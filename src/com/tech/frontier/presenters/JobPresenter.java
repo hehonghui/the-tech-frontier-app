@@ -22,17 +22,32 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.presenters;
 
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.net.JobAPI;
+import com.tech.frontier.net.JobAPIImpl;
+import com.tech.frontier.ui.interfaces.JobViewInterface;
 
 import java.util.List;
 
-public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
+public class JobPresenter {
+    JobAPI jobAPI = new JobAPIImpl();
+    JobViewInterface mJobView;
 
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
+    public JobPresenter(JobViewInterface jobViewInterface) {
+        mJobView = jobViewInterface;
+    }
 
-    public void loadMode(int category, DataListener<List<Article>> listener);
+    public void fetchJobs() {
+        jobAPI.fetchJobs(new DataListener<List<Job>>() {
+
+            @Override
+            public void onComplete(List<Job> result) {
+                mJobView.showJobs(result);
+            }
+        });
+    }
+
 }

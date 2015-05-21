@@ -24,6 +24,9 @@
 
 package com.tech.frontier.ui;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,6 +36,14 @@ import com.tech.frontier.R;
 
 public class BaseActionBarActivity extends ActionBarActivity {
     protected Toolbar mToolbar;
+    protected FragmentManager mFragmentManager;
+    protected int mFrgmContainer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFragmentManager = getSupportFragmentManager();
+    }
 
     protected void setupToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -40,11 +51,23 @@ public class BaseActionBarActivity extends ActionBarActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+    }
+
+    protected void setFragmentContainer(int container) {
+        mFrgmContainer = container;
+    }
+
+    protected void addFragment(Fragment fragment) {
+        mFragmentManager.beginTransaction().add(mFrgmContainer, fragment).commit();
+    }
+
+    protected void replaceFragment(Fragment fragment) {
+        mFragmentManager.beginTransaction().replace(mFrgmContainer, fragment).commit();
     }
 }

@@ -28,10 +28,6 @@ import com.tech.frontier.models.entities.Article;
 
 import java.util.List;
 
-public interface ArticleViewInterface {
+public interface ArticleViewInterface extends RefreshInterface {
     public void showArticles(List<Article> articles);
-
-    public void showLoading();
-
-    public void hideLoading();
 }
