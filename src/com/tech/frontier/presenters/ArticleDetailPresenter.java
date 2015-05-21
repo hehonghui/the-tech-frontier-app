@@ -22,17 +22,30 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.presenters;
 
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.net.ArticleAPI;
+import com.tech.frontier.net.ArticleAPIImpl;
+import com.tech.frontier.ui.interfaces.ArticleDetailView;
 
-import java.util.List;
+public class ArticleDetailPresenter {
+    ArticleDetailView mArticleView;
+    // 从网络上获取文章的Api
+    ArticleAPI mArticleApi = new ArticleAPIImpl();
 
-public interface ArticleAPI {
-    public void fetchArticles(DataListener<List<Article>> listener);
+    
+    public ArticleDetailPresenter(ArticleDetailView view) {
+        mArticleView = view ;
+    }
+    
+    public void fetchArticleContent(String post_id) {
+        mArticleApi.fetchArticleContent(post_id, new DataListener<String>() {
 
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
-
-    public void loadMode(DataListener<List<Article>> listener);
+            @Override
+            public void onComplete(String result) {
+                mArticleView.showArticleContent(result);
+            }
+        });
+    }
 }

@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.ArticleAdapter;
 import com.tech.frontier.adapters.ArticleAdapter.OnItemClickListener;
-import com.tech.frontier.adapters.ImagePagerAdapter;
 import com.tech.frontier.adapters.MenuAdapter;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.models.entities.MenuItem;
@@ -24,7 +23,6 @@ import com.tech.frontier.presenters.ArticlePresenter;
 import com.tech.frontier.ui.interfaces.ArticleViewInterface;
 import com.tech.frontier.widgets.AutoLoadRecyclerView;
 import com.tech.frontier.widgets.AutoLoadRecyclerView.OnLoadListener;
-import com.tech.frontier.widgets.AutoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -70,7 +68,7 @@ public class ArticlesActivity extends BaseActionBarActivity implements
 
             @Override
             public void onClick(Article article) {
-                loadArticle(article.post_id);
+                loadArticle(article);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -147,9 +145,10 @@ public class ArticlesActivity extends BaseActionBarActivity implements
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void loadArticle(String postId) {
+    private void loadArticle(Article article) {
         Intent intent = new Intent(this, ArticleDetailActivity.class);
-        intent.putExtra("post_id", postId);
+        intent.putExtra("post_id", article.post_id);
+        intent.putExtra("title", article.title);
         startActivity(intent);
     }
 
@@ -158,21 +157,19 @@ public class ArticlesActivity extends BaseActionBarActivity implements
         mDrawerLayout.closeDrawers();
 
         switch (item.iconResId) {
-            case R.drawable.android:
+            case R.drawable.android: // android
                 break;
-            case R.drawable.ios:
+            case R.drawable.ios: // IOS
 
                 break;
-            case R.drawable.hire:
-                loadArticle("21");
+            case R.drawable.hire: // 招聘信息
                 break;
-            case R.drawable.favorite:
+            case R.drawable.favorite: // 收藏
 
                 break;
-            case R.drawable.about:
-                loadArticle("19");
+            case R.drawable.about: // 关于
                 break;
-            case R.drawable.setting:
+            case R.drawable.setting: // 设置
 
                 break;
 

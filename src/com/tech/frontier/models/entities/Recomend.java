@@ -22,17 +22,17 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.models.entities;
 
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+public class Recomend {
+    public String title;
+    public String url;
+    public String imgUrl;
 
-import java.util.List;
+    public Recomend(String title, String targetUrl, String image) {
+        this.title = title;
+        url = targetUrl;
+        imgUrl = image;
+    }
 
-public interface ArticleAPI {
-    public void fetchArticles(DataListener<List<Article>> listener);
-
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
-
-    public void loadMode(DataListener<List<Article>> listener);
 }

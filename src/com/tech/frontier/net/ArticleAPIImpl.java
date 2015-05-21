@@ -26,6 +26,7 @@ package com.tech.frontier.net;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.net.handlers.ArticlesHandler;
@@ -62,6 +63,21 @@ public class ArticleAPIImpl implements ArticleAPI {
                             listener.onComplete(mJsonHandler.parse(jsonArray));
                         }
                     }
+                }, null);
+        RequestQueueMgr.getRequestQueue().add(request);
+    }
+
+    @Override
+    public void fetchArticleContent(String post_id, final DataListener<String> listener) {
+        StringRequest request = new StringRequest(
+                "http://www.devtf.cn/article_content.php?post_id=" + post_id,
+                new Listener<String>() {
+
+                    @Override
+                    public void onResponse(String html) {
+                        listener.onComplete(html);
+                    }
+
                 }, null);
         RequestQueueMgr.getRequestQueue().add(request);
     }

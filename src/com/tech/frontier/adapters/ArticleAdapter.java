@@ -36,6 +36,7 @@ import android.widget.TextView;
 
 import com.tech.frontier.R;
 import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.models.entities.Recomend;
 import com.tech.frontier.widgets.AutoScrollViewPager;
 
 import java.util.ArrayList;
@@ -83,11 +84,17 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
     }
 
     private void bindViewForHeader(HeaderViewHolder headerViewHolder) {
-        List<Integer> imageIdList = new ArrayList<Integer>();
-        imageIdList.add(R.drawable.ic_launcher);
-        imageIdList.add(R.drawable.ic_launcher);
-        imageIdList.add(R.drawable.ic_launcher);
-        imageIdList.add(R.drawable.ic_launcher);
+        List<Recomend> imageIdList = new ArrayList<Recomend>();
+        imageIdList.add(new Recomend("标题1", "",
+                "http://eimg.smzdm.com/201505/20/555be97c655018318.jpg"));
+        imageIdList
+                .add(new Recomend("标题2", "",
+                        "http://img30.360buyimg.com/da/jfs/t1381/329/75656553/70834/9e68b206/55558b04N3bb2033a.jpg"));
+        imageIdList.add(new Recomend("标题3", "",
+                "http://img.my.csdn.net/uploads/201407/26/1406383219_5806.jpg"));
+        imageIdList.add(new Recomend("标题3", "",
+                "http://am.zdmimg.com/201505/20/555be975c74701880.jpg_e600.jpg"));
+
         AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
         viewPager.setAdapter(new ImagePagerAdapter(viewPager.getContext(), imageIdList)
                 .setInfiniteLoop(true));

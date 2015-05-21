@@ -30,18 +30,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.jakewharton.utils.RecyclingPagerAdapter;
+import com.squareup.picasso.Picasso;
+import com.tech.frontier.models.entities.Recomend;
 
 import java.util.List;
 
 public class ImagePagerAdapter extends RecyclingPagerAdapter {
 
-    private Context       context;
-    private List<Integer> imageIdList;
+    private Context context;
+    private List<Recomend> imageIdList;
 
-    private int           size;
-    private boolean       isInfiniteLoop;
+    private int size;
+    private boolean isInfiniteLoop;
 
-    public ImagePagerAdapter(Context context, List<Integer> imageIdList) {
+    public ImagePagerAdapter(Context context, List<Recomend> imageIdList) {
         this.context = context;
         this.imageIdList = imageIdList;
         this.size = imageIdList.size();
@@ -72,10 +74,20 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             view = holder.imageView = new ImageView(context);
             view.setTag(holder);
         } else {
-            holder = (ViewHolder)view.getTag();
+            holder = (ViewHolder) view.getTag();
         }
-        holder.imageView.setImageResource(imageIdList.get(getPosition(position)));
+        // holder.imageView.setImageResource(imageIdList.get(getPosition(position)));
+        Recomend item = getItem(position);
+        Picasso.with(container.getContext())
+                .load(item.imgUrl)
+                .fit()
+                .into(holder.imageView);
+        ;
         return view;
+    }
+
+    private Recomend getItem(int position) {
+        return imageIdList.get(getPosition(position));
     }
 
     private static class ViewHolder {

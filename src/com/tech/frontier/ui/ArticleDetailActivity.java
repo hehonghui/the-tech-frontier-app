@@ -33,17 +33,21 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.tech.frontier.R;
+import com.tech.frontier.presenters.ArticleDetailPresenter;
+import com.tech.frontier.ui.interfaces.ArticleDetailView;
+import com.tech.frontier.utils.HtmlTemplate;
 
 /**
  * 文章阅读页面,使用WebView加载文章。
  * 
  * @author mrsimple
  */
-public class ArticleDetailActivity extends BaseActionBarActivity {
+public class ArticleDetailActivity extends BaseActionBarActivity implements ArticleDetailView {
 
     ProgressBar mProgressBar;
     WebView mWebView;
     String devtfUrl = "http://www.devtf.cn/?p=";
+    ArticleDetailPresenter mPresenter = new ArticleDetailPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +87,25 @@ public class ArticleDetailActivity extends BaseActionBarActivity {
     private void initArticleUrl() {
         Bundle extraBundle = getIntent().getExtras();
         if (extraBundle != null && extraBundle.containsKey("post_id")) {
-            devtfUrl += extraBundle.getString("post_id");
+            mPostId = extraBundle.getString("post_id");
+            mTitle = extraBundle.getString("title");
+            ;
+            devtfUrl += mPostId;
         }
     }
 
+    private String mPostId;
+    private String mTitle;
+
     private void loadWebSite() {
-        mWebView.loadUrl(devtfUrl);
+        // mWebView.loadUrl(devtfUrl);
+        mPresenter.fetchArticleContent(mPostId);
+    }
+
+    @Override
+    public void showArticleContent(String html) {
+        mWebView.loadDataWithBaseURL("", HtmlTemplate.wrap(mTitle, html), "text/html", "utf8",
+                "404");
     }
 
 }
