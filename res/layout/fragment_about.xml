@@ -24,7 +24,7 @@
         android:padding="20dp"
         android:gravity="center"
         android:text="@string/about"
-        android:textColor="#dddddd"
-        android:textSize="12sp" />
+        android:textColor="#999999"
+        android:textSize="15sp" />
 
 </RelativeLayout>

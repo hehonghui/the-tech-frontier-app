@@ -42,11 +42,28 @@ import com.tech.frontier.widgets.AutoScrollViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 主页文章列表的Adapter,第一项元素为HeaderView，因为RecyclerView并不默认支持Header，因此需要设置viewType，
+ * 将第一项设置为Header View。这里需要注意是因为Header
+ * View暂用了第一项，因此根据position获取数据时需要把position减去1，这样获取到的数据才是正确的.
+ * 
+ * @author mrsimple
+ */
 public class ArticleWithHeaderAdapter extends ArticleAdapter {
 
-    private static final int HEADER = 0;
-
-    RecomendAPI api = new RecomendAPIImpl();
+    private static final int HEADER_TYPE = 0;
+    /**
+     * Header View里面的推荐数据列表
+     */
+    final List<Recommend> recommends = new ArrayList<Recommend>();
+    /**
+     * 推荐网络请求API
+     */
+    RecomendAPI mRecomendAPI = new RecomendAPIImpl();
+    /**
+     * Header View中的ViewPager Adapter
+     */
+    HeaderImageAdapter mImagePagerAdapter;
 
     public ArticleWithHeaderAdapter(List<Article> dataSet) {
         super(dataSet);
@@ -63,7 +80,7 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        if (viewType == HEADER) {
+        if (viewType == HEADER_TYPE) {
             return createHeaderViewHolder(viewGroup);
         }
         return createArticleViewHolder(viewGroup);
@@ -74,13 +91,13 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
                 viewGroup.getContext()).inflate(R.layout.auto_slider, viewGroup, false);
         return new HeaderViewHolder(headerView);
     }
-    final List<Recommend> recommends = new ArrayList<Recommend>();
-    
+
+    // TODO : 逻辑移除到Presenter中
     private void bindViewForHeader(ViewHolder viewHolder) {
         Log.e("", "### 获取header 数据 : ");
         final HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
-        if (recommends.size() == 0) {
-            api.fetchRecomends(new DataListener<List<Recommend>>() {
+        if (mImagePagerAdapter == null && recommends.size() == 0) {
+            mRecomendAPI.fetchRecomends(new DataListener<List<Recommend>>() {
 
                 @Override
                 public void onComplete(List<Recommend> result) {
@@ -90,8 +107,6 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
             });
         }
     }
-
-    HeaderImageAdapter mImagePagerAdapter;
 
     private void initAutoSlider(HeaderViewHolder headerViewHolder, List<Recommend> result) {
         AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
@@ -128,10 +143,9 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (HEADER == position) {
+        if (HEADER_TYPE == position) {
             return 0;
         }
-
         return 1;
     }
 

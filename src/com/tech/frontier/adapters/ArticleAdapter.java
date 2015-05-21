@@ -38,6 +38,11 @@ import com.tech.frontier.models.entities.Article;
 
 import java.util.List;
 
+/**
+ * 主页文章列表的Adapter
+ * 
+ * @author mrsimple
+ */
 public class ArticleAdapter extends Adapter<ViewHolder> {
 
     List<Article> mArticles;

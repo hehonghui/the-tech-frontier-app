@@ -6,7 +6,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.MenuAdapter;
@@ -48,6 +47,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
 
         RequestQueueMgr.init(getApplicationContext());
         mArticlesFragment = new ArticlesFragment();
+        mArticlesFragment.setRetainInstance(true);
         addFragment(mArticlesFragment);
     }
 
@@ -90,9 +90,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
     }
 
     private void clickMenuItem(MenuItem item) {
-        Toast.makeText(getApplicationContext(), item.text, Toast.LENGTH_SHORT).show();
         mDrawerLayout.closeDrawers();
-
         switch (item.iconResId) {
             case R.drawable.home: // 全部
                 replaceFragment(mArticlesFragment);
