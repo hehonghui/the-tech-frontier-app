@@ -38,12 +38,12 @@ import java.util.List;
 
 public class ArticleAPIImpl implements ArticleAPI {
 
-    private int mPage = 0;
+    private int mPage = 1;
     ArticlesHandler mJsonHandler = new ArticlesHandler();
 
     @Override
     public void fetchArticles(int category, final DataListener<List<Article>> listener) {
-        performRequest(0, category, listener);
+        performRequest(1, category, listener);
     }
 
     @Override
@@ -54,7 +54,8 @@ public class ArticleAPIImpl implements ArticleAPI {
     private void performRequest(final int page, int category,
             final DataListener<List<Article>> listener) {
         JsonArrayRequest request = new JsonArrayRequest(
-                "http://www.devtf.cn/articles.php?page=" + page + "&count=50&category=" + category,
+                "http://www.devtf.cn/api/v1/?type=articles&page=" + mPage + "&count=20&categoty="
+                        + category,
                 new Listener<JSONArray>() {
 
                     @Override
@@ -71,7 +72,7 @@ public class ArticleAPIImpl implements ArticleAPI {
     @Override
     public void fetchArticleContent(String post_id, final DataListener<String> listener) {
         StringRequest request = new StringRequest(
-                "http://www.devtf.cn/article_content.php?post_id=" + post_id,
+                "http://www.devtf.cn/api/v1/?type=article&post_id=" + post_id,
                 new Listener<String>() {
 
                     @Override

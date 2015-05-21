@@ -25,6 +25,7 @@
 package com.tech.frontier.net.handlers;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.tech.frontier.models.entities.Article;
@@ -38,7 +39,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ArticlesHandler implements ResponseHandler<List<Article>, JSONArray> {
+public class ArticlesHandler implements RespHandler<List<Article>, JSONArray> {
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -52,7 +53,8 @@ public class ArticlesHandler implements ResponseHandler<List<Article>, JSONArray
             articleItem.title = itemObject.optString("title");
             articleItem.author = itemObject.optString("author");
             articleItem.post_id = itemObject.optString("post_id");
-            articleItem.category = Integer.valueOf(itemObject.optString("category"));
+            String category = itemObject.optString("category");
+            articleItem.category = TextUtils.isEmpty(category) ? 0 : Integer.valueOf(category);
             articleItem.publishTime = formatDate(dateformat, itemObject.optString("date"));
             Log.d("", "title : " + articleItem.title + ", id = " + articleItem.post_id);
             articleLists.add(articleItem);

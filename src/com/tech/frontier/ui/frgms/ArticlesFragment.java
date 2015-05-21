@@ -25,6 +25,7 @@
 package com.tech.frontier.ui.frgms;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.tech.frontier.adapters.ArticleAdapter;
 import com.tech.frontier.adapters.ArticleAdapter.OnItemClickListener;
@@ -78,7 +79,6 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
                 }
             }
         }
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -89,6 +89,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
     @Override
     public void showArticles(List<Article> result) {
+        Log.e(getTag(), "### update articles") ;
         mDataSet.clear();
         mDataSet.addAll(result);
         filterArticleByCategory();

@@ -24,7 +24,28 @@
 
 package com.tech.frontier.net.handlers;
 
+import com.tech.frontier.models.entities.Recommend;
 
-public interface ResponseHandler<T,D> {
-    public T parse(D data);
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RecommendHandler implements RespHandler<List<Recommend>, JSONArray> {
+
+    @Override
+    public List<Recommend> parse(JSONArray data) {
+        List<Recommend> recomendList = new ArrayList<Recommend>();
+        int length = data.length();
+        for (int i = 0; i < length; i++) {
+            JSONObject jsonObject = data.optJSONObject(i);
+            String title = jsonObject.optString("title");
+            String imgUrl = jsonObject.optString("img_url");
+            String url = jsonObject.optString("url");
+            recomendList.add(new Recommend(title, url, imgUrl));
+        }
+        return recomendList;
+    }
+
 }

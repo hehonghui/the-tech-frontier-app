@@ -24,12 +24,12 @@
 
 package com.tech.frontier.models.entities;
 
-public class Recomend {
+public class Recommend {
     public String title;
     public String url;
     public String imgUrl;
 
-    public Recomend(String title, String targetUrl, String image) {
+    public Recommend(String title, String targetUrl, String image) {
         this.title = title;
         url = targetUrl;
         imgUrl = image;

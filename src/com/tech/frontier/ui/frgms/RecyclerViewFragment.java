@@ -64,6 +64,7 @@ public abstract class RecyclerViewFragment<T> extends Fragment implements OnRefr
 
         initAdapter();
         initPresenter();
+        fetchDatas();
         mSwipeRefreshLayout.setRefreshing(true);
         return rootView;
     }
@@ -71,9 +72,9 @@ public abstract class RecyclerViewFragment<T> extends Fragment implements OnRefr
     @Override
     public void onResume() {
         super.onResume();
-        if (mDataSet.size() == 0) {
-            fetchDatas();
-        }
+//        if (mDataSet.size() == 0) {
+//            fetchDatas();
+//        }
     }
 
     protected abstract void initPresenter();

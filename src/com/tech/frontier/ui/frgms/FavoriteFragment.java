@@ -35,4 +35,10 @@ public class FavoriteFragment extends ArticlesFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    public void fetchDatas() {
+        // TODO : 这里需要加载本地数据库的数据
+        super.fetchDatas();
+    }
+
 }

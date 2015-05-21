@@ -22,34 +22,13 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net.handlers;
+package com.tech.frontier.net;
 
-import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.Recommend;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class JobHander implements RespHandler<List<Job>, JSONArray> {
-
-    @Override
-    public List<Job> parse(JSONArray data) {
-        List<Job> jobs = new ArrayList<Job>();
-        int length = data.length();
-        for (int i = 0; i < length; i++) {
-            JSONObject jsonObject = data.optJSONObject(i);
-            Job jobItem = new Job();
-            jobItem.company = jsonObject.optString("company");
-            jobItem.type = Integer.valueOf(jsonObject.optInt("type"));
-            jobItem.job = jsonObject.optString("job");
-            jobItem.desc = jsonObject.optString("job_desc");
-            jobItem.email = jsonObject.optString("email");
-            // 
-            jobs.add(jobItem);
-        }
-        return jobs;
-    }
-
+public interface RecomendAPI {
+    public void fetchRecomends(DataListener<List<Recommend>> listener);
 }

@@ -35,31 +35,28 @@ import android.widget.TextView;
 import com.jakewharton.utils.RecyclingPagerAdapter;
 import com.squareup.picasso.Picasso;
 import com.tech.frontier.R;
-import com.tech.frontier.models.entities.Recomend;
+import com.tech.frontier.models.entities.Recommend;
 
 import java.util.List;
 
-public class ImagePagerAdapter extends RecyclingPagerAdapter {
+public class HeaderImageAdapter extends RecyclingPagerAdapter {
 
     private Context context;
-    private List<Recomend> imageIdList;
-
-    private int size;
+    private List<Recommend> imageIdList;
     private boolean isInfiniteLoop;
     ViewPager mViewPager;
 
-    public ImagePagerAdapter(ViewPager viewPager, List<Recomend> imageIdList) {
+    public HeaderImageAdapter(ViewPager viewPager, List<Recommend> imageIdList) {
         mViewPager = viewPager;
         this.context = mViewPager.getContext();
         this.imageIdList = imageIdList;
-        this.size = imageIdList.size();
         isInfiniteLoop = false;
     }
 
     @Override
     public int getCount() {
         // Infinite loop
-        return isInfiniteLoop ? Integer.MAX_VALUE : size;
+        return isInfiniteLoop ? Integer.MAX_VALUE : imageIdList.size();
     }
 
     /**
@@ -69,7 +66,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
      * @return
      */
     private int getPosition(int position) {
-        return isInfiniteLoop ? position % size : position;
+        return isInfiniteLoop ? position % imageIdList.size() : position;
     }
 
     @Override
@@ -85,7 +82,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        Recomend item = getItem(position);
+        Recommend item = getItem(position);
         holder.titleTextView.setText(item.title);
         Picasso.with(container.getContext())
                 .load(item.imgUrl)
@@ -94,7 +91,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
         return view;
     }
 
-    private Recomend getItem(int position) {
+    private Recommend getItem(int position) {
         return imageIdList.get(getPosition(position));
     }
 
@@ -113,7 +110,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
     /**
      * @param isInfiniteLoop the isInfiniteLoop to set
      */
-    public ImagePagerAdapter setInfiniteLoop(boolean isInfiniteLoop) {
+    public HeaderImageAdapter setInfiniteLoop(boolean isInfiniteLoop) {
         this.isInfiniteLoop = isInfiniteLoop;
         return this;
     }

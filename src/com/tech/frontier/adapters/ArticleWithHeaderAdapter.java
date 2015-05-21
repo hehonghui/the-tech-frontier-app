@@ -26,13 +26,17 @@ package com.tech.frontier.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tech.frontier.R;
+import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
-import com.tech.frontier.models.entities.Recomend;
+import com.tech.frontier.models.entities.Recommend;
+import com.tech.frontier.net.RecomendAPI;
+import com.tech.frontier.net.RecomendAPIImpl;
 import com.tech.frontier.widgets.AutoScrollViewPager;
 
 import java.util.ArrayList;
@@ -42,6 +46,8 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
 
     private static final int HEADER = 0;
 
+    RecomendAPI api = new RecomendAPIImpl();
+
     public ArticleWithHeaderAdapter(List<Article> dataSet) {
         super(dataSet);
     }
@@ -50,7 +56,7 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         if (viewHolder instanceof ArticleViewHolder) {
             bindViewForArticle(viewHolder, position);
-        } else {
+        } else if (viewHolder instanceof HeaderViewHolder) {
             bindViewForHeader(viewHolder);
         }
     }
@@ -68,29 +74,41 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
                 viewGroup.getContext()).inflate(R.layout.auto_slider, viewGroup, false);
         return new HeaderViewHolder(headerView);
     }
-
+    final List<Recommend> recommends = new ArrayList<Recommend>();
+    
     private void bindViewForHeader(ViewHolder viewHolder) {
-        HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
+        Log.e("", "### 获取header 数据 : ");
+        final HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
+        if (recommends.size() == 0) {
+            api.fetchRecomends(new DataListener<List<Recommend>>() {
 
-        List<Recomend> imageIdList = new ArrayList<Recomend>();
-        imageIdList.add(new Recomend("Android MVP架构实战", "",
-                "http://eimg.smzdm.com/201505/20/555be97c655018318.jpg"));
-        imageIdList
-                .add(new Recomend("Android单元测试难在哪", "",
-                        "http://img30.360buyimg.com/da/jfs/t1381/329/75656553/70834/9e68b206/55558b04N3bb2033a.jpg"));
-        imageIdList.add(new Recomend("Kotlin自定义View", "",
-                "http://img.my.csdn.net/uploads/201407/26/1406383219_5806.jpg"));
-        imageIdList.add(new Recomend("Swift的响应式编程", "",
-                "http://am.zdmimg.com/201505/20/555be975c74701880.jpg_e600.jpg"));
+                @Override
+                public void onComplete(List<Recommend> result) {
+                    Log.e("", "### 已经获取header 数据 : ");
+                    initAutoSlider(headerViewHolder, result);
+                }
+            });
+        }
+    }
 
+    HeaderImageAdapter mImagePagerAdapter;
+
+    private void initAutoSlider(HeaderViewHolder headerViewHolder, List<Recommend> result) {
         AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
-        viewPager.setAdapter(new ImagePagerAdapter(viewPager, imageIdList)
-                .setInfiniteLoop(true));
+        if (mImagePagerAdapter == null) {
+            mImagePagerAdapter = new HeaderImageAdapter(viewPager, result);
+            mImagePagerAdapter.setInfiniteLoop(true);
+            // 设置ViewPager
+            viewPager.setInterval(15000);
+            if (result.size() > 0) {
+                viewPager.startAutoScroll();
+                viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2
+                        % result.size());
+            }
 
-        viewPager.setInterval(15000);
-        viewPager.startAutoScroll();
-        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2
-                % imageIdList.size());
+            viewPager.setAdapter(mImagePagerAdapter);
+        }
+
     }
 
     /*
@@ -110,7 +128,7 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (0 == position) {
+        if (HEADER == position) {
             return 0;
         }
 
