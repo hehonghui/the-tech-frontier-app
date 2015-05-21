@@ -25,6 +25,7 @@
 package com.tech.frontier.presenters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.ArticleModel;
@@ -67,18 +68,18 @@ public class ArticlePresenter {
     }
 
     // 获取文章
-    public void fetchArticles(int category) {
+    public void fetchArticles(int category,final Context context) {
         mArticleView.showLoading();
         mArticleApi.fetchArticles(category, new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {
-                fetchDataFinished(result);
+                fetchDataFinished(result,context);
             }
         });
     }
 
-    public void loadModeArticles(int category) {
+    public void loadModeArticles(int category,final Context context) {
         if (isNoMoreArticles) {
             return;
         }
@@ -87,7 +88,8 @@ public class ArticlePresenter {
 
             @Override
             public void onComplete(List<Article> result) {
-                fetchDataFinished(result);
+            	
+                fetchDataFinished(result,context);
                 if (result.size() == 0) {
                     isNoMoreArticles = true;
                 }
@@ -95,7 +97,7 @@ public class ArticlePresenter {
         });
     }
 
-    private void fetchDataFinished(List<Article> result) {
+    private void fetchDataFinished(List<Article> result,Context context) {
         // 移除已经存在的数据
         mArticles.removeAll(result);
         // 添加心数据
@@ -105,21 +107,21 @@ public class ArticlePresenter {
         mArticleView.showArticles(mArticles);
         mArticleView.hideLoading();
         // 存储到数据库
-        mArticleModel.saveArticles(result);
+        mArticleModel.saveArticles(result,context);
     }
 
     private void sortArticles(List<Article> articles) {
         Collections.sort(articles, mArticleComparator);
     }
 
-    public void loadArticlesFromDB() {
+    public void loadArticlesFromDB(Context context) {
         mArticleModel.loadArticlesFromCache(new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {
                 mArticleView.showArticles(result);
             }
-        });
+        },context);
     }
 
     /**

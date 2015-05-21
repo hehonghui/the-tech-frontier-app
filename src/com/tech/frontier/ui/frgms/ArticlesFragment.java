@@ -24,6 +24,7 @@
 
 package com.tech.frontier.ui.frgms;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -49,8 +50,14 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     protected ArticleAdapter mAdapter;
     private ArticlePresenter mPresenter;
     protected int mCategory = Article.ALL;
+    private Context context;
+    
 
-    @Override
+    public ArticlesFragment(Context context) {
+		this.context = context;
+	}
+
+	@Override
     protected void initAdapter() {
         mAdapter = new ArticleWithHeaderAdapter(mDataSet);
         mAdapter.setOnItemClickListener(new OnItemClickListener<Article>() {
@@ -98,12 +105,12 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     @Override
     public void fetchDatas() {
         filterArticleByCategory();
-        mPresenter.fetchArticles(mCategory);
+        mPresenter.fetchArticles(mCategory,context);
     }
 
     @Override
     public void showArticles(List<Article> result) {
-        Log.e(getTag(), "### update articles");
+       
         mDataSet.clear();
         mDataSet.addAll(result);
         filterArticleByCategory();
@@ -137,11 +144,11 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
     @Override
     public void onRefresh() {
-        mPresenter.fetchArticles(mCategory);
+        mPresenter.fetchArticles(mCategory,context);
     }
 
     @Override
     public void onLoad() {
-        mPresenter.loadModeArticles(mCategory);
+        mPresenter.loadModeArticles(mCategory,context);
     }
 }

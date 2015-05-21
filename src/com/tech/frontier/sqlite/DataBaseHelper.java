@@ -21,35 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package com.tech.frontier.ui.frgms;
+package com.tech.frontier.sqlite;
 
 import android.content.Context;
-
-import com.tech.frontier.adapters.ArticleAdapter;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * 文章收藏页面
- * 
- * @author mrsimple
+ * 建立数据库和数据表
+ * @author sundroid
+ * May 21, 2015
  */
-public class FavoriteFragment extends ArticlesFragment {
+public class DataBaseHelper extends SQLiteOpenHelper{
+	private final static String DATABASE_NAME = "tech_frontier_app";
+	private static DataBaseHelper mDataBaseHelper;
+	public synchronized static DataBaseHelper getInstance(Context context) {
+		if (mDataBaseHelper == null) {
+			mDataBaseHelper = new DataBaseHelper(context);
+		}
+		
+		return mDataBaseHelper;
+	}
+	private DataBaseHelper(Context context) {
+		super(context, DATABASE_NAME, null, 1);
+	}
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		db.execSQL("create table if not exists artcles (aid integer primary key autoincrement,author varchar(30),title  varchar(100),atype integer"
+				+ ",save_time varchar(100))");
+		db.execSQL("create table if not exists favorites (id integer primary key autoincrement,aid  integer,uid integer)");
+		db.execSQL("create table if not exists users (uid integer,name  varchar(30),avatar_url varchar(200))");
 
-    public FavoriteFragment(Context context) {
-		super(context);
+	}
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 	
+		
 	}
 
-	@Override
-    protected void initAdapter() {
-        mAdapter = new ArticleAdapter(mDataSet);
-        mRecyclerView.setAdapter(mAdapter);
-    }
 
-    @Override
-    public void fetchDatas() {
-        // TODO : 这里需要加载本地数据库的数据
-        super.fetchDatas();
-    }
+
+
 
 }

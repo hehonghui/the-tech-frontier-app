@@ -1,6 +1,7 @@
 
 package com.tech.frontier.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -36,6 +37,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
     JobsFragment mJobFragment;
     FavoriteFragment mFavoriteFragment;
     AboutFragment mAboutFragment;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,8 @@ public class ArticlesActivity extends BaseActionBarActivity {
         initViews();
 
         RequestQueueMgr.init(getApplicationContext());
-        mArticlesFragment = new ArticlesFragment();
+        context = this;
+        mArticlesFragment = new ArticlesFragment(context);
         mArticlesFragment.setRetainInstance(true);
         addFragment(mArticlesFragment);
     }
@@ -113,7 +116,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
                 break;
             case R.drawable.favorite: // 收藏
                 if (mFavoriteFragment == null) {
-                    mFavoriteFragment = new FavoriteFragment();
+                    mFavoriteFragment = new FavoriteFragment(context);
                 }
                 replaceFragment(mFavoriteFragment);
                 break;

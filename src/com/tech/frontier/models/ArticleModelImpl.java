@@ -24,11 +24,19 @@
 
 package com.tech.frontier.models;
 
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
-
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.sqlite.DataBaseHelper;
 
 /**
  * 数据存储在内存,TODO : 修改为存储到数据库
@@ -39,13 +47,76 @@ public class ArticleModelImpl implements ArticleModel {
     List<Article> mCachedArticles = new LinkedList<Article>();
 
     @Override
-    public void saveArticles(List<Article> articles) {
-        mCachedArticles.addAll(articles);
+    public void saveArticles(List<Article> articles,Context context) {
+		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getInstance(context)
+				.getWritableDatabase();
+		for (Article article : articles) {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put("title",article.title);
+			contentValues.put("author",article.author);
+			contentValues.put("atype",article.category);
+			contentValues.put("save_time",article.publishTime);
+			Log.i("SAVE", "======"+article.toString());
+			sqLiteDatabase.insert("artcles", null, contentValues);
+		}
+		sqLiteDatabase.close();
+		
+
     }
 
     @Override
-    public void loadArticlesFromCache(DataListener<List<Article>> listener) {
-        listener.onComplete(mCachedArticles);
+    public void loadArticlesFromCache(DataListener<List<Article>> listener,Context context) {
+    	mCachedArticles = getArticles(context);
+    	
+    	listener.onComplete(mCachedArticles);
     }
+
+    
+    
+
+	@Override
+	public void saveArticle(Article article, Context context) {
+		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getInstance(context)
+				.getWritableDatabase();
+		ContentValues contentValues = new ContentValues();
+		contentValues.put("title",article.title);
+		contentValues.put("author",article.author);
+		contentValues.put("atype",article.category);
+		contentValues.put("save_time",article.publishTime);
+		Log.i("SAVEA", "======"+article.toString());
+		if (sqLiteDatabase!=null) {
+			sqLiteDatabase.insert("artcles", null, contentValues);
+			sqLiteDatabase.close();
+		}
+	}
+
+	@Override
+	public List<Article> getArticles(Context context) {
+		List<Article> articles = new ArrayList<Article>();
+		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getInstance(context)
+				.getReadableDatabase();
+
+		if (sqLiteDatabase != null) {
+			Cursor cursor = sqLiteDatabase.query("artcles", null, null,
+					null, null, null, null);
+			while (cursor.moveToNext()) {
+				Article article = new Article();
+				article.author = cursor.getString(cursor
+						.getColumnIndex("author"));
+				article.category = cursor.getInt(cursor
+						.getColumnIndex("atype"));
+				article.publishTime =  cursor.getString(cursor
+						.getColumnIndex("save_time"));
+				article.title =  cursor.getString(cursor
+						.getColumnIndex("title"));
+				Log.i("READ", "======"+article.toString());
+				articles.add(article);
+			}
+			sqLiteDatabase.close();
+			
+		}
+		return articles;
+
+	}
 
 }
