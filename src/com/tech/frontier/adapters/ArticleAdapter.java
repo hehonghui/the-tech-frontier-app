@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tech.frontier.R;
+import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.models.entities.Article;
 
 import java.util.List;
@@ -46,7 +47,7 @@ import java.util.List;
 public class ArticleAdapter extends Adapter<ViewHolder> {
 
     List<Article> mArticles;
-    OnItemClickListener mClickListener;
+    OnItemClickListener<Article> mClickListener;
 
     public ArticleAdapter(List<Article> dataSet) {
         mArticles = dataSet;
@@ -96,7 +97,7 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
         return mArticles.get(position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener mClickListener) {
+    public void setOnItemClickListener(OnItemClickListener<Article> mClickListener) {
         this.mClickListener = mClickListener;
     }
 
@@ -112,9 +113,5 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
             publishTimeTv = (TextView) itemView.findViewById(R.id.article_time_tv);
             authorTv = (TextView) itemView.findViewById(R.id.article_author_tv);
         }
-    }
-
-    public static interface OnItemClickListener {
-        public void onClick(Article article);
     }
 }

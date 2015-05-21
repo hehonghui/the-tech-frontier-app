@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 
 import com.tech.frontier.R;
 import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.models.entities.Recommend;
 import com.tech.frontier.net.RecomendAPI;
@@ -63,7 +64,9 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
     /**
      * Header View中的ViewPager Adapter
      */
-    HeaderImageAdapter mImagePagerAdapter;
+    HeaderRecommendAdapter mImagePagerAdapter;
+
+    OnItemClickListener<Recommend> mRecommendListener;
 
     public ArticleWithHeaderAdapter(List<Article> dataSet) {
         super(dataSet);
@@ -111,8 +114,9 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
     private void initAutoSlider(HeaderViewHolder headerViewHolder, List<Recommend> result) {
         AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
         if (mImagePagerAdapter == null) {
-            mImagePagerAdapter = new HeaderImageAdapter(viewPager, result);
+            mImagePagerAdapter = new HeaderRecommendAdapter(viewPager, result);
             mImagePagerAdapter.setInfiniteLoop(true);
+            mImagePagerAdapter.setOnItemClickListener(mRecommendListener);
             // 设置ViewPager
             viewPager.setInterval(15000);
             if (result.size() > 0) {
@@ -124,6 +128,10 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
             viewPager.setAdapter(mImagePagerAdapter);
         }
 
+    }
+
+    public void setRecommendListener(OnItemClickListener<Recommend> mRecommendListener) {
+        this.mRecommendListener = mRecommendListener;
     }
 
     /*

@@ -26,12 +26,14 @@ package com.tech.frontier.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+
 import com.tech.frontier.R;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
@@ -42,11 +44,13 @@ import com.tech.frontier.utils.HtmlTemplate;
  * 
  * @author mrsimple
  */
-public class ArticleDetailActivity extends BaseActionBarActivity implements ArticleDetailView {
+public class DetailActivity extends BaseActionBarActivity implements ArticleDetailView {
 
     ProgressBar mProgressBar;
     WebView mWebView;
-    String devtfUrl = "http://www.devtf.cn/?p=";
+    private String mPostId;
+    private String mTitle;
+    private String mTargetUrl;
     ArticleDetailPresenter mPresenter = new ArticleDetailPresenter(this);
 
     @Override
@@ -56,7 +60,11 @@ public class ArticleDetailActivity extends BaseActionBarActivity implements Arti
         setupToolbar();
         initViews();
         initArticleUrl();
-        loadWebSite();
+        if (!TextUtils.isEmpty(mTargetUrl)) { // 加载推荐的链接
+            mWebView.loadUrl(mTargetUrl);
+        } else { // 加载文章
+            mPresenter.fetchArticleContent(mPostId);
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -88,20 +96,11 @@ public class ArticleDetailActivity extends BaseActionBarActivity implements Arti
 
     private void initArticleUrl() {
         Bundle extraBundle = getIntent().getExtras();
-        if (extraBundle != null && extraBundle.containsKey("post_id")) {
+        if (extraBundle != null) {
             mPostId = extraBundle.getString("post_id");
             mTitle = extraBundle.getString("title");
-            ;
-            devtfUrl += mPostId;
+            mTargetUrl = extraBundle.getString("url");
         }
-    }
-
-    private String mPostId;
-    private String mTitle;
-
-    private void loadWebSite() {
-        // mWebView.loadUrl(devtfUrl);
-        mPresenter.fetchArticleContent(mPostId);
     }
 
     @Override

@@ -28,11 +28,12 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.tech.frontier.adapters.ArticleAdapter;
-import com.tech.frontier.adapters.ArticleAdapter.OnItemClickListener;
 import com.tech.frontier.adapters.ArticleWithHeaderAdapter;
+import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.models.entities.Recommend;
 import com.tech.frontier.presenters.ArticlePresenter;
-import com.tech.frontier.ui.ArticleDetailActivity;
+import com.tech.frontier.ui.DetailActivity;
 import com.tech.frontier.ui.interfaces.ArticleViewInterface;
 
 import java.util.Iterator;
@@ -47,13 +48,21 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     @Override
     protected void initAdapter() {
         mAdapter = new ArticleWithHeaderAdapter(mDataSet);
-        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new OnItemClickListener<Article>() {
 
             @Override
             public void onClick(Article article) {
                 loadArticle(article);
             }
         });
+        ((ArticleWithHeaderAdapter) mAdapter)
+                .setRecommendListener(new OnItemClickListener<Recommend>() {
+
+                    @Override
+                    public void onClick(Recommend item) {
+                        loadRecommendTargetUrl(item);
+                    }
+                });
         // 设置Adapter
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -89,7 +98,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
     @Override
     public void showArticles(List<Article> result) {
-        Log.e(getTag(), "### update articles") ;
+        Log.e(getTag(), "### update articles");
         mDataSet.clear();
         mDataSet.addAll(result);
         filterArticleByCategory();
@@ -109,9 +118,15 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     }
 
     private void loadArticle(Article article) {
-        Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("post_id", article.post_id);
         intent.putExtra("title", article.title);
+        startActivity(intent);
+    }
+
+    private void loadRecommendTargetUrl(Recommend recommend) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra("url", recommend.url);
         startActivity(intent);
     }
 

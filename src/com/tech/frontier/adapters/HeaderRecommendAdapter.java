@@ -28,6 +28,7 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,18 +36,20 @@ import android.widget.TextView;
 import com.jakewharton.utils.RecyclingPagerAdapter;
 import com.squareup.picasso.Picasso;
 import com.tech.frontier.R;
+import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.models.entities.Recommend;
 
 import java.util.List;
 
-public class HeaderImageAdapter extends RecyclingPagerAdapter {
+public class HeaderRecommendAdapter extends RecyclingPagerAdapter {
 
     private Context context;
     private List<Recommend> imageIdList;
     private boolean isInfiniteLoop;
     ViewPager mViewPager;
+    OnItemClickListener<Recommend> mItemClickListener;
 
-    public HeaderImageAdapter(ViewPager viewPager, List<Recommend> imageIdList) {
+    public HeaderRecommendAdapter(ViewPager viewPager, List<Recommend> imageIdList) {
         mViewPager = viewPager;
         this.context = mViewPager.getContext();
         this.imageIdList = imageIdList;
@@ -70,25 +73,38 @@ public class HeaderImageAdapter extends RecyclingPagerAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup container) {
+    public View getView(final int position, View view, ViewGroup container) {
         ViewHolder holder;
+        final Recommend item = getItem(position);
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(context).inflate(R.layout.recommend_item, container, false);
             holder.imageView = (ImageView) view.findViewById(R.id.recommand_imageview);
             holder.titleTextView = (TextView) view.findViewById(R.id.recommend_title_tv);
+            view.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onClick(item);
+                    }
+                }
+            });
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        Recommend item = getItem(position);
         holder.titleTextView.setText(item.title);
         Picasso.with(container.getContext())
                 .load(item.imgUrl)
                 .fit()
                 .into(holder.imageView);
         return view;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener<Recommend> listener) {
+        mItemClickListener = listener;
     }
 
     private Recommend getItem(int position) {
@@ -110,7 +126,7 @@ public class HeaderImageAdapter extends RecyclingPagerAdapter {
     /**
      * @param isInfiniteLoop the isInfiniteLoop to set
      */
-    public HeaderImageAdapter setInfiniteLoop(boolean isInfiniteLoop) {
+    public HeaderRecommendAdapter setInfiniteLoop(boolean isInfiniteLoop) {
         this.isInfiniteLoop = isInfiniteLoop;
         return this;
     }

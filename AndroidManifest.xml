@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tech.frontier.ui.ArticleDetailActivity" />
+        <activity android:name="com.tech.frontier.ui.DetailActivity" />
     </application>
 
 </manifest>
