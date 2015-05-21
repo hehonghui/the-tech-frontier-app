@@ -14,16 +14,10 @@
 
         <!-- 文章列表界面 -->
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_container"
+        <FrameLayout
+            android:id="@+id/articles_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <com.tech.frontier.widgets.AutoLoadRecyclerView
-                android:id="@+id/articles_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent" />
 
         <!-- 侧滑菜单内容 -->
 
