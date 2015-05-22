@@ -1,6 +1,7 @@
 package com.tech.frontier.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,6 +36,7 @@ import com.tech.frontier.ui.frgms.ArticlesFragment;
 import com.tech.frontier.ui.frgms.FavoriteFragment;
 import com.tech.frontier.ui.frgms.JobsFragment;
 import com.tech.frontier.utils.Constants;
+import com.tech.frontier.utils.SharePreferUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +68,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
 	private NetworkImageView user_icon_imageview;
    
 	private TextView username_tv;
+	
 
 
 	/** 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能 */
@@ -86,6 +89,13 @@ public class ArticlesActivity extends BaseActionBarActivity {
 		DataBaseHelper.init(getApplicationContext());
 
 		RequestQueueMgr.init(getApplicationContext());
+		
+		
+		SharePreferUtil.init(getApplicationContext());
+		
+		
+	
+		
 
 		mArticlesFragment = new ArticlesFragment();
 		mArticlesFragment.setRetainInstance(true);
@@ -107,6 +117,10 @@ public class ArticlesActivity extends BaseActionBarActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		user_icon_imageview = (NetworkImageView) findViewById(R.id.user_icon_imageview);
 		user_icon_imageview.setDefaultImageResId(R.drawable.user_default);
+		
+	    SharePreferUtil.init(getApplicationContext());
+	
+		Log.i("USERINFO", SharePreferUtil.getUserInfo().toString());
 		username_tv = (TextView) findViewById(R.id.username_tv);
 		initMenuLayout();
 	}
@@ -256,15 +270,14 @@ public class ArticlesActivity extends BaseActionBarActivity {
 	}
 
 	private void fetchDataFinished(UserInfo result) {
-
-	
-		//TDDO  save userinfo to sqlite 
 		LruImageCache lruImageCache = LruImageCache.instance();
 
 		ImageLoader imageLoader = new ImageLoader(RequestQueueMgr.getRequestQueue(),
 				lruImageCache);
 		user_icon_imageview.setImageUrl(result.profile_image_url,imageLoader);
 		username_tv.setText(result.name);
+	
+		SharePreferUtil.addUserInfo(result);
 	}
 
 }
