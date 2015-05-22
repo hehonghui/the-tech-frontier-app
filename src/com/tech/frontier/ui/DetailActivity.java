@@ -27,12 +27,15 @@ package com.tech.frontier.ui;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.tech.frontier.R;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
@@ -107,6 +110,28 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     public void showArticleContent(String html) {
         mWebView.loadDataWithBaseURL("", HtmlTemplate.wrap(mTitle, html), "text/html", "utf8",
                 "404");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                Toast.makeText(getApplicationContext(), "share", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.action_favorite:
+
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
 }

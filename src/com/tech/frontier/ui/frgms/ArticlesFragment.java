@@ -123,7 +123,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void loadArticle(Article article) {
+    protected void loadArticle(Article article) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("post_id", article.post_id);
         intent.putExtra("title", article.title);
@@ -133,6 +133,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     private void loadRecommendTargetUrl(Recommend recommend) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("url", recommend.url);
+        intent.putExtra("title", recommend.title);
         startActivity(intent);
     }
 

@@ -25,6 +25,8 @@
 package com.tech.frontier.ui.frgms;
 
 import com.tech.frontier.adapters.ArticleAdapter;
+import com.tech.frontier.listeners.OnItemClickListener;
+import com.tech.frontier.models.entities.Article;
 
 /**
  * 文章收藏页面
@@ -36,6 +38,13 @@ public class FavoriteFragment extends ArticlesFragment {
     @Override
     protected void initAdapter() {
         mAdapter = new ArticleAdapter(mDataSet);
+        mAdapter.setOnItemClickListener(new OnItemClickListener<Article>() {
+
+            @Override
+            public void onClick(Article article) {
+                loadArticle(article);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 
