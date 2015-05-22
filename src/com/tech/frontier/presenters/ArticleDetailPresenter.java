@@ -29,7 +29,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.tech.frontier.db.ArticleDetailDBAPI;
+import com.tech.frontier.db.ArticleContentDBAPI;
 import com.tech.frontier.db.DatabaseFactory;
 import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.listeners.DataListener;
@@ -39,14 +39,25 @@ import com.tech.frontier.net.ArticleAPIImpl;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
 import com.tech.frontier.utils.LoginSession;
 
+/**
+ * 文章阅读页面的Presenter
+ * 
+ * @author mrsimple
+ */
 public class ArticleDetailPresenter {
     ArticleDetailView mArticleView;
     // 从网络上获取文章的Api
     ArticleAPI mArticleApi = new ArticleAPIImpl();
-
-    ArticleDetailDBAPI mArticleDBAPI = DatabaseFactory.createArticleDetailDBAPI();
-
+    /**
+     * 
+     */
+    ArticleContentDBAPI mArticleDBAPI = DatabaseFactory.createArticleContentDBAPI();
+    /**
+     * 
+     */
     final FavoriteDBAPI mFavoriteDBAPI = DatabaseFactory.createFavoriteDBAPI();
+
+    AuthPresenter mAuthPresenter;
 
     public ArticleDetailPresenter(ArticleDetailView view) {
         mArticleView = view;
@@ -76,8 +87,6 @@ public class ArticleDetailPresenter {
             }
         });
     }
-
-    AuthPresenter mAuthPresenter;
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mAuthPresenter != null) {

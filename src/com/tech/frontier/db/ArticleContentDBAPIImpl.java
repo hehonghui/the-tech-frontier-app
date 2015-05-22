@@ -31,7 +31,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.listeners.DataListener;
 
-public class ArticleDetailDBAPIImpl implements ArticleDetailDBAPI {
+public class ArticleContentDBAPIImpl implements ArticleContentDBAPI {
 
     @Override
     public void saveContent(String postId, String html) {

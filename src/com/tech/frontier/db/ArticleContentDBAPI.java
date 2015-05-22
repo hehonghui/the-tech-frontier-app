@@ -26,7 +26,7 @@ package com.tech.frontier.db;
 
 import com.tech.frontier.listeners.DataListener;
 
-public interface ArticleDetailDBAPI {
+public interface ArticleContentDBAPI {
 
     /**
      * @param postId

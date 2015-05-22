@@ -38,12 +38,14 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.tech.frontier.R;
+import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
-import com.tech.frontier.presenters.AuthPresenter;
 import com.tech.frontier.presenters.FavoritePresenter;
 import com.tech.frontier.presenters.SharePresenter;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
 import com.tech.frontier.utils.HtmlTemplate;
+
+import java.util.List;
 
 /**
  * 文章阅读页面,使用WebView加载文章。
@@ -57,8 +59,11 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     private String mPostId;
     private String mTitle;
     private String mTargetUrl;
+    /**
+     * 是否已收藏某篇文章
+     */
+    private boolean isFavorited = false;
     ArticleDetailPresenter mPresenter = new ArticleDetailPresenter(this);
-    AuthPresenter mAuthPresenter;
     SharePresenter mSharePresenter;
     FavoritePresenter mFavoritePresenter;
 
@@ -75,7 +80,6 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
             mPresenter.fetchArticleContent(mPostId);
         }
 
-        mAuthPresenter = new AuthPresenter(this);
         mSharePresenter = new SharePresenter(getApplicationContext());
     }
 
@@ -135,7 +139,7 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     }
 
     private String getShareUrl() {
-        return TextUtils.isEmpty(mTargetUrl) ? "http://www/devtf.cn/?p=" + mPostId : mTargetUrl;
+        return TextUtils.isEmpty(mTargetUrl) ? "http://www.devtf.cn/?p=" + mPostId : mTargetUrl;
     }
 
     @Override
@@ -160,17 +164,30 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
         mPresenter.onActivityResult(requestCode, resultCode, data);
     }
 
-    boolean isFavorited = false;
-
     @Override
     public void isFavorited(boolean isFav) {
         isFavorited = isFav;
         if (isFav && mToolbar.getMenu() != null) {
             MenuItem menuItem = mToolbar.getMenu().findItem(R.id.action_favorite);
             if (menuItem != null) {
-                menuItem.setTitle("取消收藏");
+                menuItem.setTitle(R.string.cancel_fav);
             }
         }
+    }
+
+    @Override
+    public void showArticles(List<Article> articles) {
+
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
     }
 
 }

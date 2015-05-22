@@ -33,8 +33,8 @@ public class DatabaseFactory {
         return new ArticleDBAPIImpl();
     }
 
-    public static ArticleDetailDBAPI createArticleDetailDBAPI() {
-        return new ArticleDetailDBAPIImpl();
+    public static ArticleContentDBAPI createArticleContentDBAPI() {
+        return new ArticleContentDBAPIImpl();
     }
 
     public static DatabaseAPI<Job> createJobDBAPI() {

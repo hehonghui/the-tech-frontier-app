@@ -58,7 +58,7 @@ public class SharePresenter implements Response {
         WeiboMultiMessage weiboMessage = new WeiboMultiMessage();// 初始化微博的分享消息
         TextObject textObject = new TextObject();
         textObject.text = "《" + title + "》" + "这篇文章不错, 文章地址 : " + url
-                + "。本文来自: 开发技术前线, http://www/devtf/cn。";
+                + "。本文来自: 开发技术前线, http://www.devtf.cn 。";
         weiboMessage.textObject = textObject;
         ImageObject imageObject = new ImageObject();
         imageObject.setImageObject(BitmapFactory.decodeResource(activity.getResources(),

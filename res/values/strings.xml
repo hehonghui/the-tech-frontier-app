@@ -7,4 +7,5 @@
     <string name="drawer_close">关闭</string>
     <string name="about">开发技术前线 (www.devtd.cn) 是一个高质量移动技术文章的聚合网站。邮箱 : dev.tech.frontier@gmail.com。</string>
 	<string name="not_login">未登录</string>
+	<string name="cancel_fav" >取消收藏</string>
 </resources>
