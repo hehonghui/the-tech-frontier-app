@@ -24,8 +24,6 @@
 
 package com.tech.frontier.models;
 
-import android.content.Context;
-
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
 
@@ -38,23 +36,23 @@ public interface ArticleModel {
 	 * @param articles
 	 * @param context
 	 */
-    public void saveArticles(List<Article> articles,Context context);
+    public void saveArticles(List<Article> articles);
     
     /**
      *  保存文章数据
      * @param article
      * @param context
      */
-    public void saveArticle(Article article,Context context);
+    public void saveArticle(Article article);
 
     /**
      * 从数据库加载文章数据
      * 
      * @param listener
      */
-    public void loadArticlesFromCache(DataListener<List<Article>> listener,Context context);
+    public void loadArticlesFromCache(DataListener<List<Article>> listener);
     
     
-    public List<Article> getArticles(Context context);
+    public List<Article> getArticles();
     
 }

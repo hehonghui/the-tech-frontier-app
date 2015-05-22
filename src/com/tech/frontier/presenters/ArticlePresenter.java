@@ -26,6 +26,7 @@ package com.tech.frontier.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.ArticleModel;
@@ -50,9 +51,13 @@ public class ArticlePresenter {
     // View的接口,被Presenter调用，用于像View传递数据,代表了View角色
     ArticleViewInterface mArticleView;
     // 文章数据的Model,也就是Model角色
-    ArticleModel mArticleModel = new ArticleModelImpl();
+    ArticleModel mArticleModel = new  ArticleModelImpl();;
     // 从网络上获取文章的Api
     ArticleAPI mArticleApi = new ArticleAPIImpl();
+    
+    
+
+   
     /**
      * 文章列表
      */
@@ -65,21 +70,23 @@ public class ArticlePresenter {
 
     public ArticlePresenter(ArticleViewInterface viewInterface) {
         mArticleView = viewInterface;
+     
+ 
     }
 
     // 获取文章
-    public void fetchArticles(int category,final Context context) {
+    public void fetchArticles(int category) {
         mArticleView.showLoading();
         mArticleApi.fetchArticles(category, new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {
-                fetchDataFinished(result,context);
+                fetchDataFinished(result);
             }
         });
     }
 
-    public void loadModeArticles(int category,final Context context) {
+    public void loadModeArticles(int category) {
         if (isNoMoreArticles) {
             return;
         }
@@ -89,7 +96,7 @@ public class ArticlePresenter {
             @Override
             public void onComplete(List<Article> result) {
             	
-                fetchDataFinished(result,context);
+                fetchDataFinished(result);
                 if (result.size() == 0) {
                     isNoMoreArticles = true;
                 }
@@ -97,7 +104,7 @@ public class ArticlePresenter {
         });
     }
 
-    private void fetchDataFinished(List<Article> result,Context context) {
+    private void fetchDataFinished(List<Article> result) {
         // 移除已经存在的数据
         mArticles.removeAll(result);
         // 添加心数据
@@ -107,7 +114,9 @@ public class ArticlePresenter {
         mArticleView.showArticles(mArticles);
         mArticleView.hideLoading();
         // 存储到数据库
-        mArticleModel.saveArticles(result,context);
+   
+        Log.i("result", result.toString());
+        mArticleModel.saveArticles(result);
     }
 
     private void sortArticles(List<Article> articles) {
@@ -121,7 +130,7 @@ public class ArticlePresenter {
             public void onComplete(List<Article> result) {
                 mArticleView.showArticles(result);
             }
-        },context);
+        });
     }
 
     /**

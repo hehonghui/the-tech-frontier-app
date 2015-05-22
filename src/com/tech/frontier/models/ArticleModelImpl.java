@@ -45,10 +45,16 @@ import com.tech.frontier.sqlite.DataBaseHelper;
  */
 public class ArticleModelImpl implements ArticleModel {
     List<Article> mCachedArticles = new LinkedList<Article>();
+    public static Context context;
 
-    @Override
-    public void saveArticles(List<Article> articles,Context context) {
-		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getInstance(context)
+	public ArticleModelImpl() {
+		
+	}
+
+	@Override
+    public void saveArticles(List<Article> articles) {
+   
+		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getDataBaseHelper()
 				.getWritableDatabase();
 		for (Article article : articles) {
 			ContentValues contentValues = new ContentValues();
@@ -65,8 +71,8 @@ public class ArticleModelImpl implements ArticleModel {
     }
 
     @Override
-    public void loadArticlesFromCache(DataListener<List<Article>> listener,Context context) {
-    	mCachedArticles = getArticles(context);
+    public void loadArticlesFromCache(DataListener<List<Article>> listener) {
+    	mCachedArticles = getArticles();
     	
     	listener.onComplete(mCachedArticles);
     }
@@ -75,8 +81,8 @@ public class ArticleModelImpl implements ArticleModel {
     
 
 	@Override
-	public void saveArticle(Article article, Context context) {
-		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getInstance(context)
+	public void saveArticle(Article article) {
+		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getDataBaseHelper()
 				.getWritableDatabase();
 		ContentValues contentValues = new ContentValues();
 		contentValues.put("title",article.title);
@@ -91,9 +97,9 @@ public class ArticleModelImpl implements ArticleModel {
 	}
 
 	@Override
-	public List<Article> getArticles(Context context) {
+	public List<Article> getArticles() {
 		List<Article> articles = new ArrayList<Article>();
-		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getInstance(context)
+		SQLiteDatabase sqLiteDatabase = DataBaseHelper.getDataBaseHelper()
 				.getReadableDatabase();
 
 		if (sqLiteDatabase != null) {

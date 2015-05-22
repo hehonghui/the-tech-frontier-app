@@ -24,8 +24,6 @@
 
 package com.tech.frontier.ui.frgms;
 
-import android.content.Context;
-
 import com.tech.frontier.adapters.ArticleAdapter;
 
 /**
@@ -35,10 +33,7 @@ import com.tech.frontier.adapters.ArticleAdapter;
  */
 public class FavoriteFragment extends ArticlesFragment {
 
-    public FavoriteFragment(Context context) {
-		super(context);
-	
-	}
+
 
 	@Override
     protected void initAdapter() {

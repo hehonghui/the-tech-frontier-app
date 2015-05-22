@@ -23,28 +23,37 @@
  */
 package com.tech.frontier.sqlite;
 
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * 建立数据库和数据表
- * @author sundroid
+ * 
+ * @author sundroid 
  * May 21, 2015
  */
-public class DataBaseHelper extends SQLiteOpenHelper{
+public class DataBaseHelper extends SQLiteOpenHelper {
 	private final static String DATABASE_NAME = "tech_frontier_app";
-	private static DataBaseHelper mDataBaseHelper;
-	public synchronized static DataBaseHelper getInstance(Context context) {
-		if (mDataBaseHelper == null) {
-			mDataBaseHelper = new DataBaseHelper(context);
-		}
-		
-		return mDataBaseHelper;
-	}
-	private DataBaseHelper(Context context) {
+	
+    public static DataBaseHelper mDataBaseHelper;
+    
+	public static DataBaseHelper getDataBaseHelper() {
+         return mDataBaseHelper;
+     }
+
+
+   public static void init(Context context){
+	   if(mDataBaseHelper == null){
+		   mDataBaseHelper = new DataBaseHelper(context);
+	   }
+	   
+   }
+	public DataBaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, 1);
 	}
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("create table if not exists artcles (aid integer primary key autoincrement,author varchar(30),title  varchar(100),atype integer"
@@ -53,14 +62,10 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		db.execSQL("create table if not exists users (uid integer,name  varchar(30),avatar_url varchar(200))");
 
 	}
+
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-	
-		
+
 	}
-
-
-
-
 
 }
