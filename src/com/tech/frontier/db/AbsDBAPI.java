@@ -22,18 +22,23 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.db;
 
-public class Article {
-    public static final int ALL = 1;
-    public static final int ANDROID = 2;
-    public static final int iOS = 3;
-    /**
-     * 
-     */
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
-    public int category;
+import android.database.sqlite.SQLiteDatabase;
+
+public abstract class AbsDBAPI<T> implements DatabaseAPI<T> {
+
+    static SQLiteDatabase sSqLiteDatabase;
+    String mTableName;
+
+    public AbsDBAPI(String table) {
+        mTableName = table;
+        sSqLiteDatabase = DatabaseMgr.getDatabase();
+    }
+
+    @Override
+    public void deleteAll() {
+        sSqLiteDatabase.execSQL("delete from " + mTableName);
+        DatabaseMgr.releaseDatabase();
+    }
 }

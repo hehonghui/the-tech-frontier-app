@@ -22,18 +22,26 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.db;
 
-public class Article {
-    public static final int ALL = 1;
-    public static final int ANDROID = 2;
-    public static final int iOS = 3;
+import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.Article;
+
+import java.util.List;
+
+public interface FavoriteDBAPI {
+    
     /**
+     * 加载收藏的文章
      * 
+     * @param listener
      */
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
-    public int category;
+    public void saveFavoriteArticles(Article article);
+    
+    /**
+     * 加载收藏的文章
+     * 
+     * @param listener
+     */
+    public void loadFavoriteArticles(DataListener<List<Article>> listener);
 }

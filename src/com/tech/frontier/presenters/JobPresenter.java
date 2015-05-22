@@ -24,6 +24,8 @@
 
 package com.tech.frontier.presenters;
 
+import com.tech.frontier.db.DatabaseAPI;
+import com.tech.frontier.db.DatabaseFactory;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Job;
 import com.tech.frontier.net.JobAPI;
@@ -35,19 +37,30 @@ import java.util.List;
 public class JobPresenter {
     JobAPI jobAPI = new JobAPIImpl();
     JobViewInterface mJobView;
+    DatabaseAPI<Job> mDatabaseAPI = DatabaseFactory.createJobDBAPI();
 
     public JobPresenter(JobViewInterface jobViewInterface) {
         mJobView = jobViewInterface;
     }
 
     public void fetchJobs() {
-        jobAPI.fetchJobs(new DataListener<List<Job>>() {
+        mDatabaseAPI.loadDatasFromDB(new DataListener<List<Job>>() {
 
             @Override
             public void onComplete(List<Job> result) {
                 mJobView.showJobs(result);
+                // 从网络上获取最新的数据
+                jobAPI.fetchJobs(new DataListener<List<Job>>() {
+
+                    @Override
+                    public void onComplete(List<Job> result) {
+                        mJobView.showJobs(result);
+                        mDatabaseAPI.saveDatas(result);
+                    }
+                });
             }
         });
+
     }
 
 }

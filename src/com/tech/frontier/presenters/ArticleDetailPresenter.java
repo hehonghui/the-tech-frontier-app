@@ -24,6 +24,11 @@
 
 package com.tech.frontier.presenters;
 
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.tech.frontier.db.ArticleDetailDBAPI;
+import com.tech.frontier.db.DatabaseFactory;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.ArticleAPI;
 import com.tech.frontier.net.ArticleAPIImpl;
@@ -34,18 +39,35 @@ public class ArticleDetailPresenter {
     // 从网络上获取文章的Api
     ArticleAPI mArticleApi = new ArticleAPIImpl();
 
-    
+    ArticleDetailDBAPI mArticleDBAPI = DatabaseFactory.createArticleDetailDBAPI();
+
     public ArticleDetailPresenter(ArticleDetailView view) {
-        mArticleView = view ;
+        mArticleView = view;
     }
-    
-    public void fetchArticleContent(String post_id) {
-        mArticleApi.fetchArticleContent(post_id, new DataListener<String>() {
+
+    public void fetchArticleContent(final String post_id) {
+        mArticleDBAPI.loadArticleContent(post_id, new DataListener<String>() {
 
             @Override
             public void onComplete(String result) {
-                mArticleView.showArticleContent(result);
+                // 数据库中没有则通过网络获取
+                if (TextUtils.isEmpty(result)) {
+                    Log.e("", "### 没有文章缓存");
+                    mArticleApi.fetchArticleContent(post_id, new DataListener<String>() {
+
+                        @Override
+                        public void onComplete(String result) {
+                            mArticleView.showArticleContent(result);
+                            // 存储文章到数据库中
+                            mArticleDBAPI.saveContent(post_id, result);
+                        }
+                    });
+                } else {
+                    Log.e("", "### 含有文章缓存");
+                    mArticleView.showArticleContent(result);
+                }
             }
         });
+
     }
 }

@@ -26,18 +26,15 @@ package com.tech.frontier.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tech.frontier.R;
-import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.models.entities.Recommend;
-import com.tech.frontier.net.RecomendAPI;
-import com.tech.frontier.net.RecomendAPIImpl;
+import com.tech.frontier.presenters.RecommendPresenter;
 import com.tech.frontier.widgets.AutoScrollViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -51,23 +48,25 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticleWithHeaderAdapter extends ArticleAdapter {
+public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSliderViewInterface {
 
     private static final int HEADER_TYPE = 0;
     /**
      * Header View里面的推荐数据列表
      */
     final List<Recommend> recommends = new ArrayList<Recommend>();
-    /**
-     * 推荐网络请求API
-     */
-    RecomendAPI mRecomendAPI = new RecomendAPIImpl();
+    // /**
+    // * 推荐网络请求API
+    // */
+    // RecomendAPI mRecomendAPI = new RecomendAPIImpl();
     /**
      * Header View中的ViewPager Adapter
      */
     HeaderRecommendAdapter mImagePagerAdapter;
 
     OnItemClickListener<Recommend> mRecommendListener;
+
+    RecommendPresenter mPresenter = new RecommendPresenter(this);
 
     public ArticleWithHeaderAdapter(List<Article> dataSet) {
         super(dataSet);
@@ -78,7 +77,9 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
         if (viewHolder instanceof ArticleViewHolder) {
             bindViewForArticle(viewHolder, position);
         } else if (viewHolder instanceof HeaderViewHolder) {
-            bindViewForHeader(viewHolder);
+            headerViewHolder = (HeaderViewHolder) viewHolder;
+            mPresenter.fetchRecomends();
+            // bindViewForHeader();
         }
     }
 
@@ -96,27 +97,43 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
         return new HeaderViewHolder(headerView);
     }
 
-    // TODO : 逻辑移除到Presenter中
-    private void bindViewForHeader(ViewHolder viewHolder) {
-        Log.e("", "### 获取header 数据 : ");
-        final HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
-        if (mImagePagerAdapter == null && recommends.size() == 0) {
-            mRecomendAPI.fetchRecomends(new DataListener<List<Recommend>>() {
+    HeaderViewHolder headerViewHolder;
 
-                @Override
-                public void onComplete(List<Recommend> result) {
-                    Log.e("", "### 已经获取header 数据 : ");
-                    initAutoSlider(headerViewHolder, result);
-                }
-            });
-        }
+    // TODO : 逻辑移除到Presenter中
+    // private void bindViewForHeader() {
+    // Log.e("", "### 获取header 数据 : ");
+    //
+    // final HeaderViewHolder headerViewHolder = (HeaderViewHolder)
+    // viewHolder;
+    // if (mImagePagerAdapter == null && recommends.size() == 0) {
+    // mRecomendAPI.fetchRecomends(new DataListener<List<Recommend>>() {
+    //
+    // @Override
+    // public void onComplete(List<Recommend> result) {
+    // Log.e("", "### 已经获取header 数据 : ");
+    // initAutoSlider(headerViewHolder, result);
+    // }
+    // });
+    // }
+    // }
+
+    @Override
+    public void showRecommends(List<Recommend> recommends) {
+        initAutoSlider(headerViewHolder, recommends);
     }
 
+    final List<Recommend> mRecommends = new ArrayList<Recommend>();
+
     private void initAutoSlider(HeaderViewHolder headerViewHolder, List<Recommend> result) {
+        if (result == null || result.size() == 0) {
+            return;
+        }
+        mRecommends.clear();
+        mRecommends.addAll(result);
+
         AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
         if (mImagePagerAdapter == null) {
-            mImagePagerAdapter = new HeaderRecommendAdapter(viewPager, result);
-//            mImagePagerAdapter.setInfiniteLoop(true);
+            mImagePagerAdapter = new HeaderRecommendAdapter(viewPager, mRecommends);
             mImagePagerAdapter.setOnItemClickListener(mRecommendListener);
             // 设置ViewPager
             viewPager.setInterval(5000);
@@ -127,9 +144,11 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
             }
 
             viewPager.setAdapter(mImagePagerAdapter);
-            headerViewHolder.mIndicator.setViewPager(viewPager);
+        } else {
+            mImagePagerAdapter.notifyDataSetChanged();
         }
 
+        headerViewHolder.mIndicator.setViewPager(viewPager);
     }
 
     public void setRecommendListener(OnItemClickListener<Recommend> mRecommendListener) {
@@ -169,5 +188,4 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
             mIndicator = (CirclePageIndicator) view.findViewById(R.id.recommend_indicator);
         }
     }
-
 }

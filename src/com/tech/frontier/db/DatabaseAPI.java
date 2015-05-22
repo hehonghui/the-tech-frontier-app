@@ -22,18 +22,37 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.db;
 
-public class Article {
-    public static final int ALL = 1;
-    public static final int ANDROID = 2;
-    public static final int iOS = 3;
+import com.tech.frontier.listeners.DataListener;
+
+import java.util.List;
+
+/**
+ * 数据库API
+ * 
+ * @author mrsimple
+ * @param <T>
+ */
+public interface DatabaseAPI<T> {
     /**
+     * 保存数据到数据库
      * 
+     * @param articles
      */
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
-    public int category;
+    public void saveDatas(List<T> datas);
+
+    /**
+     * 加载所有缓存
+     * 
+     * @param listener
+     */
+    public void loadDatasFromDB(DataListener<List<T>> listener);
+
+    /**
+     * 清空数据库
+     * 
+     * @param listener
+     */
+    public void deleteAll();
 }

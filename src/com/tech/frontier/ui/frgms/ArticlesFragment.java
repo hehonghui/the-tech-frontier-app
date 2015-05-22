@@ -75,6 +75,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     @Override
     protected void initPresenter() {
         mPresenter = new ArticlePresenter(this);
+        mPresenter.loadArticlesFromDB();
     }
 
     public void setArticleCategory(int category) {

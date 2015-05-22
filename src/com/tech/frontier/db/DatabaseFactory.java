@@ -22,18 +22,26 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.db;
 
-public class Article {
-    public static final int ALL = 1;
-    public static final int ANDROID = 2;
-    public static final int iOS = 3;
-    /**
-     * 
-     */
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
-    public int category;
+import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.models.entities.Recommend;
+
+public class DatabaseFactory {
+    public static DatabaseAPI<Article> createArticleDBAPI() {
+        return new ArticleDBAPIImpl();
+    }
+
+    public static ArticleDetailDBAPI createArticleDetailDBAPI() {
+        return new ArticleDetailDBAPIImpl();
+    }
+
+    public static DatabaseAPI<Job> createJobDBAPI() {
+        return new JobsDBAPIImpl();
+    }
+
+    public static DatabaseAPI<Recommend> createRecommendDBAPI() {
+        return new RecommendDBAPIImpl();
+    }
 }

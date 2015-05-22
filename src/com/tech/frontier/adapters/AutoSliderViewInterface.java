@@ -22,18 +22,12 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.adapters;
 
-public class Article {
-    public static final int ALL = 1;
-    public static final int ANDROID = 2;
-    public static final int iOS = 3;
-    /**
-     * 
-     */
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
-    public int category;
+import com.tech.frontier.models.entities.Recommend;
+
+import java.util.List;
+
+public interface AutoSliderViewInterface {
+    public void showRecommends(List<Recommend> recommends);
 }

@@ -44,8 +44,6 @@ public class ArticlesActivity extends BaseActionBarActivity {
         // 设置Fragment Container
         setFragmentContainer(R.id.articles_container);
         initViews();
-
-        RequestQueueMgr.init(getApplicationContext());
         mArticlesFragment = new ArticlesFragment();
         mArticlesFragment.setRetainInstance(true);
         addFragment(mArticlesFragment);
