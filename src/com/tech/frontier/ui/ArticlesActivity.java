@@ -66,10 +66,10 @@ public class ArticlesActivity extends BaseActionBarActivity {
 	UserAPI userAPI = new UserAPIImpl();
 
 	private NetworkImageView user_icon_imageview;
-   
-	private TextView username_tv;
-	
 
+	private TextView username_tv;
+
+	private boolean is_login = false;
 
 	/** 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能 */
 	private Oauth2AccessToken mAccessToken;
@@ -89,13 +89,8 @@ public class ArticlesActivity extends BaseActionBarActivity {
 		DataBaseHelper.init(getApplicationContext());
 
 		RequestQueueMgr.init(getApplicationContext());
-		
-		
+
 		SharePreferUtil.init(getApplicationContext());
-		
-		
-	
-		
 
 		mArticlesFragment = new ArticlesFragment();
 		mArticlesFragment.setRetainInstance(true);
@@ -106,6 +101,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
 		mAuthInfo = new AuthInfo(this, Constants.APP_KEY,
 				Constants.REDIRECT_URL, Constants.SCOPE);
 		mSsoHandler = new SsoHandler(ArticlesActivity.this, mAuthInfo);
+
 	}
 
 	private void initViews() {
@@ -117,14 +113,25 @@ public class ArticlesActivity extends BaseActionBarActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		user_icon_imageview = (NetworkImageView) findViewById(R.id.user_icon_imageview);
 		user_icon_imageview.setDefaultImageResId(R.drawable.user_default);
-		
-	    SharePreferUtil.init(getApplicationContext());
 	
-		Log.i("USERINFO", SharePreferUtil.getUserInfo().toString());
 		username_tv = (TextView) findViewById(R.id.username_tv);
+		SharePreferUtil.init(getApplicationContext());
+		if (SharePreferUtil.getUserInfo() != null) {
+			username_tv.setText(SharePreferUtil.getUserInfo().name);
+			LruImageCache lruImageCache = LruImageCache.instance();
+
+			ImageLoader imageLoader = new ImageLoader(
+					RequestQueueMgr.getRequestQueue(), lruImageCache);
+            Log.i("uuuuuuuuu", SharePreferUtil.getUserInfo().profile_image_url);
+			user_icon_imageview.setImageUrl(
+					SharePreferUtil.getUserInfo().profile_image_url,
+					imageLoader);
+		}
+
 		initMenuLayout();
 	}
 
+	
 	private void initMenuLayout() {
 		mMenuRecyclerView = (RecyclerView) findViewById(R.id.menu_recyclerview);
 		mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(
@@ -243,7 +250,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
 				// 2. 当您注册的应用程序包名与签名不正确时；
 				// 3. 当您在平台上注册的包名和签名与您当前测试的应用的包名和签名不匹配时。
 				String code = values.getString("code");
-                
+
 			}
 		}
 
@@ -272,11 +279,11 @@ public class ArticlesActivity extends BaseActionBarActivity {
 	private void fetchDataFinished(UserInfo result) {
 		LruImageCache lruImageCache = LruImageCache.instance();
 
-		ImageLoader imageLoader = new ImageLoader(RequestQueueMgr.getRequestQueue(),
-				lruImageCache);
-		user_icon_imageview.setImageUrl(result.profile_image_url,imageLoader);
+		ImageLoader imageLoader = new ImageLoader(
+				RequestQueueMgr.getRequestQueue(), lruImageCache);
+		user_icon_imageview.setImageUrl(result.profile_image_url, imageLoader);
 		username_tv.setText(result.name);
-	
+
 		SharePreferUtil.addUserInfo(result);
 	}
 
