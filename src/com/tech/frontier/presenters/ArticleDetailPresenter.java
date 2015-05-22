@@ -24,15 +24,20 @@
 
 package com.tech.frontier.presenters;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.tech.frontier.db.ArticleDetailDBAPI;
 import com.tech.frontier.db.DatabaseFactory;
+import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.UserInfo;
 import com.tech.frontier.net.ArticleAPI;
 import com.tech.frontier.net.ArticleAPIImpl;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
+import com.tech.frontier.utils.LoginSession;
 
 public class ArticleDetailPresenter {
     ArticleDetailView mArticleView;
@@ -68,5 +73,30 @@ public class ArticleDetailPresenter {
                 }
             }
         });
+    }
+
+    AuthPresenter mAuthPresenter;
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mAuthPresenter != null) {
+            mAuthPresenter.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void favorite(Activity activity, final String postId) {
+        final FavoriteDBAPI dbApi = DatabaseFactory.createFavoriteDBAPI();
+        LoginSession loginSession = LoginSession.getLoginSession();
+        if (!loginSession.isLogined()) {
+            mAuthPresenter = new AuthPresenter(activity);
+            mAuthPresenter.login(new DataListener<UserInfo>() {
+
+                @Override
+                public void onComplete(UserInfo result) {
+                    dbApi.saveFavoriteArticles(postId);
+                }
+            });
+        } else {
+            dbApi.saveFavoriteArticles(postId);
+        }
     }
 }

@@ -162,7 +162,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
         if (session.isLogined()
                 && mUserNameTv.getText().equals(getResources().getString(R.string.not_login))) {
             UserInfo result = session.getUserInfo();
-            Picasso.with(this).load(result.profileImgUrl)
+            Picasso.with(this).load(result.profileImgUrl).placeholder(R.drawable.user_default).fit()
                     .into(mUserImageView);
             mUserNameTv.setText(result.name);
         }

@@ -89,6 +89,7 @@ public class AuthPresenter {
                     @Override
                     public void onComplete(UserInfo result) {
                         result.token = token;
+                        result.uid = uid;
                         LoginSession.getLoginSession().saveUserInfo(result);
                         if (mDataListener != null) {
                             mDataListener.onComplete(result);

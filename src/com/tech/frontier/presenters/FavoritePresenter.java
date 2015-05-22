@@ -22,43 +22,33 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.ui.frgms;
+package com.tech.frontier.presenters;
 
-import com.tech.frontier.adapters.ArticleAdapter;
-import com.tech.frontier.listeners.OnItemClickListener;
+import com.tech.frontier.db.DatabaseFactory;
+import com.tech.frontier.db.FavoriteDBAPI;
+import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
-import com.tech.frontier.presenters.FavoritePresenter;
+import com.tech.frontier.ui.interfaces.ArticleViewInterface;
 
-/**
- * 文章收藏页面
- * 
- * @author mrsimple
- */
-public class FavoriteFragment extends ArticlesFragment {
+import java.util.List;
 
-    FavoritePresenter mFavoritePresenter;
+public class FavoritePresenter {
 
-    @Override
-    protected void initAdapter() {
-        mAdapter = new ArticleAdapter(mDataSet);
-        mAdapter.setOnItemClickListener(new OnItemClickListener<Article>() {
+    ArticleViewInterface mViewInterface;
+
+    FavoriteDBAPI mFavoriteDBAPI = DatabaseFactory.createFavoriteDBAPI();
+
+    public FavoritePresenter(ArticleViewInterface viewInterface) {
+        mViewInterface = viewInterface;
+    }
+
+    public void loadFavorites() {
+        mFavoriteDBAPI.loadFavoriteArticles(new DataListener<List<Article>>() {
 
             @Override
-            public void onClick(Article article) {
-                loadArticle(article);
+            public void onComplete(List<Article> result) {
+                mViewInterface.showArticles(result);
             }
         });
-        mRecyclerView.setAdapter(mAdapter);
     }
-
-    @Override
-    protected void initPresenter() {
-        mFavoritePresenter = new FavoritePresenter(this);
-    }
-
-    @Override
-    public void fetchDatas() {
-        mFavoritePresenter.loadFavorites();
-    }
-
 }

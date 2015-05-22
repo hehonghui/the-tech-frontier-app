@@ -36,7 +36,7 @@ public interface FavoriteDBAPI {
      * 
      * @param listener
      */
-    public void saveFavoriteArticles(Article article);
+    public void saveFavoriteArticles(String postId);
     
     /**
      * 加载收藏的文章

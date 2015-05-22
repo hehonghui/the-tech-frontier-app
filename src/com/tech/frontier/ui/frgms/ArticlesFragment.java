@@ -24,9 +24,6 @@
 
 package com.tech.frontier.ui.frgms;
 
-import java.util.Iterator;
-import java.util.List;
-
 import android.content.Intent;
 
 import com.tech.frontier.adapters.ArticleAdapter;
@@ -38,6 +35,9 @@ import com.tech.frontier.presenters.ArticlePresenter;
 import com.tech.frontier.ui.DetailActivity;
 import com.tech.frontier.ui.interfaces.ArticleViewInterface;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * 文章列表主界面,包含自动滚动广告栏、文章列表
  * 
@@ -48,7 +48,6 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     protected ArticleAdapter mAdapter;
     private ArticlePresenter mPresenter;
     protected int mCategory = Article.ALL;
-  
  
 	@Override
     protected void initAdapter() {

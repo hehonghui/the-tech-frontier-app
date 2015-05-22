@@ -7,6 +7,7 @@ public class UserInfo {
     public String name;
     public String profileImgUrl;
     public String token;
+    public String uid;
 
     @Override
     public String toString() {

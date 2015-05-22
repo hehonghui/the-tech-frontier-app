@@ -31,6 +31,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.utils.LoginSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,40 +39,49 @@ import java.util.List;
 public class FavoriteDBAPIImpl implements FavoriteDBAPI {
 
     @Override
-    public void saveFavoriteArticles(Article article) {
+    public void saveFavoriteArticles(String postId) {
         SQLiteDatabase database = DatabaseMgr.getDatabase();
         database.insertWithOnConflict(DatabaseHelper.TABLE_FAVORITES, null,
-                toContentValues(article),
+                toContentValues(postId),
                 SQLiteDatabase.CONFLICT_REPLACE);
         DatabaseMgr.releaseDatabase();
     }
 
-    private ContentValues toContentValues(Article article) {
+    private ContentValues toContentValues(String postId) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("aid", article.post_id);
-        contentValues.put("uid", "test_id");
+        contentValues.put("aid", postId);
+        contentValues.put("uid", LoginSession.getLoginSession().getUserInfo().uid);
         return contentValues;
     }
 
     @Override
     public void loadFavoriteArticles(DataListener<List<Article>> listener) {
         SQLiteDatabase database = DatabaseMgr.getDatabase();
-        Cursor cursor = database.query(DatabaseHelper.TABLE_ARTICLE_CONTENT, new String[] {
+        String[] columns = new String[] {
                 "aid"
-        }, "uid=?", new String[] {
-                "test_id"
-        }, null, null, null);
+        };
+        String[] selectionArgs = new String[] {
+                LoginSession.getLoginSession().getUserInfo().uid
+        };
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_FAVORITES, columns, "uid=?",
+                selectionArgs, null, null, null);
 
         List<String> articleList = queryArticlePostIds(cursor);
         cursor.close();
 
         List<Article> result = new ArrayList<Article>();
         for (String post_id : articleList) {
-            cursor = database.query(DatabaseHelper.TABLE_ARTICLES, null, "post_id=?", new String[] {
-                    post_id
-            }, null, null, null);
-            if (cursor.moveToNext()) {
-                result.add(queryArticle(cursor));
+            // cursor = database.query(DatabaseHelper.TABLE_ARTICLES, null,
+            // "post_id=?", new String[] {
+            // post_id
+            // }, null, null, null);
+            // if (cursor.moveToNext()) {
+            // result.add(queryArticle(cursor));
+            // }
+            Article item = queryArticleWithId(database, cursor, post_id);
+            if (item != null) {
+                result.add(item);
             }
         }
 
@@ -79,6 +89,17 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
             listener.onComplete(result);
         }
         cursor.close();
+    }
+
+    private Article queryArticleWithId(SQLiteDatabase database, Cursor cursor, String postId) {
+        cursor = database.query(DatabaseHelper.TABLE_ARTICLES, null, "post_id=?", new String[] {
+                postId
+        }, null, null, null);
+        if (cursor.moveToNext()) {
+            return queryArticle(cursor);
+        }
+
+        return null;
     }
 
     private List<String> queryArticlePostIds(Cursor cursor) {

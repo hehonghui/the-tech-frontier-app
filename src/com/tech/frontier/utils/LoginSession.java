@@ -34,6 +34,7 @@ public class LoginSession {
         editor.putString("name", userInfo.name);
         editor.putString("token", userInfo.token);
         editor.putString("profile_image_url", userInfo.profileImgUrl);
+        editor.putString("uid", userInfo.uid);
         editor.commit();
     }
 
@@ -43,6 +44,7 @@ public class LoginSession {
         info.location = mPreferences.getString("location", "");
         info.token = mPreferences.getString("token", "");
         info.profileImgUrl = mPreferences.getString("profile_image_url", "");
+        info.uid = mPreferences.getString("uid", "");
         return info;
     }
 

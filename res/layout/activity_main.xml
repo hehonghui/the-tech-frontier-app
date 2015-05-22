@@ -42,11 +42,11 @@
 
                 <com.tech.frontier.widgets.CircleImageView
                     android:id="@+id/user_icon_imageview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:src="@drawable/user_default" />
 
                 <TextView

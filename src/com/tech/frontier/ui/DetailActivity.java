@@ -36,13 +36,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.tech.frontier.R;
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.UserInfo;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
 import com.tech.frontier.presenters.AuthPresenter;
+import com.tech.frontier.presenters.FavoritePresenter;
+import com.tech.frontier.presenters.SharePresenter;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
 import com.tech.frontier.utils.HtmlTemplate;
 
@@ -60,6 +59,8 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     private String mTargetUrl;
     ArticleDetailPresenter mPresenter = new ArticleDetailPresenter(this);
     AuthPresenter mAuthPresenter;
+    SharePresenter mSharePresenter;
+    FavoritePresenter mFavoritePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
         }
 
         mAuthPresenter = new AuthPresenter(this);
+        mSharePresenter = new SharePresenter(getApplicationContext());
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -120,27 +122,30 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mSharePresenter.handleWeiboResponse(intent);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    private String getShareUrl() {
+        return TextUtils.isEmpty(mTargetUrl) ? "http://www/devtf.cn/?p=" + mPostId : mTargetUrl;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        mAuthPresenter.login(new DataListener<UserInfo>() {
-
-            @Override
-            public void onComplete(UserInfo result) {
-
-            }
-        });
         switch (item.getItemId()) {
             case R.id.action_share:
-                Toast.makeText(getApplicationContext(), "share", Toast.LENGTH_SHORT).show();
+                mSharePresenter.share(this, mTitle, getShareUrl());
                 break;
 
             case R.id.action_favorite:
-
+                mPresenter.favorite(this, mPostId);
                 break;
             default:
                 break;
@@ -151,7 +156,7 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mAuthPresenter.onActivityResult(requestCode, resultCode, data);
+        mPresenter.onActivityResult(requestCode, resultCode, data);
     }
 
 }

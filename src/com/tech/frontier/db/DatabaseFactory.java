@@ -44,4 +44,8 @@ public class DatabaseFactory {
     public static DatabaseAPI<Recommend> createRecommendDBAPI() {
         return new RecommendDBAPIImpl();
     }
+    
+    public static FavoriteDBAPI createFavoriteDBAPI() {
+        return new FavoriteDBAPIImpl();
+    }
 }
