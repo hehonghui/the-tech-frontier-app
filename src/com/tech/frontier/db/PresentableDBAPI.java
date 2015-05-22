@@ -24,7 +24,6 @@
 
 package com.tech.frontier.db;
 
-import com.tech.frontier.db.impl.AbsDBAPI;
 import com.tech.frontier.listeners.DataListener;
 
 import java.util.List;
@@ -46,7 +45,11 @@ public abstract class PresentableDBAPI<T> extends AbsDBAPI<T> {
      * 
      * @param articles
      */
-    public abstract void saveDatas(List<T> datas);
+    public void saveDatas(List<T> datas) {
+        for (T item : datas) {
+            saveItem(item);
+        }
+    }
 
     /**
      * 加载所有缓存

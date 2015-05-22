@@ -30,7 +30,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.tech.frontier.db.PresentableDBAPI;
 import com.tech.frontier.db.cmd.Command.ArticlesCommand;
-import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
@@ -47,21 +46,6 @@ class ArticleDBAPIImpl extends PresentableDBAPI<Article> {
 
     public ArticleDBAPIImpl() {
         super(DatabaseHelper.TABLE_ARTICLES);
-    }
-
-    @Override
-    public void saveDatas(final List<Article> datas) {
-        sDbExecutor.execute(new NoReturnCmd() {
-            @Override
-            protected Void doInBackground(SQLiteDatabase database) {
-                for (Article article : datas) {
-                    database.insertWithOnConflict(mTableName, null,
-                            toContentValues(article),
-                            SQLiteDatabase.CONFLICT_REPLACE);
-                }
-                return null;
-            }
-        });
     }
 
     @Override
@@ -97,7 +81,8 @@ class ArticleDBAPIImpl extends PresentableDBAPI<Article> {
      * @param item
      * @return
      */
-    private ContentValues toContentValues(Article item) {
+    @Override
+    protected ContentValues toContentValues(Article item) {
         ContentValues newValues = new ContentValues();
         newValues.put("post_id", item.post_id);
         newValues.put("author", item.author);

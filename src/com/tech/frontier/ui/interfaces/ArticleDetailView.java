@@ -24,8 +24,10 @@
 
 package com.tech.frontier.ui.interfaces;
 
+import com.tech.frontier.entities.ArticleDetail;
+
 public interface ArticleDetailView extends ArticleViewInterface {
-    public void showArticleContent(String html);
+    public void showArticleContent(ArticleDetail html);
 
     public void isFavorited(boolean isFav);
 }

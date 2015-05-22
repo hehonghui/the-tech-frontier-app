@@ -28,6 +28,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.db.cmd.Command;
 import com.tech.frontier.db.cmd.Command.ArticlesCommand;

@@ -24,6 +24,7 @@
 
 package com.tech.frontier.db;
 
+import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.listeners.DataListener;
 
@@ -32,17 +33,14 @@ import com.tech.frontier.listeners.DataListener;
  * 
  * @author mrsimple
  */
-public interface ArticleContentDBAPI {
+public abstract class ArticleContentDBAPI extends AbsDBAPI<ArticleDetail> {
+    public ArticleContentDBAPI() {
+        super(DatabaseHelper.TABLE_ARTICLE_CONTENT);
+    }
 
     /**
      * @param postId
      * @param html
      */
-    public void saveContent(ArticleDetail detail);
-
-    /**
-     * @param postId
-     * @param html
-     */
-    public void loadArticleContent(String postId, DataListener<String> listener);
+    public abstract void loadArticleContent(String postId, DataListener<ArticleDetail> listener);
 }

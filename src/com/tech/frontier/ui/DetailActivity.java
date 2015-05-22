@@ -39,6 +39,7 @@ import android.widget.ProgressBar;
 
 import com.tech.frontier.R;
 import com.tech.frontier.entities.Article;
+import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
 import com.tech.frontier.presenters.FavoritePresenter;
 import com.tech.frontier.presenters.SharePresenter;
@@ -120,8 +121,9 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     }
 
     @Override
-    public void showArticleContent(String html) {
-        mWebView.loadDataWithBaseURL("", HtmlTemplate.wrap(mTitle, html), "text/html", "utf8",
+    public void showArticleContent(ArticleDetail html) {
+        mWebView.loadDataWithBaseURL("", HtmlTemplate.wrap(mTitle, html.content), "text/html",
+                "utf8",
                 "404");
     }
 

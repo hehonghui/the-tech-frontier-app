@@ -70,11 +70,11 @@ class JobsDBAPIImpl extends PresentableDBAPI<Job> {
 
             @Override
             protected List<Job> doInBackground(SQLiteDatabase database) {
-                Cursor cursor =  database.query(mTableName, null, null, null,
+                Cursor cursor = database.query(mTableName, null, null, null,
                         null, null, null);
                 List<Job> result = parseResult(cursor);
                 cursor.close();
-                return result ;
+                return result;
             }
         });
 
@@ -98,7 +98,8 @@ class JobsDBAPIImpl extends PresentableDBAPI<Job> {
      * @param item
      * @return
      */
-    private ContentValues toContentValues(Job item) {
+    @Override
+    protected ContentValues toContentValues(Job item) {
         ContentValues newValues = new ContentValues();
         newValues.put("company", item.company);
         newValues.put("job", item.job);

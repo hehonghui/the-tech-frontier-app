@@ -65,20 +65,21 @@ public class ArticleDetailPresenter {
     }
 
     public void fetchArticleContent(final String post_id) {
-        mArticleDBAPI.loadArticleContent(post_id, new DataListener<String>() {
+        mArticleDBAPI.loadArticleContent(post_id, new DataListener<ArticleDetail>() {
 
             @Override
-            public void onComplete(String result) {
+            public void onComplete(ArticleDetail result) {
                 // 数据库中没有则通过网络获取
-                if (TextUtils.isEmpty(result)) {
+                if (TextUtils.isEmpty(result.content)) {
                     Log.e("", "### 没有文章缓存");
                     mArticleApi.fetchArticleContent(post_id, new DataListener<String>() {
 
                         @Override
                         public void onComplete(String result) {
-                            mArticleView.showArticleContent(result);
+                            ArticleDetail articleDetail = new ArticleDetail(post_id, result);
+                            mArticleView.showArticleContent(articleDetail);
                             // 存储文章到数据库中
-                            mArticleDBAPI.saveContent(new ArticleDetail(post_id, result));
+                            mArticleDBAPI.saveItem(articleDetail);
                         }
                     });
                 } else {

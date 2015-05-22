@@ -29,7 +29,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.tech.frontier.db.PresentableDBAPI;
-import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.cmd.Command.RecommendCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.Recommend;
@@ -42,21 +41,6 @@ class RecommendDBAPIImpl extends PresentableDBAPI<Recommend> {
 
     public RecommendDBAPIImpl() {
         super(DatabaseHelper.TABLE_RECOMMENDS);
-    }
-
-    @Override
-    public void saveDatas(final List<Recommend> datas) {
-        sDbExecutor.execute(new NoReturnCmd() {
-            @Override
-            protected Void doInBackground(SQLiteDatabase database) {
-                for (Recommend item : datas) {
-                    database.insertWithOnConflict(mTableName, null,
-                            toContentValues(item),
-                            SQLiteDatabase.CONFLICT_REPLACE);
-                }
-                return null;
-            }
-        });
     }
 
     @Override
@@ -89,7 +73,8 @@ class RecommendDBAPIImpl extends PresentableDBAPI<Recommend> {
      * @param item
      * @return
      */
-    private ContentValues toContentValues(Recommend item) {
+    @Override
+    protected ContentValues toContentValues(Recommend item) {
         ContentValues newValues = new ContentValues();
         newValues.put("title", item.title);
         newValues.put("url", item.url);

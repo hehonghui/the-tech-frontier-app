@@ -30,8 +30,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.tech.frontier.db.ArticleContentDBAPI;
 import com.tech.frontier.db.cmd.Command;
-import com.tech.frontier.db.cmd.Command.NoReturnCmd;
-import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.listeners.DataListener;
 
@@ -40,25 +38,9 @@ import com.tech.frontier.listeners.DataListener;
  * 
  * @author mrsimple
  */
-class ArticleContentDBAPIImpl extends AbsDBAPI<String> implements ArticleContentDBAPI {
-
-    public ArticleContentDBAPIImpl() {
-        super(DatabaseHelper.TABLE_ARTICLE_CONTENT);
-    }
+class ArticleContentDBAPIImpl extends ArticleContentDBAPI {
 
     @Override
-    public void saveContent(final ArticleDetail detail) {
-        sDbExecutor.execute(new NoReturnCmd() {
-            @Override
-            protected Void doInBackground(SQLiteDatabase database) {
-                database.insertWithOnConflict(mTableName, null,
-                        toContentValues(detail),
-                        SQLiteDatabase.CONFLICT_REPLACE);
-                return null;
-            }
-        });
-    }
-
     protected ContentValues toContentValues(ArticleDetail detail) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("post_id", detail.postId);
@@ -67,10 +49,10 @@ class ArticleContentDBAPIImpl extends AbsDBAPI<String> implements ArticleContent
     }
 
     @Override
-    public void loadArticleContent(final String postId, final DataListener<String> listener) {
-        sDbExecutor.execute(new Command<String>(listener) {
+    public void loadArticleContent(final String postId, final DataListener<ArticleDetail> listener) {
+        sDbExecutor.execute(new Command<ArticleDetail>(listener) {
             @Override
-            protected String doInBackground(SQLiteDatabase database) {
+            protected ArticleDetail doInBackground(SQLiteDatabase database) {
                 Cursor cursor = database.query(mTableName, new String[] {
                         "content"
                 }, "post_id=?", new String[] {
@@ -78,7 +60,7 @@ class ArticleContentDBAPIImpl extends AbsDBAPI<String> implements ArticleContent
                 }, null, null, null);
                 String result = queryArticleCotent(cursor);
                 cursor.close();
-                return result;
+                return new ArticleDetail(postId, result);
             }
         });
     }

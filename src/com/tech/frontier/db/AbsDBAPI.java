@@ -22,11 +22,13 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.impl;
+package com.tech.frontier.db;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.tech.frontier.db.cmd.Command;
+import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.engine.DbExecutor;
 
 /**
@@ -47,6 +49,22 @@ public abstract class AbsDBAPI<T> {
         mTableName = table;
     }
 
+    /**
+     * 保存数据
+     * 
+     * @param item
+     */
+    public void saveItem(final T item) {
+        sDbExecutor.execute(new NoReturnCmd() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                database.insertWithOnConflict(mTableName, null, toContentValues(item),
+                        SQLiteDatabase.CONFLICT_REPLACE);
+                return null;
+            }
+        });
+    }
+
     public void deleteAll() {
         sDbExecutor.execute(new Command<Void>() {
             @Override
@@ -55,5 +73,9 @@ public abstract class AbsDBAPI<T> {
                 return null;
             }
         });
+    }
+
+    protected ContentValues toContentValues(T item) {
+        return null;
     }
 }
