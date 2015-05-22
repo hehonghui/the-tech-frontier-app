@@ -44,4 +44,16 @@ public interface FavoriteDBAPI {
      * @param listener
      */
     public void loadFavoriteArticles(DataListener<List<Article>> listener);
+    
+    /**
+     * 
+     * @param postId
+     */
+    public void unfavoriteArticle(String postId);
+    /**
+     * 
+     * @param postId
+     * @param listener
+     */
+    public void isFavorited(String postId, DataListener<Boolean> listener) ;
 }

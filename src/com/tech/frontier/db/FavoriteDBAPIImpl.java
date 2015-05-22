@@ -124,4 +124,23 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
         // 解析数据
         return article;
     }
+
+    @Override
+    public void isFavorited(String postId, DataListener<Boolean> listener) {
+        SQLiteDatabase database = DatabaseMgr.getDatabase();
+        Cursor cursor = database.rawQuery("select * from " + DatabaseHelper.TABLE_FAVORITES
+                + " where aid = ?",
+                new String[] {
+                    postId
+                });
+        listener.onComplete(cursor.getCount() > 0);
+        DatabaseMgr.releaseDatabase();
+    }
+
+    @Override
+    public void unfavoriteArticle(String postId) {
+        SQLiteDatabase database = DatabaseMgr.getDatabase();
+        database.execSQL("delete from " + DatabaseHelper.TABLE_FAVORITES + " where aid=" + postId);
+        DatabaseMgr.releaseDatabase();
+    }
 }

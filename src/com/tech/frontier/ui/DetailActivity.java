@@ -130,6 +130,7 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_menu, menu);
+        mPresenter.isFavorited(mPostId);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -145,7 +146,7 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
                 break;
 
             case R.id.action_favorite:
-                mPresenter.favorite(this, mPostId);
+                mPresenter.favorite(this, mPostId, isFavorited);
                 break;
             default:
                 break;
@@ -157,6 +158,19 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mPresenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    boolean isFavorited = false;
+
+    @Override
+    public void isFavorited(boolean isFav) {
+        isFavorited = isFav;
+        if (isFav && mToolbar.getMenu() != null) {
+            MenuItem menuItem = mToolbar.getMenu().findItem(R.id.action_favorite);
+            if (menuItem != null) {
+                menuItem.setTitle("取消收藏");
+            }
+        }
     }
 
 }

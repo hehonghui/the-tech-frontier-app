@@ -46,6 +46,8 @@ public class ArticleDetailPresenter {
 
     ArticleDetailDBAPI mArticleDBAPI = DatabaseFactory.createArticleDetailDBAPI();
 
+    final FavoriteDBAPI mFavoriteDBAPI = DatabaseFactory.createFavoriteDBAPI();
+
     public ArticleDetailPresenter(ArticleDetailView view) {
         mArticleView = view;
     }
@@ -83,8 +85,8 @@ public class ArticleDetailPresenter {
         }
     }
 
-    public void favorite(Activity activity, final String postId) {
-        final FavoriteDBAPI dbApi = DatabaseFactory.createFavoriteDBAPI();
+    public void favorite(Activity activity, final String postId, boolean isFav) {
+
         LoginSession loginSession = LoginSession.getLoginSession();
         if (!loginSession.isLogined()) {
             mAuthPresenter = new AuthPresenter(activity);
@@ -92,11 +94,23 @@ public class ArticleDetailPresenter {
 
                 @Override
                 public void onComplete(UserInfo result) {
-                    dbApi.saveFavoriteArticles(postId);
+                    mFavoriteDBAPI.saveFavoriteArticles(postId);
                 }
             });
+        } else if (!isFav) {
+            mFavoriteDBAPI.saveFavoriteArticles(postId);
         } else {
-            dbApi.saveFavoriteArticles(postId);
+            mFavoriteDBAPI.unfavoriteArticle(postId);
         }
+    }
+
+    public void isFavorited(String postId) {
+        mFavoriteDBAPI.isFavorited(postId, new DataListener<Boolean>() {
+
+            @Override
+            public void onComplete(Boolean result) {
+                mArticleView.isFavorited(result);
+            }
+        });
     }
 }

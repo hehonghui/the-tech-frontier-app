@@ -26,4 +26,6 @@ package com.tech.frontier.ui.interfaces;
 
 public interface ArticleDetailView {
     public void showArticleContent(String html);
+
+    public void isFavorited(boolean isFav);
 }
