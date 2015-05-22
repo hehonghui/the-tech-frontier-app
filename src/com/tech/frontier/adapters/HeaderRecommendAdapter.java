@@ -45,7 +45,6 @@ public class HeaderRecommendAdapter extends RecyclingPagerAdapter {
 
     private Context context;
     private List<Recommend> imageIdList;
-    private boolean isInfiniteLoop;
     ViewPager mViewPager;
     OnItemClickListener<Recommend> mItemClickListener;
 
@@ -53,13 +52,11 @@ public class HeaderRecommendAdapter extends RecyclingPagerAdapter {
         mViewPager = viewPager;
         this.context = mViewPager.getContext();
         this.imageIdList = imageIdList;
-        isInfiniteLoop = false;
     }
 
     @Override
     public int getCount() {
-        // Infinite loop
-        return isInfiniteLoop ? Integer.MAX_VALUE : imageIdList.size();
+        return imageIdList.size();
     }
 
     /**
@@ -69,7 +66,7 @@ public class HeaderRecommendAdapter extends RecyclingPagerAdapter {
      * @return
      */
     private int getPosition(int position) {
-        return isInfiniteLoop ? position % imageIdList.size() : position;
+        return position;
     }
 
     @Override
@@ -114,20 +111,5 @@ public class HeaderRecommendAdapter extends RecyclingPagerAdapter {
     private static class ViewHolder {
         ImageView imageView;
         TextView titleTextView;
-    }
-
-    /**
-     * @return the isInfiniteLoop
-     */
-    public boolean isInfiniteLoop() {
-        return isInfiniteLoop;
-    }
-
-    /**
-     * @param isInfiniteLoop the isInfiniteLoop to set
-     */
-    public HeaderRecommendAdapter setInfiniteLoop(boolean isInfiniteLoop) {
-        this.isInfiniteLoop = isInfiniteLoop;
-        return this;
     }
 }

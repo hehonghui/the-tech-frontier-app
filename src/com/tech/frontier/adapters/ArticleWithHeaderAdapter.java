@@ -39,6 +39,7 @@ import com.tech.frontier.models.entities.Recommend;
 import com.tech.frontier.net.RecomendAPI;
 import com.tech.frontier.net.RecomendAPIImpl;
 import com.tech.frontier.widgets.AutoScrollViewPager;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,7 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
         AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
         if (mImagePagerAdapter == null) {
             mImagePagerAdapter = new HeaderRecommendAdapter(viewPager, result);
-            mImagePagerAdapter.setInfiniteLoop(true);
+//            mImagePagerAdapter.setInfiniteLoop(true);
             mImagePagerAdapter.setOnItemClickListener(mRecommendListener);
             // 设置ViewPager
             viewPager.setInterval(5000);
@@ -126,6 +127,7 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
             }
 
             viewPager.setAdapter(mImagePagerAdapter);
+            headerViewHolder.mIndicator.setViewPager(viewPager);
         }
 
     }
@@ -159,10 +161,12 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
         AutoScrollViewPager autoScrollViewPager;
+        CirclePageIndicator mIndicator;
 
         public HeaderViewHolder(View view) {
             super(view);
             autoScrollViewPager = (AutoScrollViewPager) view.findViewById(R.id.slide_viewpager);
+            mIndicator = (CirclePageIndicator) view.findViewById(R.id.recommend_indicator);
         }
     }
 
