@@ -55,10 +55,6 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSlid
      * Header View里面的推荐数据列表
      */
     final List<Recommend> recommends = new ArrayList<Recommend>();
-    // /**
-    // * 推荐网络请求API
-    // */
-    // RecomendAPI mRecomendAPI = new RecomendAPIImpl();
     /**
      * Header View中的ViewPager Adapter
      */
@@ -98,24 +94,6 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSlid
     }
 
     HeaderViewHolder headerViewHolder;
-
-    // TODO : 逻辑移除到Presenter中
-    // private void bindViewForHeader() {
-    // Log.e("", "### 获取header 数据 : ");
-    //
-    // final HeaderViewHolder headerViewHolder = (HeaderViewHolder)
-    // viewHolder;
-    // if (mImagePagerAdapter == null && recommends.size() == 0) {
-    // mRecomendAPI.fetchRecomends(new DataListener<List<Recommend>>() {
-    //
-    // @Override
-    // public void onComplete(List<Recommend> result) {
-    // Log.e("", "### 已经获取header 数据 : ");
-    // initAutoSlider(headerViewHolder, result);
-    // }
-    // });
-    // }
-    // }
 
     @Override
     public void showRecommends(List<Recommend> recommends) {

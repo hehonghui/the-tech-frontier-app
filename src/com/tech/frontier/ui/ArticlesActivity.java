@@ -6,7 +6,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -43,7 +42,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
     FavoriteFragment mFavoriteFragment;
     AboutFragment mAboutFragment;
 
-    private ImageView mUserImageView;
+    private CircleImageView mUserImageView;
     private TextView mUserNameTv;
 
     @Override
@@ -163,7 +162,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
         if (session.isLogined()
                 && mUserNameTv.getText().equals(getResources().getString(R.string.not_login))) {
             UserInfo result = session.getUserInfo();
-            Picasso.with(getApplicationContext()).load(result.profileImgUrl)
+            Picasso.with(this).load(result.profileImgUrl)
                     .into(mUserImageView);
             mUserNameTv.setText(result.name);
         }
