@@ -20,6 +20,10 @@ public class SharePreferUtil {
 		}
 	}
 
+	/**
+	 * 
+	 * @param userInfo
+	 */
 	public static void addUserInfo(UserInfo userInfo) {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString("location", userInfo.location);
@@ -28,6 +32,10 @@ public class SharePreferUtil {
 		editor.commit();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static UserInfo getUserInfo() {
 		UserInfo info = new UserInfo();
 		info.name = preferences.getString("name", "");

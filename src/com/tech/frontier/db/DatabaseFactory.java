@@ -22,45 +22,26 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.presenters;
+package com.tech.frontier.db;
 
-import com.tech.frontier.db.DatabaseAPI;
-import com.tech.frontier.db.DatabaseFactory;
-import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.models.entities.Job;
-import com.tech.frontier.net.JobAPI;
-import com.tech.frontier.net.JobAPIImpl;
-import com.tech.frontier.ui.interfaces.JobViewInterface;
+import com.tech.frontier.models.entities.Recommend;
 
-import java.util.List;
-
-public class JobPresenter {
-    JobAPI jobAPI = new JobAPIImpl();
-    JobViewInterface mJobView;
-    DatabaseAPI<Job> mDatabaseAPI = DatabaseFactory.createJobDBAPI();
-
-    public JobPresenter(JobViewInterface jobViewInterface) {
-        mJobView = jobViewInterface;
+public class DatabaseFactory {
+    public static DatabaseAPI<Article> createArticleDBAPI() {
+        return new ArticleDBAPIImpl();
     }
 
-    public void fetchJobs() {
-        mDatabaseAPI.loadDatasFromDB(new DataListener<List<Job>>() {
-
-            @Override
-            public void onComplete(List<Job> result) {
-                mJobView.showJobs(result);
-                // 从网络上获取最新的数据
-                jobAPI.fetchJobs(new DataListener<List<Job>>() {
-
-                    @Override
-                    public void onComplete(List<Job> result) {
-                        mJobView.showJobs(result);
-                        mDatabaseAPI.saveDatas(result);
-                    }
-                });
-            }
-        });
-
+    public static ArticleDetailDBAPI createArticleDetailDBAPI() {
+        return new ArticleDetailDBAPIImpl();
     }
 
+    public static DatabaseAPI<Job> createJobDBAPI() {
+        return new JobsDBAPIImpl();
+    }
+
+    public static DatabaseAPI<Recommend> createRecommendDBAPI() {
+        return new RecommendDBAPIImpl();
+    }
 }

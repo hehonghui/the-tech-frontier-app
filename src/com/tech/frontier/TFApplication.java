@@ -22,25 +22,27 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier;
 
-public class Article {
-    public static final int ALL = 1;
-    public static final int ANDROID = 2;
-    public static final int iOS = 3;
-    /**
-     * 
-     */
-    public String title;
-    public String publishTime;
-    public String author;
-    public String post_id;
-    public int category;
-	@Override
-	public String toString() {
-		return "Article [title=" + title + ", publishTime=" + publishTime
-				+ ", author=" + author + ", post_id=" + post_id + ", category="
-				+ category + "]";
-	}
-    
+import android.app.Application;
+
+import com.tech.frontier.db.DatabaseMgr;
+import com.tech.frontier.net.mgr.RequestQueueMgr;
+
+public class TFApplication extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // 初始化数据库
+        DatabaseMgr.init(this);
+        // 初始化网络请求
+        RequestQueueMgr.init(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        DatabaseMgr.closeDatabase();
+        RequestQueueMgr.getRequestQueue().stop();
+    }
 }

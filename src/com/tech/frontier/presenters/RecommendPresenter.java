@@ -24,6 +24,51 @@
 
 package com.tech.frontier.presenters;
 
+import android.util.Log;
+
+import com.tech.frontier.adapters.AutoSliderViewInterface;
+import com.tech.frontier.db.DatabaseAPI;
+import com.tech.frontier.db.DatabaseFactory;
+import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.Recommend;
+import com.tech.frontier.net.RecomendAPI;
+import com.tech.frontier.net.RecomendAPIImpl;
+
+import java.util.List;
+
 public class RecommendPresenter {
+
+    AutoSliderViewInterface mViewInterface;
+    /**
+     * 推荐网络请求API
+     */
+    RecomendAPI mRecomendAPI = new RecomendAPIImpl();
+
+    DatabaseAPI<Recommend> mDatabaseAPI = DatabaseFactory.createRecommendDBAPI();
+
+    public RecommendPresenter(AutoSliderViewInterface viewInterface) {
+        mViewInterface = viewInterface;
+    }
+
+    public void fetchRecomends() {
+        mDatabaseAPI.loadDatasFromDB(new DataListener<List<Recommend>>() {
+
+            @Override
+            public void onComplete(List<Recommend> result) {
+                Log.e("", "### recommends");
+                mViewInterface.showRecommends(result);
+                mRecomendAPI.fetchRecomends(new DataListener<List<Recommend>>() {
+
+                    @Override
+                    public void onComplete(List<Recommend> result) {
+                        Log.e("", "### 已经获取header 数据 : ");
+                        mViewInterface.showRecommends(result);
+                        mDatabaseAPI.saveDatas(result);
+                    }
+                });
+            }
+        });
+
+    }
 
 }

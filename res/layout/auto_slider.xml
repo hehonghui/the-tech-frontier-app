@@ -3,18 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="160dp" >
 
-<!--     <com.viewpagerindicator.CirclePageIndicator
-        android:id="@+id/recommend_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#ff0000"
-        android:layout_alignParentTop="true"
-        android:padding="10dip" />
- -->
     <com.tech.frontier.widgets.AutoScrollViewPager
         android:id="@+id/slide_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#aaaaaa" />
+        android:background="#f5f5f5" />
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/recommend_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="2dp"
+        android:padding="1dp" />
 
 </RelativeLayout>

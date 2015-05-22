@@ -25,12 +25,10 @@
 package com.tech.frontier.presenters;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.util.Log;
 
+import com.tech.frontier.db.DatabaseAPI;
+import com.tech.frontier.db.DatabaseFactory;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.ArticleModel;
-import com.tech.frontier.models.ArticleModelImpl;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.net.ArticleAPI;
 import com.tech.frontier.net.ArticleAPIImpl;
@@ -51,13 +49,9 @@ public class ArticlePresenter {
     // View的接口,被Presenter调用，用于像View传递数据,代表了View角色
     ArticleViewInterface mArticleView;
     // 文章数据的Model,也就是Model角色
-    ArticleModel mArticleModel = new  ArticleModelImpl();;
+    DatabaseAPI<Article> mArticleModel = DatabaseFactory.createArticleDBAPI();
     // 从网络上获取文章的Api
     ArticleAPI mArticleApi = new ArticleAPIImpl();
-    
-    
-
-   
     /**
      * 文章列表
      */
@@ -70,8 +64,6 @@ public class ArticlePresenter {
 
     public ArticlePresenter(ArticleViewInterface viewInterface) {
         mArticleView = viewInterface;
-     
- 
     }
 
     // 获取文章
@@ -95,7 +87,6 @@ public class ArticlePresenter {
 
             @Override
             public void onComplete(List<Article> result) {
-            	
                 fetchDataFinished(result);
                 if (result.size() == 0) {
                     isNoMoreArticles = true;
@@ -114,17 +105,15 @@ public class ArticlePresenter {
         mArticleView.showArticles(mArticles);
         mArticleView.hideLoading();
         // 存储到数据库
-   
-        Log.i("result", result.toString());
-        mArticleModel.saveArticles(result);
+        mArticleModel.saveDatas(result);
     }
 
     private void sortArticles(List<Article> articles) {
         Collections.sort(articles, mArticleComparator);
     }
 
-    public void loadArticlesFromDB(Context context) {
-        mArticleModel.loadArticlesFromCache(new DataListener<List<Article>>() {
+    public void loadArticlesFromDB() {
+        mArticleModel.loadDatasFromDB(new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {

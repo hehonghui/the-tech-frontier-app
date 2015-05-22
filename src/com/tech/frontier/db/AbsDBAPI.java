@@ -22,37 +22,23 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models;
+package com.tech.frontier.db;
 
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import android.database.sqlite.SQLiteDatabase;
 
-import java.util.List;
+public abstract class AbsDBAPI<T> implements DatabaseAPI<T> {
 
-public interface ArticleModel {
+    static SQLiteDatabase sSqLiteDatabase;
+    String mTableName;
 
-	/**
-	 * 保存文章数据
-	 * @param articles
-	 * @param context
-	 */
-    public void saveArticles(List<Article> articles);
-    
-    /**
-     *  保存文章数据
-     * @param article
-     * @param context
-     */
-    public void saveArticle(Article article);
+    public AbsDBAPI(String table) {
+        mTableName = table;
+        sSqLiteDatabase = DatabaseMgr.getDatabase();
+    }
 
-    /**
-     * 从数据库加载文章数据
-     * 
-     * @param listener
-     */
-    public void loadArticlesFromCache(DataListener<List<Article>> listener);
-    
-    
-    public List<Article> getArticles();
-    
+    @Override
+    public void deleteAll() {
+        sSqLiteDatabase.execSQL("delete from " + mTableName);
+        DatabaseMgr.releaseDatabase();
+    }
 }
