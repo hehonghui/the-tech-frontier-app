@@ -192,4 +192,8 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
         mProgressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onError() {
+        hideLoading();
+    }
 }

@@ -28,4 +28,6 @@ public interface RefreshInterface {
     public void showLoading();
 
     public void hideLoading();
+
+    public void onError();
 }

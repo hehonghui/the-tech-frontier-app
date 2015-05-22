@@ -24,7 +24,7 @@
 
 package com.tech.frontier.presenters;
 
-import com.tech.frontier.db.PresentableDBAPI;
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
 import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
@@ -37,7 +37,7 @@ import java.util.List;
 public class JobPresenter {
     JobAPI jobAPI = new JobAPIImpl();
     JobViewInterface mJobView;
-    PresentableDBAPI<Job> mDatabaseAPI = DbFactory.createJobDBAPI();
+    AbsDBAPI<Job> mDatabaseAPI = DbFactory.createJobDBAPI();
 
     public JobPresenter(JobViewInterface jobViewInterface) {
         mJobView = jobViewInterface;
@@ -55,7 +55,7 @@ public class JobPresenter {
                     @Override
                     public void onComplete(List<Job> result) {
                         mJobView.showJobs(result);
-                        mDatabaseAPI.saveDatas(result);
+                        mDatabaseAPI.saveItems(result);
                     }
                 });
             }

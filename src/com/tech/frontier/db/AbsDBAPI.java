@@ -25,11 +25,15 @@
 package com.tech.frontier.db;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.tech.frontier.db.cmd.Command;
 import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.engine.DbExecutor;
+import com.tech.frontier.listeners.DataListener;
+
+import java.util.List;
 
 /**
  * @author mrsimple
@@ -65,6 +69,67 @@ public abstract class AbsDBAPI<T> {
         });
     }
 
+    protected ContentValues toContentValues(T item) {
+        return null;
+    }
+
+    /**
+     * 保存数据到数据库
+     * 
+     * @param articles
+     */
+    public void saveItems(List<T> datas) {
+        for (T item : datas) {
+            saveItem(item);
+        }
+    }
+
+    /**
+     * 加载所有缓存
+     * 
+     * @param listener
+     */
+    public void loadDatasFromDB(DataListener<List<T>> listener) {
+        sDbExecutor.execute(new Command<List<T>>(listener) {
+
+            @Override
+            protected List<T> doInBackground(SQLiteDatabase database) {
+                Cursor cursor = database.query(mTableName, null, null, null,
+                        null, null, loadDatasOrderBy());
+                List<T> result = parseResult(cursor);
+                cursor.close();
+                return result;
+            }
+        });
+    }
+
+    protected String loadDatasOrderBy() {
+        return "";
+    }
+
+    /**
+     * 从Cursor中解析数据
+     * 
+     * @param cursor
+     * @return
+     */
+    protected List<T> parseResult(Cursor cursor) {
+        return null;
+    }
+
+    /**
+     * 删除符合特定条件的数据
+     */
+    public void deleteWithWhereArgs(final String whereArgs) {
+        sDbExecutor.execute(new Command<Void>() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                database.execSQL("delete from " + mTableName + whereArgs);
+                return null;
+            }
+        });
+    }
+
     public void deleteAll() {
         sDbExecutor.execute(new Command<Void>() {
             @Override
@@ -73,9 +138,5 @@ public abstract class AbsDBAPI<T> {
                 return null;
             }
         });
-    }
-
-    protected ContentValues toContentValues(T item) {
-        return null;
     }
 }

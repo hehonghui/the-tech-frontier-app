@@ -24,9 +24,9 @@
 
 package com.tech.frontier.db.impl;
 
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.ArticleContentDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
-import com.tech.frontier.db.PresentableDBAPI;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.entities.Job;
 import com.tech.frontier.entities.Recommend;
@@ -37,7 +37,7 @@ import com.tech.frontier.entities.Recommend;
  * @author mrsimple
  */
 public class DbFactory {
-    public static PresentableDBAPI<Article> createArticleDBAPI() {
+    public static AbsDBAPI<Article> createArticleDBAPI() {
         return new ArticleDBAPIImpl();
     }
 
@@ -45,11 +45,11 @@ public class DbFactory {
         return new ArticleContentDBAPIImpl();
     }
 
-    public static PresentableDBAPI<Job> createJobDBAPI() {
+    public static AbsDBAPI<Job> createJobDBAPI() {
         return new JobsDBAPIImpl();
     }
 
-    public static PresentableDBAPI<Recommend> createRecommendDBAPI() {
+    public static AbsDBAPI<Recommend> createRecommendDBAPI() {
         return new RecommendDBAPIImpl();
     }
 

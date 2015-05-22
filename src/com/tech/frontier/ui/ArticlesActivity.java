@@ -87,7 +87,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
         menuItems.add(new MenuItem("招聘信息", R.drawable.hire_icon));
         menuItems.add(new MenuItem("收藏", R.drawable.favorite));
         menuItems.add(new MenuItem("关于", R.drawable.about));
-        menuItems.add(new MenuItem("退出", R.drawable.exit));
+        menuItems.add(new MenuItem("注销", R.drawable.exit));
         MenuAdapter menuAdapter = new MenuAdapter(menuItems);
         menuAdapter.setOnItemClickListener(new MenuAdapter.OnItemClickListener() {
 
@@ -162,7 +162,8 @@ public class ArticlesActivity extends BaseActionBarActivity {
         if (session.isLogined()
                 && mUserNameTv.getText().equals(getResources().getString(R.string.not_login))) {
             UserInfo result = session.getUserInfo();
-            Picasso.with(this).load(result.profileImgUrl).placeholder(R.drawable.user_default).fit()
+            Picasso.with(this).load(result.profileImgUrl).placeholder(R.drawable.user_default)
+                    .fit()
                     .into(mUserImageView);
             mUserNameTv.setText(result.name);
         }

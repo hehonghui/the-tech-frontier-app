@@ -27,7 +27,7 @@ package com.tech.frontier.presenters;
 import android.util.Log;
 
 import com.tech.frontier.adapters.AutoSliderViewInterface;
-import com.tech.frontier.db.PresentableDBAPI;
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
 import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
@@ -44,7 +44,7 @@ public class RecommendPresenter {
      */
     RecomendAPI mRecomendAPI = new RecomendAPIImpl();
 
-    PresentableDBAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendDBAPI();
+    AbsDBAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendDBAPI();
 
     public RecommendPresenter(AutoSliderViewInterface viewInterface) {
         mViewInterface = viewInterface;
@@ -63,7 +63,7 @@ public class RecommendPresenter {
                     public void onComplete(List<Recommend> result) {
                         Log.e("", "### 已经获取header 数据 : ");
                         mViewInterface.showRecommends(result);
-                        mDatabaseAPI.saveDatas(result);
+                        mDatabaseAPI.saveItems(result);
                     }
                 });
             }

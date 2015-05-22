@@ -28,11 +28,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.db.cmd.Command;
 import com.tech.frontier.db.cmd.Command.ArticlesCommand;
-import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
@@ -46,33 +44,18 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-class FavoriteDBAPIImpl extends AbsDBAPI<Article> implements FavoriteDBAPI {
-
-    public FavoriteDBAPIImpl() {
-        super(DatabaseHelper.TABLE_FAVORITES);
-    }
+class FavoriteDBAPIImpl extends FavoriteDBAPI {
 
     @Override
-    public void saveFavoriteArticles(final String postId) {
-        sDbExecutor.execute(new NoReturnCmd() {
-            @Override
-            protected Void doInBackground(SQLiteDatabase database) {
-                database.insertWithOnConflict(DatabaseHelper.TABLE_FAVORITES, null,
-                        toContentValues(postId), SQLiteDatabase.CONFLICT_REPLACE);
-                return null;
-            }
-        });
-    }
-
-    private ContentValues toContentValues(String postId) {
+    protected ContentValues toContentValues(Article article) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("aid", postId);
+        contentValues.put("aid", article.post_id);
         contentValues.put("uid", LoginSession.getLoginSession().getUserInfo().uid);
         return contentValues;
     }
 
     @Override
-    public void loadFavoriteArticles(DataListener<List<Article>> listener) {
+    public void loadDatasFromDB(DataListener<List<Article>> listener) {
         if (listener != null) {
             sDbExecutor.execute(new ArticlesCommand(listener) {
                 @Override
@@ -190,13 +173,6 @@ class FavoriteDBAPIImpl extends AbsDBAPI<Article> implements FavoriteDBAPI {
 
     @Override
     public void unfavoriteArticle(final String postId) {
-        sDbExecutor.execute(new Command<Void>() {
-            @Override
-            protected Void doInBackground(SQLiteDatabase database) {
-                database.execSQL("delete from " + DatabaseHelper.TABLE_FAVORITES + " where aid="
-                        + postId);
-                return null;
-            }
-        });
+        deleteWithWhereArgs(" where aid=" + postId);
     }
 }

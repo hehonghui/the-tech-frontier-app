@@ -26,7 +26,7 @@ package com.tech.frontier.presenters;
 
 import android.annotation.SuppressLint;
 
-import com.tech.frontier.db.PresentableDBAPI;
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
@@ -49,7 +49,7 @@ public class ArticlePresenter {
     // View的接口,被Presenter调用，用于像View传递数据,代表了View角色
     ArticleViewInterface mArticleView;
     // 文章数据的Model,也就是Model角色
-    PresentableDBAPI<Article> mArticleModel = DbFactory.createArticleDBAPI();
+    AbsDBAPI<Article> mArticleModel = DbFactory.createArticleDBAPI();
     // 从网络上获取文章的Api
     ArticleAPI mArticleApi = new ArticleAPIImpl();
     /**
@@ -83,7 +83,7 @@ public class ArticlePresenter {
             return;
         }
         mArticleView.showLoading();
-        mArticleApi.loadMode(category, new DataListener<List<Article>>() {
+        mArticleApi.loadMore(category, new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {
@@ -105,7 +105,7 @@ public class ArticlePresenter {
         mArticleView.showArticles(mArticles);
         mArticleView.hideLoading();
         // 存储到数据库
-        mArticleModel.saveDatas(result);
+        mArticleModel.saveItems(result);
     }
 
     private void sortArticles(List<Article> articles) {

@@ -39,5 +39,5 @@ public interface ArticleAPI {
 
     public void fetchArticleContent(String post_id, DataListener<String> listener);
 
-    public void loadMode(int category, DataListener<List<Article>> listener);
+    public void loadMore(int category, DataListener<List<Article>> listener);
 }

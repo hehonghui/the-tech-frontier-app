@@ -26,38 +26,25 @@ package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.PresentableDBAPI;
-import com.tech.frontier.db.cmd.Command.RecommendCmd;
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.Recommend;
-import com.tech.frontier.listeners.DataListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class RecommendDBAPIImpl extends PresentableDBAPI<Recommend> {
+/**
+ * @author mrsimple
+ */
+class RecommendDBAPIImpl extends AbsDBAPI<Recommend> {
 
     public RecommendDBAPIImpl() {
         super(DatabaseHelper.TABLE_RECOMMENDS);
     }
 
     @Override
-    public void loadDatasFromDB(DataListener<List<Recommend>> listener) {
-        sDbExecutor.execute(new RecommendCmd(listener) {
-            @Override
-            protected List<Recommend> doInBackground(SQLiteDatabase database) {
-                Cursor cursor = database.query(mTableName, null, null, null,
-                        null, null, null);
-                List<Recommend> result = queryResult(cursor);
-                cursor.close();
-                return result;
-            }
-        });
-    }
-
-    private List<Recommend> queryResult(Cursor cursor) {
+    protected List<Recommend> parseResult(Cursor cursor) {
         List<Recommend> recommends = new ArrayList<Recommend>();
         while (cursor.moveToNext()) {
             String title = cursor.getString(0);

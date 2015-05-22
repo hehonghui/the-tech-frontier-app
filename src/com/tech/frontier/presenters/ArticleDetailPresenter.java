@@ -32,6 +32,7 @@ import android.util.Log;
 import com.tech.frontier.db.ArticleContentDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.entities.UserInfo;
 import com.tech.frontier.listeners.DataListener;
@@ -97,6 +98,7 @@ public class ArticleDetailPresenter {
     }
 
     public void favorite(Activity activity, final String postId, boolean isFav) {
+        final Article article = new Article(postId);
         LoginSession loginSession = LoginSession.getLoginSession();
         if (!loginSession.isLogined()) {
             mAuthPresenter = new AuthPresenter(activity);
@@ -104,12 +106,12 @@ public class ArticleDetailPresenter {
 
                 @Override
                 public void onComplete(UserInfo result) {
-                    mFavoriteDBAPI.saveFavoriteArticles(postId);
+                    mFavoriteDBAPI.saveItem(article);
                 }
             });
         } else if (!isFav) {
             // 收藏文章
-            mFavoriteDBAPI.saveFavoriteArticles(postId);
+            mFavoriteDBAPI.saveItem(article);
         } else {
             // 取消收藏
             mFavoriteDBAPI.unfavoriteArticle(postId);

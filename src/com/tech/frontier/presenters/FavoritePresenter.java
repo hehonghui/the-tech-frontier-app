@@ -43,7 +43,7 @@ public class FavoritePresenter {
     }
 
     public void loadFavorites() {
-        mFavoriteDBAPI.loadFavoriteArticles(new DataListener<List<Article>>() {
+        mFavoriteDBAPI.loadDatasFromDB(new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {

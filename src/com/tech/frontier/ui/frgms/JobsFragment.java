@@ -86,4 +86,9 @@ public class JobsFragment extends RecyclerViewFragment<Job> implements JobViewIn
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void onError() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
 }

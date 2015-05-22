@@ -24,38 +24,26 @@
 
 package com.tech.frontier.db;
 
+import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
-
-import java.util.List;
 
 /**
  * 收藏文章数据库操作接口
  * 
  * @author mrsimple
  */
-public interface FavoriteDBAPI {
-
-    /**
-     * 加载收藏的文章
-     * 
-     * @param listener
-     */
-    public void saveFavoriteArticles(String postId);
-
-    /**
-     * 加载收藏的文章
-     * 
-     * @param listener
-     */
-    public void loadFavoriteArticles(DataListener<List<Article>> listener);
+public abstract class FavoriteDBAPI extends AbsDBAPI<Article> {
+    public FavoriteDBAPI() {
+        super(DatabaseHelper.TABLE_FAVORITES);
+    }
 
     /**
      * 对某篇文章取消收藏
      * 
      * @param postId
      */
-    public void unfavoriteArticle(String postId);
+    public abstract void unfavoriteArticle(String postId);
 
     /**
      * 判断对某篇文章是否已关注
@@ -63,5 +51,5 @@ public interface FavoriteDBAPI {
      * @param postId
      * @param listener
      */
-    public void isFavorited(String postId, DataListener<Boolean> listener);
+    public abstract void isFavorited(String postId, DataListener<Boolean> listener);
 }

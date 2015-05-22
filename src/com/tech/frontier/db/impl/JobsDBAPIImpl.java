@@ -26,14 +26,10 @@ package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.PresentableDBAPI;
-import com.tech.frontier.db.cmd.Command.JobsCommand;
-import com.tech.frontier.db.cmd.Command.NoReturnCmd;
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.Job;
-import com.tech.frontier.listeners.DataListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,44 +39,14 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-class JobsDBAPIImpl extends PresentableDBAPI<Job> {
+class JobsDBAPIImpl extends AbsDBAPI<Job> {
 
     public JobsDBAPIImpl() {
         super(DatabaseHelper.TABLE_JOBS);
     }
 
     @Override
-    public void saveDatas(final List<Job> datas) {
-        sDbExecutor.execute(new NoReturnCmd() {
-            @Override
-            protected Void doInBackground(SQLiteDatabase database) {
-                for (Job item : datas) {
-                    database.insertWithOnConflict(mTableName, null,
-                            toContentValues(item),
-                            SQLiteDatabase.CONFLICT_REPLACE);
-                }
-                return null;
-            }
-        });
-    }
-
-    @Override
-    public void loadDatasFromDB(final DataListener<List<Job>> listener) {
-        sDbExecutor.execute(new JobsCommand(listener) {
-
-            @Override
-            protected List<Job> doInBackground(SQLiteDatabase database) {
-                Cursor cursor = database.query(mTableName, null, null, null,
-                        null, null, null);
-                List<Job> result = parseResult(cursor);
-                cursor.close();
-                return result;
-            }
-        });
-
-    }
-
-    private List<Job> parseResult(Cursor cursor) {
+    protected List<Job> parseResult(Cursor cursor) {
         List<Job> jobs = new ArrayList<Job>();
         while (cursor.moveToNext()) {
             Job item = new Job();

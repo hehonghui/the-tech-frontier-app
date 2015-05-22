@@ -26,13 +26,10 @@ package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.PresentableDBAPI;
-import com.tech.frontier.db.cmd.Command.ArticlesCommand;
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.entities.Article;
-import com.tech.frontier.listeners.DataListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,27 +39,19 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-class ArticleDBAPIImpl extends PresentableDBAPI<Article> {
+class ArticleDBAPIImpl extends AbsDBAPI<Article> {
 
     public ArticleDBAPIImpl() {
         super(DatabaseHelper.TABLE_ARTICLES);
     }
 
     @Override
-    public void loadDatasFromDB(final DataListener<List<Article>> listener) {
-        sDbExecutor.execute(new ArticlesCommand(listener) {
-            @Override
-            protected List<Article> doInBackground(SQLiteDatabase database) {
-                Cursor cursor = database.query(mTableName, null, null, null, null, null,
-                        " publish_time DESC");
-                List<Article> result = queryResult(cursor);
-                cursor.close();
-                return result;
-            }
-        });
+    protected String loadDatasOrderBy() {
+        return " publish_time DESC";
     }
 
-    private List<Article> queryResult(Cursor cursor) {
+    @Override
+    protected List<Article> parseResult(Cursor cursor) {
         List<Article> articles = new ArrayList<Article>();
         while (cursor.moveToNext()) {
             Article item = new Article();

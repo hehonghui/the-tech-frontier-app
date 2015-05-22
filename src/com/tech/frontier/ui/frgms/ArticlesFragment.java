@@ -48,10 +48,10 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     protected ArticleAdapter mAdapter;
     private ArticlePresenter mPresenter;
     protected int mCategory = Article.ALL;
- 
-	@Override
+
+    @Override
     protected void initAdapter() {
-		
+
         mAdapter = new ArticleWithHeaderAdapter(mDataSet);
         mAdapter.setOnItemClickListener(new OnItemClickListener<Article>() {
 
@@ -74,7 +74,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
     @Override
     protected void initPresenter() {
-    
+
         mPresenter = new ArticlePresenter(this);
 
         mPresenter.loadArticlesFromDB();
@@ -107,7 +107,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
     @Override
     public void showArticles(List<Article> result) {
-       
+
         mDataSet.clear();
         mDataSet.addAll(result);
         filterArticleByCategory();
@@ -148,5 +148,10 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     @Override
     public void onLoad() {
         mPresenter.loadModeArticles(mCategory);
+    }
+
+    @Override
+    public void onError() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -53,7 +53,7 @@ public class ArticleAPIImpl implements ArticleAPI {
     }
 
     @Override
-    public void loadMode(int category, DataListener<List<Article>> listener) {
+    public void loadMore(int category, DataListener<List<Article>> listener) {
         performRequest(++mPage, category, listener);
     }
 
