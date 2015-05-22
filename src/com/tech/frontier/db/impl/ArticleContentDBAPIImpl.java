@@ -22,16 +22,23 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tech.frontier.db.ArticleContentDBAPI;
+import com.tech.frontier.db.DatabaseMgr;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.listeners.DataListener;
 
-public class ArticleContentDBAPIImpl implements ArticleContentDBAPI {
+/**
+ * 操作文章内容相关的数据库实现
+ * 
+ * @author mrsimple
+ */
+class ArticleContentDBAPIImpl implements ArticleContentDBAPI {
 
     @Override
     public void saveContent(String postId, String html) {

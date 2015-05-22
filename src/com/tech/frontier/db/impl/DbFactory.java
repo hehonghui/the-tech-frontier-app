@@ -22,13 +22,21 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
+import com.tech.frontier.db.ArticleContentDBAPI;
+import com.tech.frontier.db.DatabaseAPI;
+import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.models.entities.Job;
 import com.tech.frontier.models.entities.Recommend;
 
-public class DatabaseFactory {
+/**
+ * 数据库API工厂类
+ * 
+ * @author mrsimple
+ */
+public class DbFactory {
     public static DatabaseAPI<Article> createArticleDBAPI() {
         return new ArticleDBAPIImpl();
     }
@@ -44,7 +52,7 @@ public class DatabaseFactory {
     public static DatabaseAPI<Recommend> createRecommendDBAPI() {
         return new RecommendDBAPIImpl();
     }
-    
+
     public static FavoriteDBAPI createFavoriteDBAPI() {
         return new FavoriteDBAPIImpl();
     }

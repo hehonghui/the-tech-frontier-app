@@ -22,26 +22,33 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.cmd;
 
+import android.database.sqlite.SQLiteDatabase;
+
+import com.tech.frontier.db.DatabaseMgr;
 import com.tech.frontier.listeners.DataListener;
 
-/**
- * 操作文章内容相关的数据库API
- * 
- * @author mrsimple
- */
-public interface ArticleContentDBAPI {
+public abstract class Command<T> {
 
-    /**
-     * @param postId
-     * @param html
-     */
-    public void saveContent(String postId, String html);
+    public DataListener<T> dataListener;
 
-    /**
-     * @param postId
-     * @param html
-     */
-    public void loadArticleContent(String postId, DataListener<String> listener);
+    public Command() {
+    }
+
+    public Command(DataListener<T> listener) {
+        dataListener = listener;
+    }
+
+    public final T execute() {
+        SQLiteDatabase database = DatabaseMgr.getDatabase();
+        DatabaseMgr.beginTransaction();
+        T result = doInBackground(database);
+        DatabaseMgr.setTransactionSuccess();
+        DatabaseMgr.endTransaction();
+        database.releaseReference();
+        return result;
+    }
+
+    protected abstract T doInBackground(SQLiteDatabase database);
 }

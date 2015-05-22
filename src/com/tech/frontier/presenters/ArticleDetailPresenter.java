@@ -30,8 +30,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.tech.frontier.db.ArticleContentDBAPI;
-import com.tech.frontier.db.DatabaseFactory;
 import com.tech.frontier.db.FavoriteDBAPI;
+import com.tech.frontier.db.impl.DbFactory;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.UserInfo;
 import com.tech.frontier.net.ArticleAPI;
@@ -51,11 +51,11 @@ public class ArticleDetailPresenter {
     /**
      * 
      */
-    ArticleContentDBAPI mArticleDBAPI = DatabaseFactory.createArticleContentDBAPI();
+    ArticleContentDBAPI mArticleDBAPI = DbFactory.createArticleContentDBAPI();
     /**
      * 
      */
-    final FavoriteDBAPI mFavoriteDBAPI = DatabaseFactory.createFavoriteDBAPI();
+    final FavoriteDBAPI mFavoriteDBAPI = DbFactory.createFavoriteDBAPI();
 
     AuthPresenter mAuthPresenter;
 

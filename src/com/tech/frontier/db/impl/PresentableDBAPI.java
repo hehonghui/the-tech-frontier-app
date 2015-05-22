@@ -22,26 +22,17 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
-import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.db.DatabaseAPI;
 
 /**
- * 操作文章内容相关的数据库API
- * 
  * @author mrsimple
+ * @param <T>
  */
-public interface ArticleContentDBAPI {
+public abstract class PresentableDBAPI<T> extends AbsDBAPI<T> implements DatabaseAPI<T> {
 
-    /**
-     * @param postId
-     * @param html
-     */
-    public void saveContent(String postId, String html);
-
-    /**
-     * @param postId
-     * @param html
-     */
-    public void loadArticleContent(String postId, DataListener<String> listener);
+    public PresentableDBAPI(String table) {
+        super(table);
+    }
 }

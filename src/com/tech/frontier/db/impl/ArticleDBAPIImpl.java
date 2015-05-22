@@ -22,12 +22,13 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tech.frontier.db.cmd.Command;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
@@ -40,37 +41,39 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-class ArticleDBAPIImpl extends AbsDBAPI<Article> {
+class ArticleDBAPIImpl extends PresentableDBAPI<Article> {
 
     public ArticleDBAPIImpl() {
         super(DatabaseHelper.TABLE_ARTICLES);
     }
 
     @Override
-    public void saveDatas(List<Article> datas) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        DatabaseMgr.beginTransaction();
-        for (Article article : datas) {
-            database.insertWithOnConflict(mTableName, null,
-                    toContentValues(article),
-                    SQLiteDatabase.CONFLICT_REPLACE);
-        }
-        DatabaseMgr.setTransactionSuccess();
-        DatabaseMgr.endTransaction();
-        DatabaseMgr.releaseDatabase();
+    public void saveDatas(final List<Article> datas) {
+        sDbExecutor.execute(new Command<Void>() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                for (Article article : datas) {
+                    database.insertWithOnConflict(mTableName, null,
+                            toContentValues(article),
+                            SQLiteDatabase.CONFLICT_REPLACE);
+                }
+                return null;
+            }
+        });
     }
 
     @Override
-    public void loadDatasFromDB(DataListener<List<Article>> listener) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        DatabaseMgr.beginTransaction();
-        Cursor cursor = database.query(mTableName, null, null, null, null, null,
-                " publish_time DESC");
-        listener.onComplete(queryResult(cursor));
-        cursor.close();
-        DatabaseMgr.setTransactionSuccess();
-        DatabaseMgr.endTransaction();
-        DatabaseMgr.releaseDatabase();
+    public void loadDatasFromDB(final DataListener<List<Article>> listener) {
+        sDbExecutor.execute(new Command<List<Article>>(listener) {
+            @Override
+            protected List<Article> doInBackground(SQLiteDatabase database) {
+                Cursor cursor = database.query(mTableName, null, null, null, null, null,
+                        " publish_time DESC");
+                List<Article> result = queryResult(cursor);
+                cursor.close();
+                return result;
+            }
+        });
     }
 
     private List<Article> queryResult(Cursor cursor) {

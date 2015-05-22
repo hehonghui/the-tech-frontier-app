@@ -48,11 +48,4 @@ public interface DatabaseAPI<T> {
      * @param listener
      */
     public void loadDatasFromDB(DataListener<List<T>> listener);
-
-    /**
-     * 清空数据库
-     * 
-     * @param listener
-     */
-    public void deleteAll();
 }

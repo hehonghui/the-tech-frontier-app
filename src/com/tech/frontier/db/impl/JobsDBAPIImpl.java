@@ -22,12 +22,14 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tech.frontier.db.cmd.Command;
+import com.tech.frontier.db.cmd.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Job;
@@ -35,40 +37,49 @@ import com.tech.frontier.models.entities.Job;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobsDBAPIImpl extends AbsDBAPI<Job> {
+/**
+ * 招聘信息相关的数据库操作类
+ * 
+ * @author mrsimple
+ */
+class JobsDBAPIImpl extends PresentableDBAPI<Job> {
 
     public JobsDBAPIImpl() {
         super(DatabaseHelper.TABLE_JOBS);
     }
 
     @Override
-    public void saveDatas(List<Job> datas) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        DatabaseMgr.beginTransaction();
-        for (Job item : datas) {
-            database.insertWithOnConflict(mTableName, null,
-                    toContentValues(item),
-                    SQLiteDatabase.CONFLICT_REPLACE);
-        }
-        DatabaseMgr.setTransactionSuccess();
-        DatabaseMgr.endTransaction();
-        DatabaseMgr.releaseDatabase();
+    public void saveDatas(final List<Job> datas) {
+        sDbExecutor.execute(new NoReturnCmd() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                for (Job item : datas) {
+                    database.insertWithOnConflict(mTableName, null,
+                            toContentValues(item),
+                            SQLiteDatabase.CONFLICT_REPLACE);
+                }
+                return null;
+            }
+        });
     }
 
     @Override
-    public void loadDatasFromDB(DataListener<List<Job>> listener) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        DatabaseMgr.beginTransaction();
-        Cursor cursor = database.query(mTableName, null, null, null,
-                null, null, null);
-        listener.onComplete(queryResult(cursor));
-        cursor.close();
-        DatabaseMgr.setTransactionSuccess();
-        DatabaseMgr.endTransaction();
-        DatabaseMgr.releaseDatabase();
+    public void loadDatasFromDB(final DataListener<List<Job>> listener) {
+        sDbExecutor.execute(new Command<List<Job>>(listener) {
+
+            @Override
+            protected List<Job> doInBackground(SQLiteDatabase database) {
+                Cursor cursor =  database.query(mTableName, null, null, null,
+                        null, null, null);
+                List<Job> result = parseResult(cursor);
+                cursor.close();
+                return result ;
+            }
+        });
+
     }
 
-    private List<Job> queryResult(Cursor cursor) {
+    private List<Job> parseResult(Cursor cursor) {
         List<Job> jobs = new ArrayList<Job>();
         while (cursor.moveToNext()) {
             Job item = new Job();

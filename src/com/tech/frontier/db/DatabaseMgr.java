@@ -31,6 +31,11 @@ import com.tech.frontier.db.helper.DatabaseHelper;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 数据库实例管理类,引用技术管理数据库实例,当计数为0时关闭数据库
+ * 
+ * @author mrsimple
+ */
 public class DatabaseMgr {
     private static SQLiteDatabase sDatabase;
     private static AtomicInteger sDbRef = new AtomicInteger(0);
@@ -46,8 +51,6 @@ public class DatabaseMgr {
             synchronized (DatabaseMgr.class) {
                 sHelper = new DatabaseHelper(context.getApplicationContext());
                 sDatabase = sHelper.getWritableDatabase();
-                // 获取之后引用技术为1
-                sDbRef.incrementAndGet();
             }
         }
     }
@@ -66,10 +69,6 @@ public class DatabaseMgr {
     }
 
     public static SQLiteDatabase getDatabase() {
-        if (sHelper == null) {
-            throw new NullPointerException("请调用DatabaseMgr.init(Context)函数初始化数据库");
-        }
-
         if (!sDatabase.isOpen()) {
             sDatabase = sHelper.getWritableDatabase();
         }

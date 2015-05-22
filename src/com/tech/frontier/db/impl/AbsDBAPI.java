@@ -22,26 +22,38 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
-import com.tech.frontier.listeners.DataListener;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.tech.frontier.db.cmd.Command;
+import com.tech.frontier.db.engine.DbExecutor;
 
 /**
- * 操作文章内容相关的数据库API
- * 
  * @author mrsimple
+ * @param <T>
  */
-public interface ArticleContentDBAPI {
-
+public abstract class AbsDBAPI<T> {
     /**
-     * @param postId
-     * @param html
+     * 数据库执行引擎
      */
-    public void saveContent(String postId, String html);
-
+    protected static DbExecutor sDbExecutor = DbExecutor.getExecutor();
     /**
-     * @param postId
-     * @param html
+     * 表名
      */
-    public void loadArticleContent(String postId, DataListener<String> listener);
+    protected String mTableName;
+
+    public AbsDBAPI(String table) {
+        mTableName = table;
+    }
+
+    public void deleteAll() {
+        sDbExecutor.execute(new Command<Void>() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                database.execSQL("delete from " + mTableName);
+                return null;
+            }
+        });
+    }
 }

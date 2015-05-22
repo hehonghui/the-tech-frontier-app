@@ -22,23 +22,8 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.cmd;
 
-import android.database.sqlite.SQLiteDatabase;
+public abstract class NoReturnCmd extends Command<Void> {
 
-public abstract class AbsDBAPI<T> implements DatabaseAPI<T> {
-
-    static SQLiteDatabase sSqLiteDatabase;
-    String mTableName;
-
-    public AbsDBAPI(String table) {
-        mTableName = table;
-        sSqLiteDatabase = DatabaseMgr.getDatabase();
-    }
-
-    @Override
-    public void deleteAll() {
-        sSqLiteDatabase.execSQL("delete from " + mTableName);
-        DatabaseMgr.releaseDatabase();
-    }
 }

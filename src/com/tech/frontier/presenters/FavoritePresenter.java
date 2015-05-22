@@ -24,8 +24,8 @@
 
 package com.tech.frontier.presenters;
 
-import com.tech.frontier.db.DatabaseFactory;
 import com.tech.frontier.db.FavoriteDBAPI;
+import com.tech.frontier.db.impl.DbFactory;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.ui.interfaces.ArticleViewInterface;
@@ -36,7 +36,7 @@ public class FavoritePresenter {
 
     ArticleViewInterface mViewInterface;
 
-    FavoriteDBAPI mFavoriteDBAPI = DatabaseFactory.createFavoriteDBAPI();
+    FavoriteDBAPI mFavoriteDBAPI = DbFactory.createFavoriteDBAPI();
 
     public FavoritePresenter(ArticleViewInterface viewInterface) {
         mViewInterface = viewInterface;

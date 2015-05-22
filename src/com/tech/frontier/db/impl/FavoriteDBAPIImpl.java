@@ -22,12 +22,15 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tech.frontier.db.FavoriteDBAPI;
+import com.tech.frontier.db.cmd.Command;
+import com.tech.frontier.db.cmd.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Article;
@@ -36,15 +39,27 @@ import com.tech.frontier.utils.LoginSession;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteDBAPIImpl implements FavoriteDBAPI {
+/**
+ * 收藏相关的数据库操作类，包含收藏某篇文章、取消收藏、加载收藏列表、判断某篇文章是否已经被我收藏
+ * 
+ * @author mrsimple
+ */
+class FavoriteDBAPIImpl extends AbsDBAPI<Article> implements FavoriteDBAPI {
+
+    public FavoriteDBAPIImpl() {
+        super(DatabaseHelper.TABLE_FAVORITES);
+    }
 
     @Override
-    public void saveFavoriteArticles(String postId) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        database.insertWithOnConflict(DatabaseHelper.TABLE_FAVORITES, null,
-                toContentValues(postId),
-                SQLiteDatabase.CONFLICT_REPLACE);
-        DatabaseMgr.releaseDatabase();
+    public void saveFavoriteArticles(final String postId) {
+        sDbExecutor.execute(new NoReturnCmd() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                database.insertWithOnConflict(DatabaseHelper.TABLE_FAVORITES, null,
+                        toContentValues(postId), SQLiteDatabase.CONFLICT_REPLACE);
+                return null;
+            }
+        });
     }
 
     private ContentValues toContentValues(String postId) {
@@ -57,12 +72,15 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
     @Override
     public void loadFavoriteArticles(DataListener<List<Article>> listener) {
         if (listener != null) {
-            SQLiteDatabase database = DatabaseMgr.getDatabase();
-            // 从关系表找到所有文章的id
-            List<String> articleList = findMyFavoriteArticleIds(database);
-            // 根据文章id找到文章的详细信息
-            listener.onComplete(loadArticles(database, articleList));
-            DatabaseMgr.releaseDatabase();
+            sDbExecutor.execute(new Command<List<Article>>(listener) {
+                @Override
+                protected List<Article> doInBackground(SQLiteDatabase database) {
+                    // 从关系表找到所有文章的id
+                    List<String> articleList = findMyFavoriteArticleIds(database);
+                    // 根据文章id找到文章的详细信息
+                    return loadArticles(database, articleList);
+                }
+            });
         }
     }
 
@@ -77,6 +95,12 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
         return result;
     }
 
+    /**
+     * 查找我关注的所有文章id
+     * 
+     * @param database
+     * @return
+     */
     private List<String> findMyFavoriteArticleIds(SQLiteDatabase database) {
         String[] columns = new String[] {
                 "aid"
@@ -88,24 +112,37 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
         Cursor cursor = database.query(DatabaseHelper.TABLE_FAVORITES, columns, "uid=?",
                 selectionArgs, null, null, null);
 
-        List<String> articleList = queryArticlePostIds(cursor);
+        List<String> articleList = parseArticlePostIds(cursor);
         cursor.close();
         return articleList;
     }
 
+    /**
+     * 通过文章id到articles表中查询文章的完整信息
+     * 
+     * @param database
+     * @param postId
+     * @return
+     */
     private Article queryArticleWithId(SQLiteDatabase database, String postId) {
         Cursor cursor = database.query(DatabaseHelper.TABLE_ARTICLES, null, "post_id=?",
                 new String[] {
                     postId
                 }, null, null, null);
         if (cursor.moveToNext()) {
-            return queryArticle(cursor);
+            return parseArticle(cursor);
         }
 
         return null;
     }
 
-    private List<String> queryArticlePostIds(Cursor cursor) {
+    /**
+     * 从Cursor中解析文章的id
+     * 
+     * @param cursor
+     * @return
+     */
+    private List<String> parseArticlePostIds(Cursor cursor) {
         List<String> articlesList = new ArrayList<String>();
         while (cursor.moveToNext()) {
             articlesList.add(cursor.getString(0));
@@ -113,7 +150,13 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
         return articlesList;
     }
 
-    private Article queryArticle(Cursor cursor) {
+    /**
+     * 解析某篇文章
+     * 
+     * @param cursor
+     * @return
+     */
+    private Article parseArticle(Cursor cursor) {
         Article article = new Article();
         article.post_id = cursor.getString(0);
         article.author = cursor.getString(1);
@@ -126,21 +169,32 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
     }
 
     @Override
-    public void isFavorited(String postId, DataListener<Boolean> listener) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        Cursor cursor = database.rawQuery("select * from " + DatabaseHelper.TABLE_FAVORITES
-                + " where aid = ?",
-                new String[] {
-                    postId
-                });
-        listener.onComplete(cursor.getCount() > 0);
-        DatabaseMgr.releaseDatabase();
+    public void isFavorited(final String postId, DataListener<Boolean> listener) {
+        sDbExecutor.execute(new Command<Boolean>(listener) {
+            @Override
+            protected Boolean doInBackground(SQLiteDatabase database) {
+                final String[] selectArgs = new String[] {
+                        postId, LoginSession.getLoginSession().getUserInfo().uid
+                };
+                // 根据post id在收藏表中是否有记录
+                Cursor cursor = database.rawQuery("select * from " + DatabaseHelper.TABLE_FAVORITES
+                        + " where aid = ? AND uid=?", selectArgs);
+                int result = cursor.getCount();
+                cursor.close();
+                return result > 0;
+            }
+        });
     }
 
     @Override
-    public void unfavoriteArticle(String postId) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        database.execSQL("delete from " + DatabaseHelper.TABLE_FAVORITES + " where aid=" + postId);
-        DatabaseMgr.releaseDatabase();
+    public void unfavoriteArticle(final String postId) {
+        sDbExecutor.execute(new Command<Void>() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                database.execSQL("delete from " + DatabaseHelper.TABLE_FAVORITES + " where aid="
+                        + postId);
+                return null;
+            }
+        });
     }
 }

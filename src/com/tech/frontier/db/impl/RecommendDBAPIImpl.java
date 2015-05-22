@@ -22,12 +22,14 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.impl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tech.frontier.db.cmd.Command;
+import com.tech.frontier.db.cmd.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.models.entities.Recommend;
@@ -35,43 +37,44 @@ import com.tech.frontier.models.entities.Recommend;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecommendDBAPIImpl extends AbsDBAPI<Recommend> {
+class RecommendDBAPIImpl extends PresentableDBAPI<Recommend> {
 
     public RecommendDBAPIImpl() {
         super(DatabaseHelper.TABLE_RECOMMENDS);
     }
 
     @Override
-    public void saveDatas(List<Recommend> datas) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        DatabaseMgr.beginTransaction();
-        for (Recommend item : datas) {
-            database.insertWithOnConflict(mTableName, null,
-                    toContentValues(item),
-                    SQLiteDatabase.CONFLICT_REPLACE);
-        }
-        DatabaseMgr.setTransactionSuccess();
-        DatabaseMgr.endTransaction();
-        DatabaseMgr.releaseDatabase();
+    public void saveDatas(final List<Recommend> datas) {
+        sDbExecutor.execute(new NoReturnCmd() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                for (Recommend item : datas) {
+                    database.insertWithOnConflict(mTableName, null,
+                            toContentValues(item),
+                            SQLiteDatabase.CONFLICT_REPLACE);
+                }
+                return null;
+            }
+        });
     }
 
     @Override
     public void loadDatasFromDB(DataListener<List<Recommend>> listener) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        DatabaseMgr.beginTransaction();
-        Cursor cursor = database.query(mTableName, null, null, null,
-                null, null, null);
-        listener.onComplete(queryResult(cursor));
-        cursor.close();
-        DatabaseMgr.setTransactionSuccess();
-        DatabaseMgr.endTransaction();
-        DatabaseMgr.releaseDatabase();
+        sDbExecutor.execute(new Command<List<Recommend>>(listener) {
+            @Override
+            protected List<Recommend> doInBackground(SQLiteDatabase database) {
+                Cursor cursor = database.query(mTableName, null, null, null,
+                        null, null, null);
+                List<Recommend> result = queryResult(cursor);
+                cursor.close();
+                return result;
+            }
+        });
     }
 
     private List<Recommend> queryResult(Cursor cursor) {
         List<Recommend> recommends = new ArrayList<Recommend>();
         while (cursor.moveToNext()) {
-
             String title = cursor.getString(0);
             String url = cursor.getString(1);
             String imgUrl = cursor.getString(2);
