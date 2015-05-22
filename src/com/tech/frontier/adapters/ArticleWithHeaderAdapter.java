@@ -118,7 +118,7 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter {
             mImagePagerAdapter.setInfiniteLoop(true);
             mImagePagerAdapter.setOnItemClickListener(mRecommendListener);
             // 设置ViewPager
-            viewPager.setInterval(15000);
+            viewPager.setInterval(5000);
             if (result.size() > 0) {
                 viewPager.startAutoScroll();
                 viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2

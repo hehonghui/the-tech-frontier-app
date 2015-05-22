@@ -72,9 +72,9 @@ public class ArticlesActivity extends BaseActionBarActivity {
     private void setupMenuRecyclerView() {
         List<MenuItem> menuItems = new ArrayList<MenuItem>();
         menuItems.add(new MenuItem("全部", R.drawable.home));
-        menuItems.add(new MenuItem("Android", R.drawable.android));
-        menuItems.add(new MenuItem("iOS", R.drawable.ios));
-        menuItems.add(new MenuItem("招聘信息", R.drawable.hire));
+        menuItems.add(new MenuItem("Android", R.drawable.android_icon));
+        menuItems.add(new MenuItem("iOS", R.drawable.ios_icon));
+        menuItems.add(new MenuItem("招聘信息", R.drawable.hire_icon));
         menuItems.add(new MenuItem("收藏", R.drawable.favorite));
         menuItems.add(new MenuItem("关于", R.drawable.about));
         menuItems.add(new MenuItem("退出", R.drawable.exit));
@@ -93,19 +93,21 @@ public class ArticlesActivity extends BaseActionBarActivity {
         mDrawerLayout.closeDrawers();
         switch (item.iconResId) {
             case R.drawable.home: // 全部
+                mArticlesFragment.setArticleCategory(Article.ALL);
+                mArticlesFragment.fetchDatas();
                 replaceFragment(mArticlesFragment);
                 break;
-            case R.drawable.android: // android
+            case R.drawable.android_icon: // android
                 replaceFragment(mArticlesFragment);
                 mArticlesFragment.setArticleCategory(Article.ANDROID);
                 mArticlesFragment.fetchDatas();
                 break;
-            case R.drawable.ios: // IOS
+            case R.drawable.ios_icon: // IOS
                 replaceFragment(mArticlesFragment);
                 mArticlesFragment.setArticleCategory(Article.iOS);
                 mArticlesFragment.fetchDatas();
                 break;
-            case R.drawable.hire: // 招聘信息
+            case R.drawable.hire_icon: // 招聘信息
                 if (mJobFragment == null) {
                     mJobFragment = new JobsFragment();
                 }

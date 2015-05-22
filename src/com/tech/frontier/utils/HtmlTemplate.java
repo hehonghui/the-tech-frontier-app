@@ -54,6 +54,7 @@ public class HtmlTemplate {
         sb.append(title);
         sb.append("</a>");
         sb.append("</h2>");
+        sb.append("<hr/>");
         sb.append("</div>");
         sb.append("<div class=\"entry\">");
         sb.append(content);
