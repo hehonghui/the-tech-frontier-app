@@ -92,6 +92,7 @@ public class MenuAdapter extends Adapter<MenuViewHolder> {
         public MenuViewHolder(View itemView) {
             super(itemView);
             userImageView = (ImageView) itemView.findViewById(R.id.menu_icon_imageview);
+          
             nameTextView = (TextView) itemView.findViewById(R.id.menu_text_tv);
         }
     }

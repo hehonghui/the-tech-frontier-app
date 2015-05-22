@@ -39,12 +39,13 @@
 
                 <!-- 用户头像界面 -->
 
-                <ImageView
+                <com.android.volley.toolbox.NetworkImageView
                     android:id="@+id/user_icon_imageview"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/app_name"
+                    android:onClick="userIconClick" 
                     android:src="@drawable/user_default" />
 
                 <TextView

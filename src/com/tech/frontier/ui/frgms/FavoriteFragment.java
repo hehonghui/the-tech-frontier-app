@@ -35,7 +35,9 @@ import com.tech.frontier.models.entities.Article;
  */
 public class FavoriteFragment extends ArticlesFragment {
 
-    @Override
+
+
+	@Override
     protected void initAdapter() {
         mAdapter = new ArticleAdapter(mDataSet);
         mAdapter.setOnItemClickListener(new OnItemClickListener<Article>() {
