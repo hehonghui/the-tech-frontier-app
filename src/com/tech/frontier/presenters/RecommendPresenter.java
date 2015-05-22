@@ -27,12 +27,12 @@ package com.tech.frontier.presenters;
 import android.util.Log;
 
 import com.tech.frontier.adapters.AutoSliderViewInterface;
-import com.tech.frontier.db.DatabaseAPI;
+import com.tech.frontier.db.PresentableDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Recommend;
 import com.tech.frontier.net.RecomendAPI;
-import com.tech.frontier.net.RecomendAPIImpl;
+import com.tech.frontier.net.impl.RecomendAPIImpl;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class RecommendPresenter {
      */
     RecomendAPI mRecomendAPI = new RecomendAPIImpl();
 
-    DatabaseAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendDBAPI();
+    PresentableDBAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendDBAPI();
 
     public RecommendPresenter(AutoSliderViewInterface viewInterface) {
         mViewInterface = viewInterface;

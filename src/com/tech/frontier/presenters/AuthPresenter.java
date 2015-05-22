@@ -34,10 +34,10 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.tech.frontier.entities.UserInfo;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.UserInfo;
 import com.tech.frontier.net.UserAPI;
-import com.tech.frontier.net.UserAPIImpl;
+import com.tech.frontier.net.impl.UserAPIImpl;
 import com.tech.frontier.utils.Constants;
 import com.tech.frontier.utils.LoginSession;
 

@@ -1,5 +1,5 @@
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.entities;
 
 
 public class UserInfo {

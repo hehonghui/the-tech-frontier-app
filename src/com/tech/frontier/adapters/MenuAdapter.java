@@ -35,7 +35,7 @@ import android.widget.TextView;
 
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.MenuAdapter.MenuViewHolder;
-import com.tech.frontier.models.entities.MenuItem;
+import com.tech.frontier.entities.MenuItem;
 
 import java.util.List;
 

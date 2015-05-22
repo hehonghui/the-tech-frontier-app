@@ -22,12 +22,18 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.entities;
 
-public class Job {
-    public int type ;
-    public String company;
-    public String job;
-    public String desc;
-    public String email;
+public class ArticleDetail {
+    public String postId;
+    public String content;
+
+    public ArticleDetail() {
+    }
+
+    public ArticleDetail(String pid, String html) {
+        postId = pid;
+        content = html;
+    }
+
 }

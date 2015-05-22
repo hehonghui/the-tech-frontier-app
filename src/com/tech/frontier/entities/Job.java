@@ -22,30 +22,12 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.entities;
 
-import com.tech.frontier.listeners.DataListener;
-
-import java.util.List;
-
-/**
- * 数据库API
- * 
- * @author mrsimple
- * @param <T>
- */
-public interface DatabaseAPI<T> {
-    /**
-     * 保存数据到数据库
-     * 
-     * @param articles
-     */
-    public void saveDatas(List<T> datas);
-
-    /**
-     * 加载所有缓存
-     * 
-     * @param listener
-     */
-    public void loadDatasFromDB(DataListener<List<T>> listener);
+public class Job {
+    public int type ;
+    public String company;
+    public String job;
+    public String desc;
+    public String email;
 }

@@ -31,9 +31,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tech.frontier.R;
+import com.tech.frontier.entities.Article;
+import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.OnItemClickListener;
-import com.tech.frontier.models.entities.Article;
-import com.tech.frontier.models.entities.Recommend;
 import com.tech.frontier.presenters.RecommendPresenter;
 import com.tech.frontier.widgets.AutoScrollViewPager;
 import com.viewpagerindicator.CirclePageIndicator;

@@ -26,7 +26,7 @@ package com.tech.frontier;
 
 import android.app.Application;
 
-import com.tech.frontier.db.DatabaseMgr;
+import com.tech.frontier.db.helper.DatabaseMgr;
 import com.tech.frontier.net.mgr.RequestQueueMgr;
 import com.tech.frontier.utils.LoginSession;
 

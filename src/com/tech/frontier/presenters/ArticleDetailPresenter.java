@@ -32,10 +32,11 @@ import android.util.Log;
 import com.tech.frontier.db.ArticleContentDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.entities.ArticleDetail;
+import com.tech.frontier.entities.UserInfo;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.UserInfo;
 import com.tech.frontier.net.ArticleAPI;
-import com.tech.frontier.net.ArticleAPIImpl;
+import com.tech.frontier.net.impl.ArticleAPIImpl;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
 import com.tech.frontier.utils.LoginSession;
 
@@ -77,7 +78,7 @@ public class ArticleDetailPresenter {
                         public void onComplete(String result) {
                             mArticleView.showArticleContent(result);
                             // 存储文章到数据库中
-                            mArticleDBAPI.saveContent(post_id, result);
+                            mArticleDBAPI.saveContent(new ArticleDetail(post_id, result));
                         }
                     });
                 } else {
@@ -95,7 +96,6 @@ public class ArticleDetailPresenter {
     }
 
     public void favorite(Activity activity, final String postId, boolean isFav) {
-
         LoginSession loginSession = LoginSession.getLoginSession();
         if (!loginSession.isLogined()) {
             mAuthPresenter = new AuthPresenter(activity);
@@ -107,8 +107,10 @@ public class ArticleDetailPresenter {
                 }
             });
         } else if (!isFav) {
+            // 收藏文章
             mFavoriteDBAPI.saveFavoriteArticles(postId);
         } else {
+            // 取消收藏
             mFavoriteDBAPI.unfavoriteArticle(postId);
         }
     }

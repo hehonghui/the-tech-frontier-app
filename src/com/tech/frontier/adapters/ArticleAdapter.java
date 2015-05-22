@@ -34,8 +34,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tech.frontier.R;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.OnItemClickListener;
-import com.tech.frontier.models.entities.Article;
 
 import java.util.List;
 

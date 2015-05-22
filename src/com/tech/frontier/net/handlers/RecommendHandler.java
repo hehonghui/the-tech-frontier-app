@@ -24,7 +24,7 @@
 
 package com.tech.frontier.net.handlers;
 
-import com.tech.frontier.models.entities.Recommend;
+import com.tech.frontier.entities.Recommend;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

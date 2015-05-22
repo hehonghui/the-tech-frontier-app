@@ -24,12 +24,12 @@
 
 package com.tech.frontier.presenters;
 
-import com.tech.frontier.db.DatabaseAPI;
+import com.tech.frontier.db.PresentableDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Job;
 import com.tech.frontier.net.JobAPI;
-import com.tech.frontier.net.JobAPIImpl;
+import com.tech.frontier.net.impl.JobAPIImpl;
 import com.tech.frontier.ui.interfaces.JobViewInterface;
 
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.List;
 public class JobPresenter {
     JobAPI jobAPI = new JobAPIImpl();
     JobViewInterface mJobView;
-    DatabaseAPI<Job> mDatabaseAPI = DbFactory.createJobDBAPI();
+    PresentableDBAPI<Job> mDatabaseAPI = DbFactory.createJobDBAPI();
 
     public JobPresenter(JobViewInterface jobViewInterface) {
         mJobView = jobViewInterface;

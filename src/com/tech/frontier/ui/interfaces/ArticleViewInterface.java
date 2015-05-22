@@ -24,7 +24,7 @@
 
 package com.tech.frontier.ui.interfaces;
 
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.entities.Article;
 
 import java.util.List;
 

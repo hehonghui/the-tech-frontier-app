@@ -28,10 +28,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.cmd.Command;
+import com.tech.frontier.db.PresentableDBAPI;
+import com.tech.frontier.db.cmd.Command.ArticlesCommand;
+import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,7 @@ class ArticleDBAPIImpl extends PresentableDBAPI<Article> {
 
     @Override
     public void saveDatas(final List<Article> datas) {
-        sDbExecutor.execute(new Command<Void>() {
+        sDbExecutor.execute(new NoReturnCmd() {
             @Override
             protected Void doInBackground(SQLiteDatabase database) {
                 for (Article article : datas) {
@@ -64,7 +66,7 @@ class ArticleDBAPIImpl extends PresentableDBAPI<Article> {
 
     @Override
     public void loadDatasFromDB(final DataListener<List<Article>> listener) {
-        sDbExecutor.execute(new Command<List<Article>>(listener) {
+        sDbExecutor.execute(new ArticlesCommand(listener) {
             @Override
             protected List<Article> doInBackground(SQLiteDatabase database) {
                 Cursor cursor = database.query(mTableName, null, null, null, null, null,

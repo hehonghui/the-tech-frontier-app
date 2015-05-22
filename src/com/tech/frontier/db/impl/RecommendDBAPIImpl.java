@@ -28,11 +28,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.cmd.Command;
-import com.tech.frontier.db.cmd.NoReturnCmd;
+import com.tech.frontier.db.PresentableDBAPI;
+import com.tech.frontier.db.cmd.Command.NoReturnCmd;
+import com.tech.frontier.db.cmd.Command.RecommendCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
+import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Recommend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ class RecommendDBAPIImpl extends PresentableDBAPI<Recommend> {
 
     @Override
     public void loadDatasFromDB(DataListener<List<Recommend>> listener) {
-        sDbExecutor.execute(new Command<List<Recommend>>(listener) {
+        sDbExecutor.execute(new RecommendCmd(listener) {
             @Override
             protected List<Recommend> doInBackground(SQLiteDatabase database) {
                 Cursor cursor = database.query(mTableName, null, null, null,

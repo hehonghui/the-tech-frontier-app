@@ -25,11 +25,11 @@
 package com.tech.frontier.db.impl;
 
 import com.tech.frontier.db.ArticleContentDBAPI;
-import com.tech.frontier.db.DatabaseAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
-import com.tech.frontier.models.entities.Article;
-import com.tech.frontier.models.entities.Job;
-import com.tech.frontier.models.entities.Recommend;
+import com.tech.frontier.db.PresentableDBAPI;
+import com.tech.frontier.entities.Article;
+import com.tech.frontier.entities.Job;
+import com.tech.frontier.entities.Recommend;
 
 /**
  * 数据库API工厂类
@@ -37,7 +37,7 @@ import com.tech.frontier.models.entities.Recommend;
  * @author mrsimple
  */
 public class DbFactory {
-    public static DatabaseAPI<Article> createArticleDBAPI() {
+    public static PresentableDBAPI<Article> createArticleDBAPI() {
         return new ArticleDBAPIImpl();
     }
 
@@ -45,11 +45,11 @@ public class DbFactory {
         return new ArticleContentDBAPIImpl();
     }
 
-    public static DatabaseAPI<Job> createJobDBAPI() {
+    public static PresentableDBAPI<Job> createJobDBAPI() {
         return new JobsDBAPIImpl();
     }
 
-    public static DatabaseAPI<Recommend> createRecommendDBAPI() {
+    public static PresentableDBAPI<Recommend> createRecommendDBAPI() {
         return new RecommendDBAPIImpl();
     }
 

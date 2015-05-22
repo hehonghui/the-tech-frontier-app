@@ -22,12 +22,10 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-
-import com.tech.frontier.db.helper.DatabaseHelper;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

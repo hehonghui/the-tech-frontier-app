@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.entities;
 
 public class MenuItem {
     public int iconResId;

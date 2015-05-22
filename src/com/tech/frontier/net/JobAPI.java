@@ -24,8 +24,8 @@
 
 package com.tech.frontier.net;
 
+import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Job;
 
 import java.util.List;
 

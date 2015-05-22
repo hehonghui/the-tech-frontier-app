@@ -25,8 +25,8 @@
 package com.tech.frontier.ui.frgms;
 
 import com.tech.frontier.adapters.ArticleAdapter;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.OnItemClickListener;
-import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.presenters.FavoritePresenter;
 
 /**

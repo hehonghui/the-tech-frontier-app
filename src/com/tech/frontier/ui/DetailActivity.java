@@ -38,7 +38,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.tech.frontier.R;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
 import com.tech.frontier.presenters.FavoritePresenter;
 import com.tech.frontier.presenters.SharePresenter;

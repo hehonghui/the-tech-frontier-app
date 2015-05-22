@@ -24,7 +24,7 @@
 
 package com.tech.frontier.net.handlers;
 
-import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.entities.Job;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

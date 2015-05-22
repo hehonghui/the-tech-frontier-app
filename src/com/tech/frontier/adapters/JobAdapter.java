@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.JobAdapter.JobViewHolder;
-import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.entities.Job;
 
 import java.util.List;
 

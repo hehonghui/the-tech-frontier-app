@@ -26,8 +26,8 @@ package com.tech.frontier.presenters;
 
 import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.ui.interfaces.ArticleViewInterface;
 
 import java.util.List;

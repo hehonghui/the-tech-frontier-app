@@ -24,7 +24,7 @@
 
 package com.tech.frontier.adapters;
 
-import com.tech.frontier.models.entities.Recommend;
+import com.tech.frontier.entities.Recommend;
 
 import java.util.List;
 

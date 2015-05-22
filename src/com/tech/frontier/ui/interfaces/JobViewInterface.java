@@ -24,7 +24,7 @@
 
 package com.tech.frontier.ui.interfaces;
 
-import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.entities.Job;
 
 import java.util.List;
 

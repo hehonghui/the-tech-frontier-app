@@ -22,17 +22,25 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.models.entities;
+package com.tech.frontier.entities;
 
-public class Recommend {
+public class Article {
+    public static final int ALL = 1;
+    public static final int ANDROID = 2;
+    public static final int iOS = 3;
+    /**
+     * 
+     */
     public String title;
-    public String url;
-    public String imgUrl;
-
-    public Recommend(String title, String targetUrl, String image) {
-        this.title = title;
-        url = targetUrl;
-        imgUrl = image;
-    }
-
+    public String publishTime;
+    public String author;
+    public String post_id;
+    public int category;
+	@Override
+	public String toString() {
+		return "Article [title=" + title + ", publishTime=" + publishTime
+				+ ", author=" + author + ", post_id=" + post_id + ", category="
+				+ category + "]";
+	}
+    
 }

@@ -22,13 +22,14 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.net.impl;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Recommend;
-import com.tech.frontier.net.handlers.RecommendHandler;
+import com.tech.frontier.net.JobAPI;
+import com.tech.frontier.net.handlers.JobHander;
 import com.tech.frontier.net.mgr.RequestQueueMgr;
 
 import org.json.JSONArray;
@@ -36,18 +37,17 @@ import org.json.JSONArray;
 import java.util.List;
 
 /**
- * 推荐API实现类
- * 
+ * 招聘信息相关的网络API实现类
  * @author mrsimple
+ *
  */
-public class RecomendAPIImpl implements RecomendAPI {
+public class JobAPIImpl implements JobAPI {
 
-    RecommendHandler mHandler = new RecommendHandler();
+    JobHander mHandler = new JobHander();
 
-    @Override
-    public void fetchRecomends(final DataListener<List<Recommend>> listener) {
+    private void performRequest(final DataListener<List<Job>> listener) {
         JsonArrayRequest request = new JsonArrayRequest(
-                "http://www.devtf.cn/api/v1/?type=recommends",
+                "http://www.devtf.cn/api/v1/?type=jobs",
                 new Listener<JSONArray>() {
 
                     @Override
@@ -59,6 +59,11 @@ public class RecomendAPIImpl implements RecomendAPI {
                     }
                 }, null);
         RequestQueueMgr.getRequestQueue().add(request);
+    }
+
+    @Override
+    public void fetchJobs(DataListener<List<Job>> listener) {
+        performRequest(listener);
     }
 
 }

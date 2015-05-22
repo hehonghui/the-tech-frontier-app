@@ -26,8 +26,13 @@ package com.tech.frontier.db.cmd;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.DatabaseMgr;
+import com.tech.frontier.db.helper.DatabaseMgr;
+import com.tech.frontier.entities.Article;
+import com.tech.frontier.entities.Job;
+import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
+
+import java.util.List;
 
 public abstract class Command<T> {
 
@@ -51,4 +56,45 @@ public abstract class Command<T> {
     }
 
     protected abstract T doInBackground(SQLiteDatabase database);
+
+    /**
+     * 无返回值的数据库命令
+     * 
+     * @author mrsimple
+     */
+    public static abstract class NoReturnCmd extends Command<Void> {
+    }
+
+    /**
+     * 返回文章列表的数据库命令
+     * 
+     * @author mrsimple
+     */
+    public static abstract class ArticlesCommand extends Command<List<Article>> {
+        public ArticlesCommand(DataListener<List<Article>> listener) {
+            dataListener = listener;
+        }
+    }
+
+    /**
+     * 返回招聘信息列表的数据库命令
+     * 
+     * @author mrsimple
+     */
+    public static abstract class JobsCommand extends Command<List<Job>> {
+        public JobsCommand(DataListener<List<Job>> listener) {
+            dataListener = listener;
+        }
+    }
+
+    /**
+     * 返回推荐文章列表的数据库命令
+     * 
+     * @author mrsimple
+     */
+    public static abstract class RecommendCmd extends Command<List<Recommend>> {
+        public RecommendCmd(DataListener<List<Recommend>> listener) {
+            dataListener = listener;
+        }
+    }
 }

@@ -36,8 +36,8 @@ import android.widget.TextView;
 import com.jakewharton.utils.RecyclingPagerAdapter;
 import com.squareup.picasso.Picasso;
 import com.tech.frontier.R;
+import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.OnItemClickListener;
-import com.tech.frontier.models.entities.Recommend;
 
 import java.util.List;
 

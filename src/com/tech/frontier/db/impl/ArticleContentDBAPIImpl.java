@@ -29,8 +29,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.tech.frontier.db.ArticleContentDBAPI;
-import com.tech.frontier.db.DatabaseMgr;
+import com.tech.frontier.db.cmd.Command;
+import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
+import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.listeners.DataListener;
 
 /**
@@ -38,41 +40,50 @@ import com.tech.frontier.listeners.DataListener;
  * 
  * @author mrsimple
  */
-class ArticleContentDBAPIImpl implements ArticleContentDBAPI {
+class ArticleContentDBAPIImpl extends AbsDBAPI<String> implements ArticleContentDBAPI {
 
-    @Override
-    public void saveContent(String postId, String html) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("post_id", postId);
-        contentValues.put("content", html);
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        database.insertWithOnConflict(DatabaseHelper.TABLE_ARTICLE_CONTENT, null, contentValues,
-                SQLiteDatabase.CONFLICT_REPLACE);
+    public ArticleContentDBAPIImpl() {
+        super(DatabaseHelper.TABLE_ARTICLE_CONTENT);
     }
 
     @Override
-    public void loadArticleContent(String postId, DataListener<String> listener) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        Cursor cursor = database.query(DatabaseHelper.TABLE_ARTICLE_CONTENT, new String[] {
-                "content"
-        }, "post_id=?", new String[] {
-                postId
-        }, null, null, null);
-        if (listener != null) {
-            listener.onComplete(queryArticleCotent(cursor));
-        }
-        cursor.close();
-        DatabaseMgr.releaseDatabase();
+    public void saveContent(final ArticleDetail detail) {
+        sDbExecutor.execute(new NoReturnCmd() {
+            @Override
+            protected Void doInBackground(SQLiteDatabase database) {
+                database.insertWithOnConflict(mTableName, null,
+                        toContentValues(detail),
+                        SQLiteDatabase.CONFLICT_REPLACE);
+                return null;
+            }
+        });
+    }
+
+    protected ContentValues toContentValues(ArticleDetail detail) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("post_id", detail.postId);
+        contentValues.put("content", detail.content);
+        return contentValues;
+    }
+
+    @Override
+    public void loadArticleContent(final String postId, final DataListener<String> listener) {
+        sDbExecutor.execute(new Command<String>(listener) {
+            @Override
+            protected String doInBackground(SQLiteDatabase database) {
+                Cursor cursor = database.query(mTableName, new String[] {
+                        "content"
+                }, "post_id=?", new String[] {
+                        postId
+                }, null, null, null);
+                String result = queryArticleCotent(cursor);
+                cursor.close();
+                return result;
+            }
+        });
     }
 
     private String queryArticleCotent(Cursor cursor) {
         return cursor.moveToNext() ? cursor.getString(0) : "";
     }
-
-    public void deleteAll() {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
-        database.execSQL("delete from " + DatabaseHelper.TABLE_ARTICLE_CONTENT);
-        DatabaseMgr.releaseDatabase();
-    }
-
 }

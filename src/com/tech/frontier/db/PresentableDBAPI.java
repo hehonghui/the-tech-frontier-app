@@ -22,8 +22,36 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.cmd;
+package com.tech.frontier.db;
 
-public abstract class NoReturnCmd extends Command<Void> {
+import com.tech.frontier.db.impl.AbsDBAPI;
+import com.tech.frontier.listeners.DataListener;
 
+import java.util.List;
+
+/**
+ * 可用于数据展示的数据库操作接口，也就是含有setData
+ * 
+ * @author mrsimple
+ * @param <T>
+ */
+public abstract class PresentableDBAPI<T> extends AbsDBAPI<T> {
+
+    public PresentableDBAPI(String table) {
+        super(table);
+    }
+
+    /**
+     * 保存数据到数据库
+     * 
+     * @param articles
+     */
+    public abstract void saveDatas(List<T> datas);
+
+    /**
+     * 加载所有缓存
+     * 
+     * @param listener
+     */
+    public abstract void loadDatasFromDB(DataListener<List<T>> listener);
 }

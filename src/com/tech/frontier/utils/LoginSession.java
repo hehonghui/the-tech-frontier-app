@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.tech.frontier.models.entities.UserInfo;
+import com.tech.frontier.entities.UserInfo;
 
 public class LoginSession {
     static LoginSession sLoginSession;

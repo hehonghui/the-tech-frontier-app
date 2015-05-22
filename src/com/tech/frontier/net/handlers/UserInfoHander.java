@@ -2,7 +2,7 @@ package com.tech.frontier.net.handlers;
 
 import org.json.JSONObject;
 
-import com.tech.frontier.models.entities.UserInfo;
+import com.tech.frontier.entities.UserInfo;
 
 public class UserInfoHander implements RespHandler<UserInfo,JSONObject>{
 

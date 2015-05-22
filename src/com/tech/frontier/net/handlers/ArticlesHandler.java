@@ -28,7 +28,7 @@ import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.entities.Article;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

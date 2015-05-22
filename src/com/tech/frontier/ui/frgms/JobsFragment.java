@@ -25,7 +25,7 @@
 package com.tech.frontier.ui.frgms;
 
 import com.tech.frontier.adapters.JobAdapter;
-import com.tech.frontier.models.entities.Job;
+import com.tech.frontier.entities.Job;
 import com.tech.frontier.presenters.JobPresenter;
 import com.tech.frontier.ui.interfaces.JobViewInterface;
 

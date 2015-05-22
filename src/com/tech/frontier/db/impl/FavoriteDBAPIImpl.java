@@ -30,10 +30,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.tech.frontier.db.FavoriteDBAPI;
 import com.tech.frontier.db.cmd.Command;
-import com.tech.frontier.db.cmd.NoReturnCmd;
+import com.tech.frontier.db.cmd.Command.ArticlesCommand;
+import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
 import com.tech.frontier.utils.LoginSession;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ class FavoriteDBAPIImpl extends AbsDBAPI<Article> implements FavoriteDBAPI {
     @Override
     public void loadFavoriteArticles(DataListener<List<Article>> listener) {
         if (listener != null) {
-            sDbExecutor.execute(new Command<List<Article>>(listener) {
+            sDbExecutor.execute(new ArticlesCommand(listener) {
                 @Override
                 protected List<Article> doInBackground(SQLiteDatabase database) {
                     // 从关系表找到所有文章的id

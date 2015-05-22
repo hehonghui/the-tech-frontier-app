@@ -28,9 +28,9 @@ import android.content.Intent;
 
 import com.tech.frontier.adapters.ArticleAdapter;
 import com.tech.frontier.adapters.ArticleWithHeaderAdapter;
+import com.tech.frontier.entities.Article;
+import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.OnItemClickListener;
-import com.tech.frontier.models.entities.Article;
-import com.tech.frontier.models.entities.Recommend;
 import com.tech.frontier.presenters.ArticlePresenter;
 import com.tech.frontier.ui.DetailActivity;
 import com.tech.frontier.ui.interfaces.ArticleViewInterface;

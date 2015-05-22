@@ -22,17 +22,17 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.impl;
+package com.tech.frontier.entities;
 
-import com.tech.frontier.db.DatabaseAPI;
+public class Recommend {
+    public String title;
+    public String url;
+    public String imgUrl;
 
-/**
- * @author mrsimple
- * @param <T>
- */
-public abstract class PresentableDBAPI<T> extends AbsDBAPI<T> implements DatabaseAPI<T> {
-
-    public PresentableDBAPI(String table) {
-        super(table);
+    public Recommend(String title, String targetUrl, String image) {
+        this.title = title;
+        url = targetUrl;
+        imgUrl = image;
     }
+
 }

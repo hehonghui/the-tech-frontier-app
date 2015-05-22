@@ -24,6 +24,7 @@
 
 package com.tech.frontier.db;
 
+import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.listeners.DataListener;
 
 /**
@@ -37,7 +38,7 @@ public interface ArticleContentDBAPI {
      * @param postId
      * @param html
      */
-    public void saveContent(String postId, String html);
+    public void saveContent(ArticleDetail detail);
 
     /**
      * @param postId

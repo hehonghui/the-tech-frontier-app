@@ -28,11 +28,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.cmd.Command;
-import com.tech.frontier.db.cmd.NoReturnCmd;
+import com.tech.frontier.db.PresentableDBAPI;
+import com.tech.frontier.db.cmd.Command.JobsCommand;
+import com.tech.frontier.db.cmd.Command.NoReturnCmd;
 import com.tech.frontier.db.helper.DatabaseHelper;
+import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Job;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ class JobsDBAPIImpl extends PresentableDBAPI<Job> {
 
     @Override
     public void loadDatasFromDB(final DataListener<List<Job>> listener) {
-        sDbExecutor.execute(new Command<List<Job>>(listener) {
+        sDbExecutor.execute(new JobsCommand(listener) {
 
             @Override
             protected List<Job> doInBackground(SQLiteDatabase database) {

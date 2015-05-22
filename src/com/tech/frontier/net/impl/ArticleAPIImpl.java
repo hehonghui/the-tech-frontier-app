@@ -22,13 +22,14 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.net;
+package com.tech.frontier.net.impl;
 
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.models.entities.Article;
+import com.tech.frontier.net.ArticleAPI;
 import com.tech.frontier.net.handlers.ArticlesHandler;
 import com.tech.frontier.net.mgr.RequestQueueMgr;
 
@@ -55,6 +56,8 @@ public class ArticleAPIImpl implements ArticleAPI {
     public void loadMode(int category, DataListener<List<Article>> listener) {
         performRequest(++mPage, category, listener);
     }
+
+    // TODO : 网络请求的错误处理,Presenter
 
     private void performRequest(final int page, int category,
             final DataListener<List<Article>> listener) {

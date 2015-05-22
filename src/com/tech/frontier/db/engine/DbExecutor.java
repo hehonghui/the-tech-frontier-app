@@ -78,48 +78,14 @@ public class DbExecutor {
             @Override
             public void run() {
                 T result = command.execute();
-                // 执行数据库操作请求,将结果投递到UI线程
-                postResult(result, command.dataListener);
+                if (command.dataListener != null) {
+                    // 执行数据库操作请求,将结果投递到UI线程
+                    postResult(result, command.dataListener);
+                }
             }
         });
     }
 
-    //
-    // /**
-    // * 执行请求
-    // *
-    // * @param command
-    // */
-    // public <T extends Model> void executeSingle(final From command,
-    // final DataListener<T> listener) {
-    // sAsyncHandler.post(new Runnable() {
-    //
-    // @Override
-    // public void run() {
-    // T result = command.executeSingle();
-    // // 执行数据库操作请求,将结果投递到UI线程
-    // postResult(result, listener);
-    // }
-    // });
-    // }
-    //
-    // /**
-    // * 将结果投递到UI线程
-    // *
-    // * @param result
-    // * @param listener
-    // */
-    // private <T extends Model> void postResult(final T result,
-    // final SimpleFetchListener<T> listener) {
-    // mUIHandler.post(new Runnable() {
-    //
-    // @Override
-    // public void run() {
-    // listener.onComplete(result);
-    // }
-    // });
-    // }
-    //
     /**
      * 将结果投递到UI线程
      *
