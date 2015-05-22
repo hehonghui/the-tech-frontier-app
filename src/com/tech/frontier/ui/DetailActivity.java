@@ -25,6 +25,7 @@
 package com.tech.frontier.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -38,7 +39,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.tech.frontier.R;
+import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.models.entities.UserInfo;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
+import com.tech.frontier.presenters.AuthPresenter;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
 import com.tech.frontier.utils.HtmlTemplate;
 
@@ -55,6 +59,7 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     private String mTitle;
     private String mTargetUrl;
     ArticleDetailPresenter mPresenter = new ArticleDetailPresenter(this);
+    AuthPresenter mAuthPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,8 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
         } else { // 加载文章
             mPresenter.fetchArticleContent(mPostId);
         }
+
+        mAuthPresenter = new AuthPresenter(this);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -120,6 +127,13 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        mAuthPresenter.login(new DataListener<UserInfo>() {
+
+            @Override
+            public void onComplete(UserInfo result) {
+
+            }
+        });
         switch (item.getItemId()) {
             case R.id.action_share:
                 Toast.makeText(getApplicationContext(), "share", Toast.LENGTH_SHORT).show();
@@ -132,6 +146,12 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mAuthPresenter.onActivityResult(requestCode, resultCode, data);
     }
 
 }

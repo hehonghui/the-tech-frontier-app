@@ -12,7 +12,7 @@ public class UserInfoHander implements RespHandler<UserInfo,JSONObject>{
 		UserInfo info = new UserInfo();
 		info.location = data.optString("location");
 		info.name = data.optString("name");
-		info.profile_image_url = data.optString("profile_image_url");
+		info.profileImgUrl = data.optString("profile_image_url");
 		return info;
 	}
 

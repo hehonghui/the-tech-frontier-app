@@ -28,6 +28,7 @@ import android.app.Application;
 
 import com.tech.frontier.db.DatabaseMgr;
 import com.tech.frontier.net.mgr.RequestQueueMgr;
+import com.tech.frontier.utils.LoginSession;
 
 public class TFApplication extends Application {
     @Override
@@ -37,6 +38,8 @@ public class TFApplication extends Application {
         DatabaseMgr.init(this);
         // 初始化网络请求
         RequestQueueMgr.init(this);
+        // 初始化
+        LoginSession.init(this);
     }
 
     @Override
