@@ -33,7 +33,9 @@ import com.tech.frontier.adapters.ArticleAdapter;
  */
 public class FavoriteFragment extends ArticlesFragment {
 
-    @Override
+
+
+	@Override
     protected void initAdapter() {
         mAdapter = new ArticleAdapter(mDataSet);
         mRecyclerView.setAdapter(mAdapter);

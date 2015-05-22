@@ -24,6 +24,7 @@
 
 package com.tech.frontier.listeners;
 
+
 /**
  * 通用数据Listener
  * 
@@ -32,4 +33,5 @@ package com.tech.frontier.listeners;
  */
 public interface DataListener<T> {
     public void onComplete(T result);
+
 }
