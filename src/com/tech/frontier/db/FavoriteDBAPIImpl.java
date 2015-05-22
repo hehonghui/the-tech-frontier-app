@@ -56,7 +56,28 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
 
     @Override
     public void loadFavoriteArticles(DataListener<List<Article>> listener) {
-        SQLiteDatabase database = DatabaseMgr.getDatabase();
+        if (listener != null) {
+            SQLiteDatabase database = DatabaseMgr.getDatabase();
+            // 从关系表找到所有文章的id
+            List<String> articleList = findMyFavoriteArticleIds(database);
+            // 根据文章id找到文章的详细信息
+            listener.onComplete(loadArticles(database, articleList));
+            DatabaseMgr.releaseDatabase();
+        }
+    }
+
+    private List<Article> loadArticles(SQLiteDatabase database, List<String> articleIds) {
+        List<Article> result = new ArrayList<Article>();
+        for (String post_id : articleIds) {
+            Article item = queryArticleWithId(database, post_id);
+            if (item != null) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    private List<String> findMyFavoriteArticleIds(SQLiteDatabase database) {
         String[] columns = new String[] {
                 "aid"
         };
@@ -69,32 +90,14 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
 
         List<String> articleList = queryArticlePostIds(cursor);
         cursor.close();
-
-        List<Article> result = new ArrayList<Article>();
-        for (String post_id : articleList) {
-            // cursor = database.query(DatabaseHelper.TABLE_ARTICLES, null,
-            // "post_id=?", new String[] {
-            // post_id
-            // }, null, null, null);
-            // if (cursor.moveToNext()) {
-            // result.add(queryArticle(cursor));
-            // }
-            Article item = queryArticleWithId(database, cursor, post_id);
-            if (item != null) {
-                result.add(item);
-            }
-        }
-
-        if (listener != null) {
-            listener.onComplete(result);
-        }
-        cursor.close();
+        return articleList;
     }
 
-    private Article queryArticleWithId(SQLiteDatabase database, Cursor cursor, String postId) {
-        cursor = database.query(DatabaseHelper.TABLE_ARTICLES, null, "post_id=?", new String[] {
-                postId
-        }, null, null, null);
+    private Article queryArticleWithId(SQLiteDatabase database, String postId) {
+        Cursor cursor = database.query(DatabaseHelper.TABLE_ARTICLES, null, "post_id=?",
+                new String[] {
+                    postId
+                }, null, null, null);
         if (cursor.moveToNext()) {
             return queryArticle(cursor);
         }
@@ -117,6 +120,7 @@ public class FavoriteDBAPIImpl implements FavoriteDBAPI {
         article.title = cursor.getString(2);
         article.category = cursor.getInt(3);
         article.publishTime = cursor.getString(4);
+        cursor.close();
         // 解析数据
         return article;
     }
