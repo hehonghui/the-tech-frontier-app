@@ -51,7 +51,15 @@ public abstract class RecyclerViewFragment<T> extends Fragment implements OnRefr
             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        initRefreshView(rootView);
+        initAdapter();
+        initPresenter();
+        fetchDatas();
+        mSwipeRefreshLayout.setRefreshing(true);
+        return rootView;
+    }
 
+    protected void initRefreshView(View rootView) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -61,12 +69,6 @@ public abstract class RecyclerViewFragment<T> extends Fragment implements OnRefr
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRecyclerView.setOnLoadListener(this);
-
-        initAdapter();
-        initPresenter();
-        fetchDatas();
-        mSwipeRefreshLayout.setRefreshing(true);
-        return rootView;
     }
 
     protected abstract void initPresenter();

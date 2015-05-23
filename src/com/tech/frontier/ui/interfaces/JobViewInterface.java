@@ -28,6 +28,6 @@ import com.tech.frontier.entities.Job;
 
 import java.util.List;
 
-public interface JobViewInterface extends RefreshInterface{
-    public void showJobs(List<Job> jobs);
+public interface JobViewInterface extends RefreshInterface<List<Job>> {
+    // public void showJobs(List<Job> jobs);
 }

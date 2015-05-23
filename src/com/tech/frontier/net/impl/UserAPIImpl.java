@@ -9,7 +9,6 @@ import com.tech.frontier.entities.UserInfo;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.UserAPI;
 import com.tech.frontier.net.handlers.UserInfoHander;
-import com.tech.frontier.net.mgr.RequestQueueMgr;
 import com.tech.frontier.utils.Constants;
 
 import org.json.JSONObject;
@@ -19,9 +18,11 @@ import org.json.JSONObject;
  * 
  * @author mrsimple
  */
-public class UserAPIImpl implements UserAPI {
+public class UserAPIImpl extends AbsNetwork<UserInfo, JSONObject> implements UserAPI {
 
-    UserInfoHander mHander = new UserInfoHander();
+    public UserAPIImpl() {
+        mRespHandler = new UserInfoHander();
+    }
 
     @Override
     public void fetchUserInfo(String uid, String token, final DataListener<UserInfo> listener) {
@@ -31,7 +32,7 @@ public class UserAPIImpl implements UserAPI {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (listener != null) {
-                            listener.onComplete(mHander.parse(response));
+                            listener.onComplete(mRespHandler.parse(response));
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -41,7 +42,7 @@ public class UserAPIImpl implements UserAPI {
                     }
                 });
 
-        RequestQueueMgr.getRequestQueue().add(request);
+        performRequest(request);
     }
 
 }

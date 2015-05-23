@@ -24,10 +24,21 @@
 
 package com.tech.frontier.ui.interfaces;
 
-public interface RefreshInterface {
+import com.android.volley.VolleyError;
+
+/**
+ * 可进行网络刷新的接口
+ * 
+ * @author mrsimple
+ * @param <T>
+ */
+public interface RefreshInterface<T> {
+
+    public void fetchedData(T result);
+
     public void showLoading();
 
     public void hideLoading();
 
-    public void onError();
+    public void onError(VolleyError error);
 }

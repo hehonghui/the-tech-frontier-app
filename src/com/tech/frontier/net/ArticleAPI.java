@@ -24,6 +24,7 @@
 
 package com.tech.frontier.net;
 
+import com.android.volley.Response.ErrorListener;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
 
@@ -35,9 +36,30 @@ import java.util.List;
  * @author mrsimple
  */
 public interface ArticleAPI {
-    public void fetchArticles(int category, DataListener<List<Article>> listener);
+    /**
+     * 根据分类获取文章
+     * 
+     * @param category 文章分类,2代表Android, 3代表iOS，其他数值为获取所有文章
+     * @param listener 监听器
+     */
+    public void fetchArticles(int category, DataListener<List<Article>> listener,
+            ErrorListener errorListener);
 
-    public void fetchArticleContent(String post_id, DataListener<String> listener);
+    /**
+     * 获取某篇文章的内容
+     * 
+     * @param post_id 文章id
+     * @param listener
+     */
+    public void fetchArticleContent(String post_id, DataListener<String> listener,
+            ErrorListener errorListener);
 
-    public void loadMore(int category, DataListener<List<Article>> listener);
+    /**
+     * 加载更多文章
+     * 
+     * @param category 分类
+     * @param listener
+     */
+    public void loadMore(int category, DataListener<List<Article>> listener,
+            ErrorListener errorListener);
 }

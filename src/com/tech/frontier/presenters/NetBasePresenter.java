@@ -22,25 +22,23 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.presenters;
 
-import com.tech.frontier.db.helper.DatabaseHelper;
-import com.tech.frontier.entities.ArticleDetail;
-import com.tech.frontier.listeners.DataListener;
+import com.android.volley.Response.ErrorListener;
+import com.tech.frontier.ui.interfaces.RefreshInterface;
 
 /**
- * 操作文章内容相关的数据库API
+ * 含有网络加载的Presenter
  * 
  * @author mrsimple
+ * @param <T> 视图接口的类型
  */
-public abstract class ArticleContentDBAPI extends AbsDBAPI<ArticleDetail> {
-    public ArticleContentDBAPI() {
-        super(DatabaseHelper.TABLE_ARTICLE_CONTENT);
-    }
+public abstract class NetBasePresenter<T extends RefreshInterface<?>> {
+    protected T mView;
 
-    /**
-     * @param postId
-     * @param html
-     */
-    public abstract void fetchArticleContent(String postId, DataListener<ArticleDetail> listener);
+    ErrorListener mErrorListener = new ErrorListener() {
+        public void onErrorResponse(com.android.volley.VolleyError error) {
+            mView.onError(error);
+        };
+    };
 }

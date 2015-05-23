@@ -24,6 +24,7 @@
 
 package com.tech.frontier.net;
 
+import com.android.volley.Response.ErrorListener;
 import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
 
@@ -35,5 +36,10 @@ import java.util.List;
  * @author mrsimple
  */
 public interface JobAPI {
-    public void fetchJobs(DataListener<List<Job>> listener);
+    /**
+     * 获取最新的招聘信息
+     * 
+     * @param listener
+     */
+    public void fetchJobs(DataListener<List<Job>> listener, ErrorListener errorListener);
 }

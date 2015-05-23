@@ -25,9 +25,10 @@
 package com.tech.frontier.entities;
 
 public class Job {
-    public int type ;
+    public int type;
     public String company;
     public String job;
     public String desc;
     public String email;
+    public String url;
 }

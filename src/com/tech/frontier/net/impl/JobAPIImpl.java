@@ -24,13 +24,13 @@
 
 package com.tech.frontier.net.impl;
 
+import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.JobAPI;
 import com.tech.frontier.net.handlers.JobHander;
-import com.tech.frontier.net.mgr.RequestQueueMgr;
 
 import org.json.JSONArray;
 
@@ -38,14 +38,16 @@ import java.util.List;
 
 /**
  * 招聘信息相关的网络API实现类
+ * 
  * @author mrsimple
- *
  */
-public class JobAPIImpl implements JobAPI {
+public class JobAPIImpl extends AbsNetwork<List<Job>, JSONArray> implements JobAPI {
 
-    JobHander mHandler = new JobHander();
+    public JobAPIImpl() {
+        mRespHandler = new JobHander();
+    }
 
-    private void performRequest(final DataListener<List<Job>> listener) {
+    private void performRequest(final DataListener<List<Job>> listener,  ErrorListener errorListener) {
         JsonArrayRequest request = new JsonArrayRequest(
                 "http://www.devtf.cn/api/v1/?type=jobs",
                 new Listener<JSONArray>() {
@@ -54,16 +56,16 @@ public class JobAPIImpl implements JobAPI {
                     public void onResponse(JSONArray jsonArray) {
                         if (listener != null) {
                             // 解析结果
-                            listener.onComplete(mHandler.parse(jsonArray));
+                            listener.onComplete(mRespHandler.parse(jsonArray));
                         }
                     }
                 }, null);
-        RequestQueueMgr.getRequestQueue().add(request);
+        performRequest(request);
     }
 
     @Override
-    public void fetchJobs(DataListener<List<Job>> listener) {
-        performRequest(listener);
+    public void fetchJobs(DataListener<List<Job>> listener, ErrorListener errorListener) {
+        performRequest(listener, errorListener);
     }
 
 }

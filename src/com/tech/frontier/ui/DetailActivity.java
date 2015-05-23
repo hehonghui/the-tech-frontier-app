@@ -37,16 +37,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.android.volley.VolleyError;
 import com.tech.frontier.R;
-import com.tech.frontier.entities.Article;
 import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.presenters.ArticleDetailPresenter;
 import com.tech.frontier.presenters.FavoritePresenter;
 import com.tech.frontier.presenters.SharePresenter;
 import com.tech.frontier.ui.interfaces.ArticleDetailView;
 import com.tech.frontier.utils.HtmlTemplate;
-
-import java.util.List;
 
 /**
  * 文章阅读页面,使用WebView加载文章。
@@ -121,10 +119,9 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     }
 
     @Override
-    public void showArticleContent(ArticleDetail html) {
-        mWebView.loadDataWithBaseURL("", HtmlTemplate.wrap(mTitle, html.content), "text/html",
-                "utf8",
-                "404");
+    public void fetchedData(ArticleDetail result) {
+        mWebView.loadDataWithBaseURL("", HtmlTemplate.wrap(mTitle, result.content),
+                "text/html", "utf8", "404");
     }
 
     @Override
@@ -178,11 +175,6 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     }
 
     @Override
-    public void showArticles(List<Article> articles) {
-
-    }
-
-    @Override
     public void showLoading() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
@@ -193,7 +185,7 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
     }
 
     @Override
-    public void onError() {
+    public void onError(VolleyError error) {
         hideLoading();
     }
 }

@@ -35,5 +35,10 @@ import java.util.List;
  * @author mrsimple
  */
 public interface RecomendAPI {
+    /**
+     * 获取推荐列表
+     * 
+     * @param listener
+     */
     public void fetchRecomends(DataListener<List<Recommend>> listener);
 }

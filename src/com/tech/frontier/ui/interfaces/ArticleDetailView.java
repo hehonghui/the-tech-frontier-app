@@ -26,8 +26,8 @@ package com.tech.frontier.ui.interfaces;
 
 import com.tech.frontier.entities.ArticleDetail;
 
-public interface ArticleDetailView extends ArticleViewInterface {
-    public void showArticleContent(ArticleDetail html);
+public interface ArticleDetailView extends RefreshInterface<ArticleDetail> {
+//    public void showArticleContent(ArticleDetail html);
 
     public void isFavorited(boolean isFav);
 }

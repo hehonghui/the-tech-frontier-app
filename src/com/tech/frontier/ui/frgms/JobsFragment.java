@@ -24,6 +24,7 @@
 
 package com.tech.frontier.ui.frgms;
 
+import com.android.volley.VolleyError;
 import com.tech.frontier.adapters.JobAdapter;
 import com.tech.frontier.entities.Job;
 import com.tech.frontier.presenters.JobPresenter;
@@ -68,9 +69,9 @@ public class JobsFragment extends RecyclerViewFragment<Job> implements JobViewIn
     }
 
     @Override
-    public void showJobs(List<Job> jobs) {
+    public void fetchedData(List<Job> result) {
         mDataSet.clear();
-        mDataSet.addAll(jobs);
+        mDataSet.addAll(result);
         mAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
         mRecyclerView.setLoading(false);
@@ -87,7 +88,7 @@ public class JobsFragment extends RecyclerViewFragment<Job> implements JobViewIn
     }
 
     @Override
-    public void onError() {
+    public void onError(VolleyError error) {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 

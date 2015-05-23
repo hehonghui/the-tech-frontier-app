@@ -30,7 +30,6 @@ import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.RecomendAPI;
 import com.tech.frontier.net.handlers.RecommendHandler;
-import com.tech.frontier.net.mgr.RequestQueueMgr;
 
 import org.json.JSONArray;
 
@@ -41,9 +40,11 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class RecomendAPIImpl implements RecomendAPI {
+public class RecomendAPIImpl extends AbsNetwork<List<Recommend>, JSONArray> implements RecomendAPI {
 
-    RecommendHandler mHandler = new RecommendHandler();
+    public RecomendAPIImpl() {
+        mRespHandler = new RecommendHandler();
+    }
 
     @Override
     public void fetchRecomends(final DataListener<List<Recommend>> listener) {
@@ -55,11 +56,11 @@ public class RecomendAPIImpl implements RecomendAPI {
                     public void onResponse(JSONArray jsonArray) {
                         if (listener != null) {
                             // 解析结果
-                            listener.onComplete(mHandler.parse(jsonArray));
+                            listener.onComplete(mRespHandler.parse(jsonArray));
                         }
                     }
                 }, null);
-        RequestQueueMgr.getRequestQueue().add(request);
+        performRequest(request);
     }
 
 }

@@ -28,6 +28,6 @@ import com.tech.frontier.entities.Article;
 
 import java.util.List;
 
-public interface ArticleViewInterface extends RefreshInterface {
-    public void showArticles(List<Article> articles);
+public interface ArticleViewInterface extends RefreshInterface<List<Article>> {
+    // public void showArticles(List<Article> articles);
 }

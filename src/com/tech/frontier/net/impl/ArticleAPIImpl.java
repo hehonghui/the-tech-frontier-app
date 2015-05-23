@@ -24,6 +24,7 @@
 
 package com.tech.frontier.net.impl;
 
+import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -42,25 +43,30 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticleAPIImpl implements ArticleAPI {
+public class ArticleAPIImpl extends AbsNetwork<List<Article>, JSONArray> implements ArticleAPI {
 
     private int mPage = 1;
-    ArticlesHandler mJsonHandler = new ArticlesHandler();
 
-    @Override
-    public void fetchArticles(int category, final DataListener<List<Article>> listener) {
-        performRequest(1, category, listener);
+    public ArticleAPIImpl() {
+        mRespHandler = new ArticlesHandler();
     }
 
     @Override
-    public void loadMore(int category, DataListener<List<Article>> listener) {
-        performRequest(++mPage, category, listener);
+    public void fetchArticles(int category, final DataListener<List<Article>> listener,
+            ErrorListener errorListener) {
+        performRequest(1, category, listener, errorListener);
+    }
+
+    @Override
+    public void loadMore(int category, DataListener<List<Article>> listener,
+            ErrorListener errorListener) {
+        performRequest(++mPage, category, listener, errorListener);
     }
 
     // TODO : 网络请求的错误处理,Presenter
 
     private void performRequest(final int page, int category,
-            final DataListener<List<Article>> listener) {
+            final DataListener<List<Article>> listener, ErrorListener errorListener) {
         JsonArrayRequest request = new JsonArrayRequest(
                 "http://www.devtf.cn/api/v1/?type=articles&page=" + mPage + "&count=20&categoty="
                         + category,
@@ -70,15 +76,16 @@ public class ArticleAPIImpl implements ArticleAPI {
                     public void onResponse(JSONArray jsonArray) {
                         if (listener != null) {
                             // 解析结果
-                            listener.onComplete(mJsonHandler.parse(jsonArray));
+                            listener.onComplete(mRespHandler.parse(jsonArray));
                         }
                     }
-                }, null);
+                }, errorListener);
         RequestQueueMgr.getRequestQueue().add(request);
     }
 
     @Override
-    public void fetchArticleContent(String post_id, final DataListener<String> listener) {
+    public void fetchArticleContent(String post_id, final DataListener<String> listener,
+            ErrorListener errorListener) {
         StringRequest request = new StringRequest(
                 "http://www.devtf.cn/api/v1/?type=article&post_id=" + post_id,
                 new Listener<String>() {
@@ -88,7 +95,7 @@ public class ArticleAPIImpl implements ArticleAPI {
                         listener.onComplete(html);
                     }
 
-                }, null);
-        RequestQueueMgr.getRequestQueue().add(request);
+                }, errorListener);
+        performRequest(request);
     }
 }

@@ -47,7 +47,7 @@ public class FavoritePresenter {
 
             @Override
             public void onComplete(List<Article> result) {
-                mViewInterface.showArticles(result);
+                mViewInterface.fetchedData(result);
             }
         });
     }

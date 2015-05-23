@@ -34,13 +34,12 @@ import com.tech.frontier.ui.interfaces.JobViewInterface;
 
 import java.util.List;
 
-public class JobPresenter {
+public class JobPresenter extends NetBasePresenter<JobViewInterface> {
     JobAPI jobAPI = new JobAPIImpl();
-    JobViewInterface mJobView;
     AbsDBAPI<Job> mDatabaseAPI = DbFactory.createJobDBAPI();
 
     public JobPresenter(JobViewInterface jobViewInterface) {
-        mJobView = jobViewInterface;
+        mView = jobViewInterface;
     }
 
     public void fetchJobs() {
@@ -48,16 +47,16 @@ public class JobPresenter {
 
             @Override
             public void onComplete(List<Job> result) {
-                mJobView.showJobs(result);
+                mView.fetchedData(result);
                 // 从网络上获取最新的数据
                 jobAPI.fetchJobs(new DataListener<List<Job>>() {
 
                     @Override
                     public void onComplete(List<Job> result) {
-                        mJobView.showJobs(result);
+                        mView.fetchedData(result);
                         mDatabaseAPI.saveItems(result);
                     }
-                });
+                }, mErrorListener);
             }
         });
 

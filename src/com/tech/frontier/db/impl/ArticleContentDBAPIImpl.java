@@ -49,7 +49,7 @@ class ArticleContentDBAPIImpl extends ArticleContentDBAPI {
     }
 
     @Override
-    public void loadArticleContent(final String postId, final DataListener<ArticleDetail> listener) {
+    public void fetchArticleContent(final String postId, final DataListener<ArticleDetail> listener) {
         sDbExecutor.execute(new Command<ArticleDetail>(listener) {
             @Override
             protected ArticleDetail doInBackground(SQLiteDatabase database) {

@@ -27,7 +27,6 @@ package com.tech.frontier.presenters;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.tech.frontier.db.ArticleContentDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
@@ -46,8 +45,7 @@ import com.tech.frontier.utils.LoginSession;
  * 
  * @author mrsimple
  */
-public class ArticleDetailPresenter {
-    ArticleDetailView mArticleView;
+public class ArticleDetailPresenter extends NetBasePresenter<ArticleDetailView> {
     // 从网络上获取文章的Api
     ArticleAPI mArticleApi = new ArticleAPIImpl();
     /**
@@ -62,33 +60,40 @@ public class ArticleDetailPresenter {
     AuthPresenter mAuthPresenter;
 
     public ArticleDetailPresenter(ArticleDetailView view) {
-        mArticleView = view;
+        mView = view;
     }
 
-    public void fetchArticleContent(final String post_id) {
-        mArticleDBAPI.loadArticleContent(post_id, new DataListener<ArticleDetail>() {
+    /**
+     * 获取某篇文章的内容,先从数据库获取,如果数据库没有缓存则从网络上获取
+     * 
+     * @param post_id
+     */
+    public void fetchArticleContent(final String postId) {
+        mArticleDBAPI.fetchArticleContent(postId, new DataListener<ArticleDetail>() {
 
             @Override
             public void onComplete(ArticleDetail result) {
                 // 数据库中没有则通过网络获取
                 if (TextUtils.isEmpty(result.content)) {
-                    Log.e("", "### 没有文章缓存");
-                    mArticleApi.fetchArticleContent(post_id, new DataListener<String>() {
-
-                        @Override
-                        public void onComplete(String result) {
-                            ArticleDetail articleDetail = new ArticleDetail(post_id, result);
-                            mArticleView.showArticleContent(articleDetail);
-                            // 存储文章到数据库中
-                            mArticleDBAPI.saveItem(articleDetail);
-                        }
-                    });
+                    fetchFromNetwork(postId);
                 } else {
-                    Log.e("", "### 含有文章缓存");
-                    mArticleView.showArticleContent(result);
+                    mView.fetchedData(result);
                 }
             }
         });
+    }
+
+    private void fetchFromNetwork(final String postId) {
+        mArticleApi.fetchArticleContent(postId, new DataListener<String>() {
+
+            @Override
+            public void onComplete(String result) {
+                ArticleDetail articleDetail = new ArticleDetail(postId, result);
+                mView.fetchedData(articleDetail);
+                // 存储文章到数据库中
+                mArticleDBAPI.saveItem(articleDetail);
+            }
+        }, mErrorListener);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -97,6 +102,13 @@ public class ArticleDetailPresenter {
         }
     }
 
+    /**
+     * 收藏某篇文章
+     * 
+     * @param activity
+     * @param postId
+     * @param isFav
+     */
     public void favorite(Activity activity, final String postId, boolean isFav) {
         final Article article = new Article(postId);
         LoginSession loginSession = LoginSession.getLoginSession();
@@ -123,7 +135,7 @@ public class ArticleDetailPresenter {
 
             @Override
             public void onComplete(Boolean result) {
-                mArticleView.isFavorited(result);
+                mView.isFavorited(result);
             }
         });
     }

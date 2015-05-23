@@ -45,9 +45,7 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticlePresenter {
-    // View的接口,被Presenter调用，用于像View传递数据,代表了View角色
-    ArticleViewInterface mArticleView;
+public class ArticlePresenter extends NetBasePresenter<ArticleViewInterface> {
     // 文章数据的Model,也就是Model角色
     AbsDBAPI<Article> mArticleModel = DbFactory.createArticleDBAPI();
     // 从网络上获取文章的Api
@@ -63,26 +61,26 @@ public class ArticlePresenter {
     private boolean isNoMoreArticles = false;
 
     public ArticlePresenter(ArticleViewInterface viewInterface) {
-        mArticleView = viewInterface;
+        mView = viewInterface;
     }
 
     // 获取文章
     public void fetchArticles(int category) {
-        mArticleView.showLoading();
+        mView.showLoading();
         mArticleApi.fetchArticles(category, new DataListener<List<Article>>() {
 
             @Override
             public void onComplete(List<Article> result) {
                 fetchDataFinished(result);
             }
-        });
+        }, mErrorListener);
     }
 
     public void loadModeArticles(int category) {
         if (isNoMoreArticles) {
             return;
         }
-        mArticleView.showLoading();
+        mView.showLoading();
         mArticleApi.loadMore(category, new DataListener<List<Article>>() {
 
             @Override
@@ -92,7 +90,7 @@ public class ArticlePresenter {
                     isNoMoreArticles = true;
                 }
             }
-        });
+        }, mErrorListener);
     }
 
     private void fetchDataFinished(List<Article> result) {
@@ -102,8 +100,8 @@ public class ArticlePresenter {
         mArticles.addAll(result);
         // 排序
         sortArticles(mArticles);
-        mArticleView.showArticles(mArticles);
-        mArticleView.hideLoading();
+        mView.fetchedData(mArticles);
+        mView.hideLoading();
         // 存储到数据库
         mArticleModel.saveItems(result);
     }
@@ -117,7 +115,7 @@ public class ArticlePresenter {
 
             @Override
             public void onComplete(List<Article> result) {
-                mArticleView.showArticles(result);
+                mView.fetchedData(result);
             }
         });
     }
@@ -132,7 +130,6 @@ public class ArticlePresenter {
         @Override
         public int compare(Article lhs, Article rhs) {
             try {
-
                 long lTime = df.parse(lhs.publishTime).getTime();
                 long rTime = df.parse(rhs.publishTime).getTime();
                 return (int) Math.abs(lTime - rTime);

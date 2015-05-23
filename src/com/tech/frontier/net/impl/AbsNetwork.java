@@ -22,25 +22,24 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.net.impl;
 
-import com.tech.frontier.db.helper.DatabaseHelper;
-import com.tech.frontier.entities.ArticleDetail;
-import com.tech.frontier.listeners.DataListener;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.tech.frontier.net.handlers.RespHandler;
+import com.tech.frontier.net.mgr.RequestQueueMgr;
 
-/**
- * 操作文章内容相关的数据库API
- * 
- * @author mrsimple
- */
-public abstract class ArticleContentDBAPI extends AbsDBAPI<ArticleDetail> {
-    public ArticleContentDBAPI() {
-        super(DatabaseHelper.TABLE_ARTICLE_CONTENT);
-    }
+public abstract class AbsNetwork<T, D> {
+    static RequestQueue sRequestQueue = RequestQueueMgr.getRequestQueue();
+
+    RespHandler<T, D> mRespHandler;
 
     /**
-     * @param postId
-     * @param html
+     * 执行网络请求
+     * 
+     * @param request
      */
-    public abstract void fetchArticleContent(String postId, DataListener<ArticleDetail> listener);
+    protected void performRequest(Request<?> request) {
+        sRequestQueue.add(request);
+    }
 }

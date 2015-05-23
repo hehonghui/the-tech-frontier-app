@@ -61,4 +61,9 @@ public class FavoriteFragment extends ArticlesFragment {
         mFavoritePresenter.loadFavorites();
     }
 
+    @Override
+    public void onRefresh() {
+        hideLoading();
+    }
+
 }

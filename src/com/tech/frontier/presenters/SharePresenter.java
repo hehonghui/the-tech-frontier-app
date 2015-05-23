@@ -51,6 +51,8 @@ public class SharePresenter implements Response {
     }
 
     /**
+     * 分享文章到新浪微博
+     * 
      * @param title
      * @param url
      */

@@ -26,6 +26,7 @@ package com.tech.frontier.ui.frgms;
 
 import android.content.Intent;
 
+import com.android.volley.VolleyError;
 import com.tech.frontier.adapters.ArticleAdapter;
 import com.tech.frontier.adapters.ArticleWithHeaderAdapter;
 import com.tech.frontier.entities.Article;
@@ -51,7 +52,6 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
     @Override
     protected void initAdapter() {
-
         mAdapter = new ArticleWithHeaderAdapter(mDataSet);
         mAdapter.setOnItemClickListener(new OnItemClickListener<Article>() {
 
@@ -74,9 +74,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
     @Override
     protected void initPresenter() {
-
         mPresenter = new ArticlePresenter(this);
-
         mPresenter.loadArticlesFromDB();
 
     }
@@ -106,8 +104,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     }
 
     @Override
-    public void showArticles(List<Article> result) {
-
+    public void fetchedData(List<Article> result) {
         mDataSet.clear();
         mDataSet.addAll(result);
         filterArticleByCategory();
@@ -151,7 +148,7 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
     }
 
     @Override
-    public void onError() {
+    public void onError(VolleyError error) {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 }
