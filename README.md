@@ -37,39 +37,12 @@
 * [picasso](https://github.com/square/picasso)
 * [android-auto-scroll-view-pager](https://github.com/Trinea/android-auto-scroll-view-pager)
 
-
 ## 第三方SDK接入
 
 * 新浪微博SDK;
 
-## 服务端接口说明 
-
-### 获取文章概要信息列表
-http://www.devtf.cn/articles.php?page=0&count=30&category=2
-
-参数说明 :       
-page : 用于数据分页( 加载更多 )，0代表第一页；     
-count : 请求返回的数据量;     
-category : 数据分类，2为android,3为iOS。    
-
-### 获取文章内容
-http://www.devtf.cn/article_content.php?post_id=499
-
-参数说明 :     
-post_id : 文章的唯一id;
-
-
-## 未处理的问题
-
-1. 文章的数据库存储;
-2. 未添加列表头部的自动滚动广告条;如图![](./document/images/autoslider.jpg)
-3. 第三方登录;
-4. 分享到微博;
-5. html页面只截取文章内容;
-6. 招聘信息使用List的原生展示方式,服务器端需要添加数据库、API接口与管理页面;
-
 ## 界面版式图
 
-| ![](document/images/material.png) | ![](document/images/material-menu.png) |
-|--------|--------|
-| 主界面 | 菜单界面 |
+| ![](document/images/pic-1.jpg) | ![](document/images/pic-2.jpg) | ![](document/images/pic-3.jpg) |
+|--------|--------|--------|
+| 主界面 | 菜单界面 | 文章阅读界面 |
