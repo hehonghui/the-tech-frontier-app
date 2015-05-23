@@ -13,9 +13,10 @@
         android:id="@+id/recommend_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="2dp"
-        android:padding="1dp" />
+        android:paddingLeft="3dp"
+        android:paddingStart="3dp"
+        android:layout_margin="2dp" />
 
 </RelativeLayout>
