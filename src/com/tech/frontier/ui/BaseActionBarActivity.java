@@ -34,6 +34,7 @@ import android.view.View.OnClickListener;
 
 import com.tech.frontier.R;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 public class BaseActionBarActivity extends ActionBarActivity {
     protected Toolbar mToolbar;
@@ -45,6 +46,7 @@ public class BaseActionBarActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
         MobclickAgent.onResume(this);
+        UmengUpdateAgent.update(this);
     }
 
     @Override
