@@ -54,6 +54,7 @@ class JobsDBAPIImpl extends AbsDBAPI<Job> {
             item.job = cursor.getString(1);
             item.desc = cursor.getString(2);
             item.email = cursor.getString(3);
+            item.url = cursor.getString(4);
             // 解析数据
             jobs.add(item);
         }
@@ -71,6 +72,7 @@ class JobsDBAPIImpl extends AbsDBAPI<Job> {
         newValues.put("job", item.job);
         newValues.put("job_desc", item.desc);
         newValues.put("email", item.email);
+        newValues.put("url", item.url);
         return newValues;
     }
 

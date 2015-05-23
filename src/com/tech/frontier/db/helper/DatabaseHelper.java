@@ -51,7 +51,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE " + TABLE_ARTICLES);
+        db.execSQL("DROP TABLE " + TABLE_ARTICLE_CONTENT);
+        db.execSQL("DROP TABLE " + TABLE_FAVORITES);
+        db.execSQL("DROP TABLE " + TABLE_JOBS);
+        db.execSQL("DROP TABLE " + TABLE_RECOMMENDS);
+        onCreate(db);
     }
 
     public static final String TABLE_ARTICLES = "articles";
@@ -82,7 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + " company varchar(30) NOT NULL, "
             + " job varchar(30) NOT NULL, "
             + " job_desc varchar(50), "
-            + " email varchar(30) NOT NULL, UNIQUE(company,job)"
+            + " email varchar(30) NOT NULL,"
+            + " url varchar(100) NOT NULL,"
+            + "UNIQUE(company,job)"
             + " )";
 
     private final static String CREATE_RECOMMENDS_TABLE_SQL = "CREATE TABLE recommends (  "

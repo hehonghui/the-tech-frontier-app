@@ -46,6 +46,7 @@ public class JobHander implements RespHandler<List<Job>, JSONArray> {
             jobItem.job = jsonObject.optString("job");
             jobItem.desc = jsonObject.optString("job_desc");
             jobItem.email = jsonObject.optString("email");
+            jobItem.url = jsonObject.optString("url");
             // 
             jobs.add(jobItem);
         }
