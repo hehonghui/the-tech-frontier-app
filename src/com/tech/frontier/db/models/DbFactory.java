@@ -22,33 +22,38 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.presenters;
+package com.tech.frontier.db.models;
 
+import com.tech.frontier.db.AbsDBAPI;
+import com.tech.frontier.db.ArticleDetailDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
-import com.tech.frontier.db.models.DbFactory;
 import com.tech.frontier.entities.Article;
-import com.tech.frontier.listeners.DataListener;
-import com.tech.frontier.ui.interfaces.ArticleViewInterface;
+import com.tech.frontier.entities.Job;
+import com.tech.frontier.entities.Recommend;
 
-import java.util.List;
-
-public class FavoritePresenter {
-
-    ArticleViewInterface mViewInterface;
-
-    FavoriteDBAPI mFavoriteDBAPI = DbFactory.createFavoriteModel();
-
-    public FavoritePresenter(ArticleViewInterface viewInterface) {
-        mViewInterface = viewInterface;
+/**
+ * 数据库API工厂类
+ * 
+ * @author mrsimple
+ */
+public class DbFactory {
+    public static AbsDBAPI<Article> createArticleModel() {
+        return new ArticleModel();
     }
 
-    public void loadFavorites() {
-        mFavoriteDBAPI.loadDatasFromDB(new DataListener<List<Article>>() {
+    public static ArticleDetailDBAPI createArticleDetailModel() {
+        return new ArticleDetailModel();
+    }
 
-            @Override
-            public void onComplete(List<Article> result) {
-                mViewInterface.fetchedData(result);
-            }
-        });
+    public static AbsDBAPI<Job> createJobModel() {
+        return new JobsModel();
+    }
+
+    public static AbsDBAPI<Recommend> createRecommendModel() {
+        return new RecommendModel();
+    }
+
+    public static FavoriteDBAPI createFavoriteModel() {
+        return new FavoriteModel();
     }
 }

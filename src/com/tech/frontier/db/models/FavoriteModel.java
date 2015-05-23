@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.impl;
+package com.tech.frontier.db.models;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -44,7 +44,7 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-class FavoriteDBAPIImpl extends FavoriteDBAPI {
+class FavoriteModel extends FavoriteDBAPI {
 
     @Override
     protected ContentValues toContentValues(Article article) {

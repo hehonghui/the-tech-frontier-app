@@ -22,38 +22,25 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.impl;
+package com.tech.frontier.db;
 
-import com.tech.frontier.db.AbsDBAPI;
-import com.tech.frontier.db.ArticleContentDBAPI;
-import com.tech.frontier.db.FavoriteDBAPI;
-import com.tech.frontier.entities.Article;
-import com.tech.frontier.entities.Job;
-import com.tech.frontier.entities.Recommend;
+import com.tech.frontier.db.helper.DatabaseHelper;
+import com.tech.frontier.entities.ArticleDetail;
+import com.tech.frontier.listeners.DataListener;
 
 /**
- * 数据库API工厂类
+ * 操作文章内容相关的数据库API
  * 
  * @author mrsimple
  */
-public class DbFactory {
-    public static AbsDBAPI<Article> createArticleDBAPI() {
-        return new ArticleDBAPIImpl();
+public abstract class ArticleDetailDBAPI extends AbsDBAPI<ArticleDetail> {
+    public ArticleDetailDBAPI() {
+        super(DatabaseHelper.TABLE_ARTICLE_CONTENT);
     }
 
-    public static ArticleContentDBAPI createArticleContentDBAPI() {
-        return new ArticleContentDBAPIImpl();
-    }
-
-    public static AbsDBAPI<Job> createJobDBAPI() {
-        return new JobsDBAPIImpl();
-    }
-
-    public static AbsDBAPI<Recommend> createRecommendDBAPI() {
-        return new RecommendDBAPIImpl();
-    }
-
-    public static FavoriteDBAPI createFavoriteDBAPI() {
-        return new FavoriteDBAPIImpl();
-    }
+    /**
+     * @param postId
+     * @param html
+     */
+    public abstract void fetchArticleContent(String postId, DataListener<ArticleDetail> listener);
 }

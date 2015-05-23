@@ -25,7 +25,7 @@
 package com.tech.frontier.presenters;
 
 import com.tech.frontier.db.AbsDBAPI;
-import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.db.models.DbFactory;
 import com.tech.frontier.entities.Job;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.JobAPI;
@@ -36,7 +36,7 @@ import java.util.List;
 
 public class JobPresenter extends NetBasePresenter<JobViewInterface> {
     JobAPI jobAPI = new JobAPIImpl();
-    AbsDBAPI<Job> mDatabaseAPI = DbFactory.createJobDBAPI();
+    AbsDBAPI<Job> mDatabaseAPI = DbFactory.createJobModel();
 
     public JobPresenter(JobViewInterface jobViewInterface) {
         mView = jobViewInterface;

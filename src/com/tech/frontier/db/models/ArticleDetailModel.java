@@ -22,13 +22,13 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.impl;
+package com.tech.frontier.db.models;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.tech.frontier.db.ArticleContentDBAPI;
+import com.tech.frontier.db.ArticleDetailDBAPI;
 import com.tech.frontier.db.cmd.Command;
 import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.listeners.DataListener;
@@ -38,7 +38,7 @@ import com.tech.frontier.listeners.DataListener;
  * 
  * @author mrsimple
  */
-class ArticleContentDBAPIImpl extends ArticleContentDBAPI {
+class ArticleDetailModel extends ArticleDetailDBAPI {
 
     @Override
     protected ContentValues toContentValues(ArticleDetail detail) {

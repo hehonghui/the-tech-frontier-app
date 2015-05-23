@@ -28,9 +28,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.tech.frontier.db.ArticleContentDBAPI;
+import com.tech.frontier.db.ArticleDetailDBAPI;
 import com.tech.frontier.db.FavoriteDBAPI;
-import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.db.models.DbFactory;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.entities.ArticleDetail;
 import com.tech.frontier.entities.UserInfo;
@@ -51,11 +51,11 @@ public class ArticleDetailPresenter extends NetBasePresenter<ArticleDetailView> 
     /**
      * 
      */
-    ArticleContentDBAPI mArticleDBAPI = DbFactory.createArticleContentDBAPI();
+    ArticleDetailDBAPI mArticleDBAPI = DbFactory.createArticleDetailModel();
     /**
      * 
      */
-    final FavoriteDBAPI mFavoriteDBAPI = DbFactory.createFavoriteDBAPI();
+    final FavoriteDBAPI mFavoriteDBAPI = DbFactory.createFavoriteModel();
 
     AuthPresenter mAuthPresenter;
 

@@ -29,7 +29,7 @@ import android.util.Log;
 import com.tech.frontier.adapters.ArticleWithHeaderAdapter.HeaderViewHolder;
 import com.tech.frontier.adapters.HeaderRecommendAdapter;
 import com.tech.frontier.db.AbsDBAPI;
-import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.db.models.DbFactory;
 import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.listeners.OnItemClickListener;
@@ -47,7 +47,7 @@ public class RecommendPresenter {
     /**
      * 操作推荐文章的数据库对象
      */
-    AbsDBAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendDBAPI();
+    AbsDBAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendModel();
 
     /**
      * 

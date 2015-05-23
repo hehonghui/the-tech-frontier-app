@@ -27,7 +27,7 @@ package com.tech.frontier.presenters;
 import android.annotation.SuppressLint;
 
 import com.tech.frontier.db.AbsDBAPI;
-import com.tech.frontier.db.impl.DbFactory;
+import com.tech.frontier.db.models.DbFactory;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.ArticleAPI;
@@ -47,7 +47,7 @@ import java.util.List;
  */
 public class ArticlePresenter extends NetBasePresenter<ArticleViewInterface> {
     // 文章数据的Model,也就是Model角色
-    AbsDBAPI<Article> mArticleModel = DbFactory.createArticleDBAPI();
+    AbsDBAPI<Article> mArticleModel = DbFactory.createArticleModel();
     // 从网络上获取文章的Api
     ArticleAPI mArticleApi = new ArticleAPIImpl();
     /**

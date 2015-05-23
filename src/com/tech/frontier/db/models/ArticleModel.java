@@ -22,43 +22,48 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.impl;
+package com.tech.frontier.db.models;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.helper.DatabaseHelper;
-import com.tech.frontier.entities.Job;
+import com.tech.frontier.entities.Article;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 招聘信息相关的数据库操作类
+ * 文章相关的数据库 API
  * 
  * @author mrsimple
  */
-class JobsDBAPIImpl extends AbsDBAPI<Job> {
+class ArticleModel extends AbsDBAPI<Article> {
 
-    public JobsDBAPIImpl() {
-        super(DatabaseHelper.TABLE_JOBS);
+    public ArticleModel() {
+        super(DatabaseHelper.TABLE_ARTICLES);
     }
 
     @Override
-    protected List<Job> parseResult(Cursor cursor) {
-        List<Job> jobs = new ArrayList<Job>();
+    protected String loadDatasOrderBy() {
+        return " publish_time DESC";
+    }
+
+    @Override
+    protected List<Article> parseResult(Cursor cursor) {
+        List<Article> articles = new ArrayList<Article>();
         while (cursor.moveToNext()) {
-            Job item = new Job();
-            item.company = cursor.getString(0);
-            item.job = cursor.getString(1);
-            item.desc = cursor.getString(2);
-            item.email = cursor.getString(3);
-            item.url = cursor.getString(4);
+            Article item = new Article();
+            item.post_id = cursor.getString(0);
+            item.author = cursor.getString(1);
+            item.title = cursor.getString(2);
+            item.category = cursor.getInt(3);
+            item.publishTime = cursor.getString(4);
             // 解析数据
-            jobs.add(item);
+            articles.add(item);
         }
-        return jobs;
+        return articles;
     }
 
     /**
@@ -66,14 +71,13 @@ class JobsDBAPIImpl extends AbsDBAPI<Job> {
      * @return
      */
     @Override
-    protected ContentValues toContentValues(Job item) {
+    protected ContentValues toContentValues(Article item) {
         ContentValues newValues = new ContentValues();
-        newValues.put("company", item.company);
-        newValues.put("job", item.job);
-        newValues.put("job_desc", item.desc);
-        newValues.put("email", item.email);
-        newValues.put("url", item.url);
+        newValues.put("post_id", item.post_id);
+        newValues.put("author", item.author);
+        newValues.put("title", item.title);
+        newValues.put("category", item.category);
+        newValues.put("publish_time", item.publishTime);
         return newValues;
     }
-
 }

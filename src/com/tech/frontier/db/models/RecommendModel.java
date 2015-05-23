@@ -22,25 +22,51 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db;
+package com.tech.frontier.db.models;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
+import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.helper.DatabaseHelper;
-import com.tech.frontier.entities.ArticleDetail;
-import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.entities.Recommend;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 操作文章内容相关的数据库API
- * 
  * @author mrsimple
  */
-public abstract class ArticleContentDBAPI extends AbsDBAPI<ArticleDetail> {
-    public ArticleContentDBAPI() {
-        super(DatabaseHelper.TABLE_ARTICLE_CONTENT);
+class RecommendModel extends AbsDBAPI<Recommend> {
+
+    public RecommendModel() {
+        super(DatabaseHelper.TABLE_RECOMMENDS);
+    }
+
+    @Override
+    protected List<Recommend> parseResult(Cursor cursor) {
+        List<Recommend> recommends = new ArrayList<Recommend>();
+        while (cursor.moveToNext()) {
+            String title = cursor.getString(0);
+            String url = cursor.getString(1);
+            String imgUrl = cursor.getString(2);
+            // 解析数据
+            recommends.add(new Recommend(title, url, imgUrl));
+        }
+        return recommends;
     }
 
     /**
-     * @param postId
-     * @param html
+     * @param item
+     * @return
      */
-    public abstract void fetchArticleContent(String postId, DataListener<ArticleDetail> listener);
+    @Override
+    protected ContentValues toContentValues(Recommend item) {
+        ContentValues newValues = new ContentValues();
+        newValues.put("title", item.title);
+        newValues.put("url", item.url);
+        newValues.put("img_url", item.imgUrl);
+        return newValues;
+    }
+
 }

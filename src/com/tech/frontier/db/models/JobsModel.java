@@ -22,38 +22,43 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.db.impl;
+package com.tech.frontier.db.models;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.helper.DatabaseHelper;
-import com.tech.frontier.entities.Recommend;
+import com.tech.frontier.entities.Job;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 招聘信息相关的数据库操作类
+ * 
  * @author mrsimple
  */
-class RecommendDBAPIImpl extends AbsDBAPI<Recommend> {
+class JobsModel extends AbsDBAPI<Job> {
 
-    public RecommendDBAPIImpl() {
-        super(DatabaseHelper.TABLE_RECOMMENDS);
+    public JobsModel() {
+        super(DatabaseHelper.TABLE_JOBS);
     }
 
     @Override
-    protected List<Recommend> parseResult(Cursor cursor) {
-        List<Recommend> recommends = new ArrayList<Recommend>();
+    protected List<Job> parseResult(Cursor cursor) {
+        List<Job> jobs = new ArrayList<Job>();
         while (cursor.moveToNext()) {
-            String title = cursor.getString(0);
-            String url = cursor.getString(1);
-            String imgUrl = cursor.getString(2);
+            Job item = new Job();
+            item.company = cursor.getString(0);
+            item.job = cursor.getString(1);
+            item.desc = cursor.getString(2);
+            item.email = cursor.getString(3);
+            item.url = cursor.getString(4);
             // 解析数据
-            recommends.add(new Recommend(title, url, imgUrl));
+            jobs.add(item);
         }
-        return recommends;
+        return jobs;
     }
 
     /**
@@ -61,11 +66,13 @@ class RecommendDBAPIImpl extends AbsDBAPI<Recommend> {
      * @return
      */
     @Override
-    protected ContentValues toContentValues(Recommend item) {
+    protected ContentValues toContentValues(Job item) {
         ContentValues newValues = new ContentValues();
-        newValues.put("title", item.title);
+        newValues.put("company", item.company);
+        newValues.put("job", item.job);
+        newValues.put("job_desc", item.desc);
+        newValues.put("email", item.email);
         newValues.put("url", item.url);
-        newValues.put("img_url", item.imgUrl);
         return newValues;
     }
 
