@@ -25,6 +25,10 @@
 package com.tech.frontier.presenters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,10 +38,12 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.tech.frontier.R;
 import com.tech.frontier.entities.UserInfo;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.UserAPI;
 import com.tech.frontier.net.impl.UserAPIImpl;
+import com.tech.frontier.ui.interfaces.LogoutInterface;
 import com.tech.frontier.utils.Constants;
 import com.tech.frontier.utils.LoginSession;
 
@@ -45,15 +51,22 @@ public class AuthPresenter {
     private Oauth2AccessToken mAccessToken;
     private SsoHandler mSsoHandler;
     private AuthInfo mAuthInfo;
-    UserAPI userAPI = new UserAPIImpl();
+    UserAPI mUserAPI = new UserAPIImpl();
+    LogoutInterface mLogoutInterface;
 
-    public AuthPresenter(Activity context) {
-        mAuthInfo = new AuthInfo(context, Constants.APP_KEY,
-                Constants.REDIRECT_URL, Constants.SCOPE);
-        mSsoHandler = new SsoHandler(context, mAuthInfo);
+    public AuthPresenter() {
     }
 
-    public void login(DataListener<UserInfo> listener) {
+    public AuthPresenter(LogoutInterface loginInterface) {
+        mLogoutInterface = loginInterface;
+    }
+
+    public void login(Activity activity, DataListener<UserInfo> listener) {
+        if (mSsoHandler == null) {
+            mAuthInfo = new AuthInfo(activity, Constants.APP_KEY,
+                    Constants.REDIRECT_URL, Constants.SCOPE);
+            mSsoHandler = new SsoHandler(activity, mAuthInfo);
+        }
         mSsoHandler.authorize(new AuthListener(listener));
     }
 
@@ -61,6 +74,19 @@ public class AuthPresenter {
         if (mSsoHandler != null) {
             mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
+    }
+
+    public void logout(Context context) {
+        new AlertDialog.Builder(context).setTitle(R.string.is_logout).
+                setPositiveButton(R.string.sure, new OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LoginSession.getLoginSession().clear();
+                        mLogoutInterface.logouted();
+                    }
+                }).setNegativeButton(R.string.cancel, null).create().show();
+
     }
 
     /**
@@ -84,7 +110,7 @@ public class AuthPresenter {
                 final String uid = mAccessToken.getUid();
                 final String token = mAccessToken.getToken();
                 Log.i("RESULT", mAccessToken.toString());
-                userAPI.fetchUserInfo(uid, token, new DataListener<UserInfo>() {
+                mUserAPI.fetchUserInfo(uid, token, new DataListener<UserInfo>() {
 
                     @Override
                     public void onComplete(UserInfo result) {

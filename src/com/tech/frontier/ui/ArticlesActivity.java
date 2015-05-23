@@ -16,10 +16,12 @@ import com.tech.frontier.entities.MenuItem;
 import com.tech.frontier.entities.UserInfo;
 import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.net.mgr.RequestQueueMgr;
+import com.tech.frontier.presenters.AuthPresenter;
 import com.tech.frontier.ui.frgms.AboutFragment;
 import com.tech.frontier.ui.frgms.ArticlesFragment;
 import com.tech.frontier.ui.frgms.FavoriteFragment;
 import com.tech.frontier.ui.frgms.JobsFragment;
+import com.tech.frontier.ui.interfaces.LogoutInterface;
 import com.tech.frontier.utils.LoginSession;
 import com.tech.frontier.widgets.CircleImageView;
 
@@ -31,7 +33,7 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticlesActivity extends BaseActionBarActivity {
+public class ArticlesActivity extends BaseActionBarActivity implements LogoutInterface {
 
     private DrawerLayout mDrawerLayout;
 
@@ -82,13 +84,13 @@ public class ArticlesActivity extends BaseActionBarActivity {
 
     private void setupMenuRecyclerView() {
         List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        menuItems.add(new MenuItem("全部", R.drawable.home));
-        menuItems.add(new MenuItem("Android", R.drawable.android_icon));
-        menuItems.add(new MenuItem("iOS", R.drawable.ios_icon));
-        menuItems.add(new MenuItem("招聘信息", R.drawable.hire_icon));
-        menuItems.add(new MenuItem("收藏", R.drawable.favorite));
-        menuItems.add(new MenuItem("关于", R.drawable.about));
-        menuItems.add(new MenuItem("注销", R.drawable.exit));
+        menuItems.add(new MenuItem(getString(R.string.all), R.drawable.home));
+        menuItems.add(new MenuItem(getString(R.string.android), R.drawable.android_icon));
+        menuItems.add(new MenuItem(getString(R.string.ios), R.drawable.ios_icon));
+        menuItems.add(new MenuItem(getString(R.string.jobs), R.drawable.hire_icon));
+        menuItems.add(new MenuItem(getString(R.string.favorite), R.drawable.favorite));
+        menuItems.add(new MenuItem(getString(R.string.about_menu), R.drawable.about));
+        menuItems.add(new MenuItem(getString(R.string.logout), R.drawable.exit));
         MenuAdapter menuAdapter = new MenuAdapter(menuItems);
         menuAdapter.setOnItemClickListener(new OnItemClickListener<MenuItem>() {
             @Override
@@ -137,7 +139,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
                 break;
 
             case R.drawable.exit:
-                finish();
+                new AuthPresenter(this).logout(this);
                 break;
 
             default:
@@ -167,5 +169,11 @@ public class ArticlesActivity extends BaseActionBarActivity {
                     .into(mUserImageView);
             mUserNameTv.setText(result.name);
         }
+    }
+
+    @Override
+    public void logouted() {
+        mUserImageView.setImageResource(R.drawable.user_default);
+        mUserNameTv.setText(R.string.not_login);
     }
 }

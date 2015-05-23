@@ -48,6 +48,14 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="55606aea67e58efdcf007877" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="no-channel" />
     </application>
 
 </manifest>

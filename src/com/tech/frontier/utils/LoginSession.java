@@ -38,6 +38,10 @@ public class LoginSession {
         editor.commit();
     }
 
+    public void clear() {
+        mPreferences.edit().clear().commit();
+    }
+
     public UserInfo getUserInfo() {
         UserInfo info = new UserInfo();
         info.name = mPreferences.getString("name", "");

@@ -113,8 +113,8 @@ public class ArticleDetailPresenter extends NetBasePresenter<ArticleDetailView> 
         final Article article = new Article(postId);
         LoginSession loginSession = LoginSession.getLoginSession();
         if (!loginSession.isLogined()) {
-            mAuthPresenter = new AuthPresenter(activity);
-            mAuthPresenter.login(new DataListener<UserInfo>() {
+            mAuthPresenter = new AuthPresenter();
+            mAuthPresenter.login(activity, new DataListener<UserInfo>() {
 
                 @Override
                 public void onComplete(UserInfo result) {

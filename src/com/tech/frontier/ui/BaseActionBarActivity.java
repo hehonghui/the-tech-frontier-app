@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.tech.frontier.R;
+import com.umeng.analytics.MobclickAgent;
 
 public class BaseActionBarActivity extends ActionBarActivity {
     protected Toolbar mToolbar;
@@ -43,12 +44,18 @@ public class BaseActionBarActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
-     
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     protected void setupToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("开发技术前线");
+        mToolbar.setTitle(R.string.app_name);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(new OnClickListener() {
