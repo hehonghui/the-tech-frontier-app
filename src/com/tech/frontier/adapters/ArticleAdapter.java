@@ -25,17 +25,13 @@
 package com.tech.frontier.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tech.frontier.R;
 import com.tech.frontier.entities.Article;
-import com.tech.frontier.listeners.OnItemClickListener;
 
 import java.util.List;
 
@@ -44,42 +40,23 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticleAdapter extends Adapter<ViewHolder> {
-
-    List<Article> mArticles;
-    OnItemClickListener<Article> mClickListener;
+public class ArticleAdapter extends BaseAdapter<Article, ViewHolder> {
 
     public ArticleAdapter(List<Article> dataSet) {
-        mArticles = dataSet;
+        super(dataSet);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    protected void bindDataToItemView(ViewHolder viewHolder, Article item) {
         if (viewHolder instanceof ArticleViewHolder) {
-            bindViewForArticle(viewHolder, position);
+            bindArticleToItemView((ArticleViewHolder) viewHolder, item);
         }
     }
 
-    protected void bindViewForArticle(ViewHolder viewHolder, int position) {
-        ArticleViewHolder articleViewHolder = (ArticleViewHolder) viewHolder;
-        final Article article = getItem(position);
-        articleViewHolder.titleTv.setText(article.title);
-        articleViewHolder.publishTimeTv.setText(article.publishTime);
-        articleViewHolder.authorTv.setText(article.author);
-        articleViewHolder.itemView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (mClickListener != null) {
-                    mClickListener.onClick(article);
-                }
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return mArticles.size();
+    protected void bindArticleToItemView(ArticleViewHolder viewHolder, Article item) {
+        viewHolder.titleTv.setText(item.title);
+        viewHolder.publishTimeTv.setText(item.publishTime);
+        viewHolder.authorTv.setText(item.author);
     }
 
     @Override
@@ -88,17 +65,7 @@ public class ArticleAdapter extends Adapter<ViewHolder> {
     }
 
     protected ViewHolder createArticleViewHolder(ViewGroup viewGroup) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.recyclerview_article_item, viewGroup, false);
-        return new ArticleViewHolder(itemView);
-    }
-
-    protected Article getItem(int position) {
-        return mArticles.get(position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener<Article> mClickListener) {
-        this.mClickListener = mClickListener;
+        return new ArticleViewHolder(inflateItemView(viewGroup, R.layout.recyclerview_article_item));
     }
 
     static class ArticleViewHolder extends RecyclerView.ViewHolder {

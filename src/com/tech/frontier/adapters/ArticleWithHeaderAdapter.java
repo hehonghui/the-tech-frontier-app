@@ -26,7 +26,6 @@ package com.tech.frontier.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,6 +34,7 @@ import com.tech.frontier.entities.Article;
 import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.presenters.RecommendPresenter;
+import com.tech.frontier.ui.interfaces.BaseViewInterface;
 import com.tech.frontier.widgets.AutoScrollViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -48,20 +48,33 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSliderViewInterface {
+public class ArticleWithHeaderAdapter extends ArticleAdapter
+        implements BaseViewInterface<List<Recommend>> {
 
-    private static final int HEADER_TYPE = 0;
     /**
-     * Header View里面的推荐数据列表
+     * 
      */
-    final List<Recommend> recommends = new ArrayList<Recommend>();
+    private static final int HEADER_TYPE = 0;
     /**
      * Header View中的ViewPager Adapter
      */
     HeaderRecommendAdapter mImagePagerAdapter;
 
+    /**
+     * 
+     */
+    HeaderViewHolder headerViewHolder;
+    /**
+     * 
+     */
+    final List<Recommend> mRecommends = new ArrayList<Recommend>();
+    /**
+     * 
+     */
     OnItemClickListener<Recommend> mRecommendListener;
-
+    /**
+     * 
+     */
     RecommendPresenter mPresenter = new RecommendPresenter(this);
 
     public ArticleWithHeaderAdapter(List<Article> dataSet) {
@@ -69,40 +82,36 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSlid
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    protected void bindDataToItemView(ViewHolder viewHolder, Article item) {
         if (viewHolder instanceof ArticleViewHolder) {
-            bindViewForArticle(viewHolder, position);
-        } else if (viewHolder instanceof HeaderViewHolder) {
+            bindArticleToItemView((ArticleViewHolder) viewHolder, item);
+        } else if (viewHolder instanceof HeaderViewHolder
+                && mRecommends.size() == 0) { // 获取一次数据之后不再进行重新请求
             headerViewHolder = (HeaderViewHolder) viewHolder;
             mPresenter.fetchRecomends();
-            // bindViewForHeader();
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == HEADER_TYPE) {
-            return createHeaderViewHolder(viewGroup);
+            return new HeaderViewHolder(inflateItemView(viewGroup, R.layout.auto_slider));
         }
         return createArticleViewHolder(viewGroup);
     }
 
-    private HeaderViewHolder createHeaderViewHolder(ViewGroup viewGroup) {
-        View headerView = LayoutInflater.from(
-                viewGroup.getContext()).inflate(R.layout.auto_slider, viewGroup, false);
-        return new HeaderViewHolder(headerView);
-    }
-
-    HeaderViewHolder headerViewHolder;
-
+    /*
+     * 获取到推荐文章的数据之后初始化自动滚动的ViewPager
+     * @see
+     * com.tech.frontier.ui.interfaces.BaseViewInterface#fetchedData(java.lang
+     * .Object)
+     */
     @Override
-    public void showRecommends(List<Recommend> recommends) {
-        initAutoSlider(headerViewHolder, recommends);
+    public void fetchedData(List<Recommend> result) {
+        initAutoScrollViewPager(headerViewHolder, result);
     }
 
-    final List<Recommend> mRecommends = new ArrayList<Recommend>();
-
-    private void initAutoSlider(HeaderViewHolder headerViewHolder, List<Recommend> result) {
+    private void initAutoScrollViewPager(HeaderViewHolder headerViewHolder, List<Recommend> result) {
         if (result == null || result.size() == 0) {
             return;
         }
@@ -120,7 +129,6 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSlid
                 viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2
                         % result.size());
             }
-
             viewPager.setAdapter(mImagePagerAdapter);
         } else {
             mImagePagerAdapter.notifyDataSetChanged();
@@ -129,7 +137,7 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSlid
         headerViewHolder.mIndicator.setViewPager(viewPager);
     }
 
-    public void setRecommendListener(OnItemClickListener<Recommend> mRecommendListener) {
+    public void setRecommendClickListener(OnItemClickListener<Recommend> mRecommendListener) {
         this.mRecommendListener = mRecommendListener;
     }
 
@@ -139,13 +147,14 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSlid
      */
     @Override
     public int getItemCount() {
-        return mArticles == null ? 1 : mArticles.size() + 1;
+        return mDataSet == null ? 1 : mDataSet.size() + 1;
     }
 
     @Override
     protected Article getItem(int position) {
         // 因为第一个添加了一个Header,因此数据索引要减去1
-        return mArticles.get(position - 1);
+        int itemIndex = position - 1;
+        return itemIndex >= 0 ? mDataSet.get(itemIndex) : null;
     }
 
     @Override
@@ -156,6 +165,11 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter implements AutoSlid
         return 1;
     }
 
+    /**
+     * 顶部的自动滚动ViewPager的ViewHolder
+     * 
+     * @author mrsimple
+     */
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
         AutoScrollViewPager autoScrollViewPager;
         CirclePageIndicator mIndicator;

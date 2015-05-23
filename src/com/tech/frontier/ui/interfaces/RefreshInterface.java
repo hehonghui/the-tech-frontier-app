@@ -32,9 +32,7 @@ import com.android.volley.VolleyError;
  * @author mrsimple
  * @param <T>
  */
-public interface RefreshInterface<T> {
-
-    public void fetchedData(T result);
+public interface RefreshInterface<T> extends BaseViewInterface<T> {
 
     public void showLoading();
 

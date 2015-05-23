@@ -69,7 +69,7 @@ public class JobsFragment extends RecyclerViewFragment<Job> implements JobViewIn
     @Override
     protected void initAdapter() {
         mAdapter = new JobAdapter(mDataSet);
-        mAdapter.setItemClickListener(new OnItemClickListener<Job>() {
+        mAdapter.setOnItemClickListener(new OnItemClickListener<Job>() {
 
             @Override
             public void onClick(Job item) {

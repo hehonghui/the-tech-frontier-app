@@ -24,18 +24,14 @@
 
 package com.tech.frontier.adapters;
 
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.JobAdapter.JobViewHolder;
 import com.tech.frontier.entities.Job;
-import com.tech.frontier.listeners.OnItemClickListener;
 
 import java.util.List;
 
@@ -44,47 +40,23 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class JobAdapter extends Adapter<JobViewHolder> {
-
-    List<Job> mJobs;
-    OnItemClickListener<Job> mItemClickListener;
+public class JobAdapter extends BaseAdapter<Job, JobViewHolder> {
 
     public JobAdapter(List<Job> dataSet) {
-        mJobs = dataSet;
+        super(dataSet);
     }
 
     @Override
-    public int getItemCount() {
-        return mJobs.size();
-    }
-
-    @Override
-    public void onBindViewHolder(JobViewHolder viewHolder,final int position) {
-        Job jobItem = mJobs.get(position);
-        viewHolder.companyTextView.setText(jobItem.company);
-        viewHolder.jobTextView.setText(jobItem.job);
-        viewHolder.jobDescTextView.setText(jobItem.desc);
-        viewHolder.emailTextView.setText(jobItem.email);
-        viewHolder.itemView.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                if ( mItemClickListener != null ) {
-                    mItemClickListener.onClick(mJobs.get(position));
-                }
-            }
-        });
+    protected void bindDataToItemView(JobViewHolder viewHolder, Job item) {
+        viewHolder.companyTextView.setText(item.company);
+        viewHolder.jobTextView.setText(item.job);
+        viewHolder.jobDescTextView.setText(item.desc);
+        viewHolder.emailTextView.setText(item.email);
     }
 
     @Override
     public JobViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.job_item,
-                viewGroup, false);
-        return new JobViewHolder(view);
-    }
-
-    public void setItemClickListener(OnItemClickListener<Job> mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
+        return new JobViewHolder(inflateItemView(viewGroup, R.layout.job_item));
     }
 
     static class JobViewHolder extends ViewHolder {

@@ -26,27 +26,31 @@ package com.tech.frontier.presenters;
 
 import android.util.Log;
 
-import com.tech.frontier.adapters.AutoSliderViewInterface;
 import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
 import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
 import com.tech.frontier.net.RecomendAPI;
 import com.tech.frontier.net.impl.RecomendAPIImpl;
+import com.tech.frontier.ui.interfaces.BaseViewInterface;
 
 import java.util.List;
 
 public class RecommendPresenter {
-
-    AutoSliderViewInterface mViewInterface;
+    /**
+     * View接口
+     */
+    BaseViewInterface<List<Recommend>> mViewInterface;
     /**
      * 推荐网络请求API
      */
     RecomendAPI mRecomendAPI = new RecomendAPIImpl();
-
+    /**
+     * 操作推荐文章的数据库对象
+     */
     AbsDBAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendDBAPI();
 
-    public RecommendPresenter(AutoSliderViewInterface viewInterface) {
+    public RecommendPresenter(BaseViewInterface<List<Recommend>> viewInterface) {
         mViewInterface = viewInterface;
     }
 
@@ -56,14 +60,14 @@ public class RecommendPresenter {
             @Override
             public void onComplete(List<Recommend> result) {
                 Log.e("", "### recommends");
-                mViewInterface.showRecommends(result);
+                mViewInterface.fetchedData(result);
                 mRecomendAPI.fetchRecomends(new DataListener<List<Recommend>>() {
 
                     @Override
-                    public void onComplete(List<Recommend> result) {
-                        Log.e("", "### 已经获取header 数据 : ");
-                        mViewInterface.showRecommends(result);
-                        mDatabaseAPI.saveItems(result);
+                    public void onComplete(List<Recommend> netResult) {
+                        Log.e("", "### 已经获取header 数据 : " + netResult.size());
+                        mViewInterface.fetchedData(netResult);
+                        mDatabaseAPI.saveItems(netResult);
                     }
                 });
             }

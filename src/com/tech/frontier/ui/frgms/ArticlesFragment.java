@@ -57,11 +57,13 @@ public class ArticlesFragment extends RecyclerViewFragment<Article> implements
 
             @Override
             public void onClick(Article article) {
-                loadArticle(article);
+                if (article != null) {
+                    loadArticle(article);
+                }
             }
         });
         ((ArticleWithHeaderAdapter) mAdapter)
-                .setRecommendListener(new OnItemClickListener<Recommend>() {
+                .setRecommendClickListener(new OnItemClickListener<Recommend>() {
 
                     @Override
                     public void onClick(Recommend item) {

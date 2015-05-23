@@ -22,12 +22,8 @@
  * THE SOFTWARE.
  */
 
-package com.tech.frontier.adapters;
+package com.tech.frontier.ui.interfaces;
 
-import com.tech.frontier.entities.Recommend;
-
-import java.util.List;
-
-public interface AutoSliderViewInterface {
-    public void showRecommends(List<Recommend> recommends);
+public interface BaseViewInterface<T> {
+    public void fetchedData(T result);
 }

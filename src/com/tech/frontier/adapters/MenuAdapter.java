@@ -25,10 +25,7 @@
 package com.tech.frontier.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,7 +33,6 @@ import android.widget.TextView;
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.MenuAdapter.MenuViewHolder;
 import com.tech.frontier.entities.MenuItem;
-import com.tech.frontier.listeners.OnItemClickListener;
 
 import java.util.List;
 
@@ -45,45 +41,21 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class MenuAdapter extends Adapter<MenuViewHolder> {
-
-    List<MenuItem> mMenus;
-    OnItemClickListener<MenuItem> mClickListener;
+public class MenuAdapter extends BaseAdapter<MenuItem, MenuViewHolder> {
 
     public MenuAdapter(List<MenuItem> dataSet) {
-        mMenus = dataSet;
+        super(dataSet);
     }
 
     @Override
-    public int getItemCount() {
-        return mMenus == null ? 0 : mMenus.size();
-    }
-
-    @Override
-    public void onBindViewHolder(MenuViewHolder viewHolder, int position) {
-        final MenuItem item = mMenus.get(position);
+    protected void bindDataToItemView(MenuViewHolder viewHolder, MenuItem item) {
         viewHolder.nameTextView.setText(item.text);
         viewHolder.userImageView.setImageResource(item.iconResId);
-        viewHolder.itemView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (mClickListener != null) {
-                    mClickListener.onClick(item);
-                }
-            }
-        });
     }
 
     @Override
     public MenuViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.menu_item, viewGroup, false);
-        return new MenuViewHolder(itemView);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener<MenuItem> mClickListener) {
-        this.mClickListener = mClickListener;
+        return new MenuViewHolder(inflateItemView(viewGroup, R.layout.menu_item));
     }
 
     static class MenuViewHolder extends RecyclerView.ViewHolder {
