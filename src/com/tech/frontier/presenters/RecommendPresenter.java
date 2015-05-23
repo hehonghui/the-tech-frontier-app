@@ -26,21 +26,20 @@ package com.tech.frontier.presenters;
 
 import android.util.Log;
 
+import com.tech.frontier.adapters.ArticleWithHeaderAdapter.HeaderViewHolder;
+import com.tech.frontier.adapters.HeaderRecommendAdapter;
 import com.tech.frontier.db.AbsDBAPI;
 import com.tech.frontier.db.impl.DbFactory;
 import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.DataListener;
+import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.net.RecomendAPI;
 import com.tech.frontier.net.impl.RecomendAPIImpl;
-import com.tech.frontier.ui.interfaces.BaseViewInterface;
+import com.tech.frontier.widgets.AutoScrollViewPager;
 
 import java.util.List;
 
 public class RecommendPresenter {
-    /**
-     * View接口
-     */
-    BaseViewInterface<List<Recommend>> mViewInterface;
     /**
      * 推荐网络请求API
      */
@@ -50,8 +49,21 @@ public class RecommendPresenter {
      */
     AbsDBAPI<Recommend> mDatabaseAPI = DbFactory.createRecommendDBAPI();
 
-    public RecommendPresenter(BaseViewInterface<List<Recommend>> viewInterface) {
-        mViewInterface = viewInterface;
+    /**
+     * 
+     */
+    OnItemClickListener<Recommend> mRecommendListener;
+    /**
+     * 
+     */
+    private HeaderViewHolder mHeaderViewHolder;
+    /**
+     * Header View中的ViewPager Adapter
+     */
+    HeaderRecommendAdapter mRecommendAdapter;
+
+    public RecommendPresenter(HeaderViewHolder headerViewHolder) {
+        this.mHeaderViewHolder = headerViewHolder;
     }
 
     public void fetchRecomends() {
@@ -60,13 +72,13 @@ public class RecommendPresenter {
             @Override
             public void onComplete(List<Recommend> result) {
                 Log.e("", "### recommends");
-                mViewInterface.fetchedData(result);
+                initAutoScrollViewPager(result);
                 mRecomendAPI.fetchRecomends(new DataListener<List<Recommend>>() {
 
                     @Override
                     public void onComplete(List<Recommend> netResult) {
                         Log.e("", "### 已经获取header 数据 : " + netResult.size());
-                        mViewInterface.fetchedData(netResult);
+                        initAutoScrollViewPager(netResult);
                         mDatabaseAPI.saveItems(netResult);
                     }
                 });
@@ -75,4 +87,32 @@ public class RecommendPresenter {
 
     }
 
+    /**
+     * 获取到推荐文章的数据之后初始化自动滚动的ViewPager
+     * 
+     * @param result
+     */
+    private void initAutoScrollViewPager(List<Recommend> result) {
+        if (result == null || result.size() == 0
+                || mRecommendAdapter != null) {
+            return;
+        }
+
+        AutoScrollViewPager viewPager = mHeaderViewHolder.autoScrollViewPager;
+        mRecommendAdapter = new HeaderRecommendAdapter(viewPager, result);
+        mRecommendAdapter.setOnItemClickListener(mRecommendListener);
+        // 设置ViewPager
+        viewPager.setInterval(5000);
+        if (result.size() > 0) {
+            viewPager.startAutoScroll();
+            viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2
+                    % result.size());
+        }
+        viewPager.setAdapter(mRecommendAdapter);
+        mHeaderViewHolder.mIndicator.setViewPager(viewPager);
+    }
+
+    public void setRecommendClickListener(OnItemClickListener<Recommend> mRecommendListener) {
+        this.mRecommendListener = mRecommendListener;
+    }
 }

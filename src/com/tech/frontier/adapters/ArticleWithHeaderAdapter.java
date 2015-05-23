@@ -34,11 +34,9 @@ import com.tech.frontier.entities.Article;
 import com.tech.frontier.entities.Recommend;
 import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.presenters.RecommendPresenter;
-import com.tech.frontier.ui.interfaces.BaseViewInterface;
 import com.tech.frontier.widgets.AutoScrollViewPager;
 import com.viewpagerindicator.CirclePageIndicator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,34 +46,25 @@ import java.util.List;
  * 
  * @author mrsimple
  */
-public class ArticleWithHeaderAdapter extends ArticleAdapter
-        implements BaseViewInterface<List<Recommend>> {
+public class ArticleWithHeaderAdapter extends ArticleAdapter {
 
     /**
      * 
      */
     private static final int HEADER_TYPE = 0;
-    /**
-     * Header View中的ViewPager Adapter
-     */
-    HeaderRecommendAdapter mImagePagerAdapter;
 
     /**
-     * 
+     * 广告栏ViewHolder
      */
-    HeaderViewHolder headerViewHolder;
+    HeaderViewHolder mHeaderViewHolder;
     /**
-     * 
+     * 推荐相关的Presenter
      */
-    final List<Recommend> mRecommends = new ArrayList<Recommend>();
+    RecommendPresenter mPresenter;
     /**
-     * 
+     * 推荐文章的点击事件
      */
-    OnItemClickListener<Recommend> mRecommendListener;
-    /**
-     * 
-     */
-    RecommendPresenter mPresenter = new RecommendPresenter(this);
+    OnItemClickListener<Recommend> mRecmItemClickListener;
 
     public ArticleWithHeaderAdapter(List<Article> dataSet) {
         super(dataSet);
@@ -86,8 +75,10 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter
         if (viewHolder instanceof ArticleViewHolder) {
             bindArticleToItemView((ArticleViewHolder) viewHolder, item);
         } else if (viewHolder instanceof HeaderViewHolder
-                && mRecommends.size() == 0) { // 获取一次数据之后不再进行重新请求
-            headerViewHolder = (HeaderViewHolder) viewHolder;
+                && mPresenter == null) { // 获取一次数据之后不再进行重新请求
+            mHeaderViewHolder = (HeaderViewHolder) viewHolder;
+            mPresenter = new RecommendPresenter(mHeaderViewHolder);
+            mPresenter.setRecommendClickListener(mRecmItemClickListener);
             mPresenter.fetchRecomends();
         }
     }
@@ -100,45 +91,8 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter
         return createArticleViewHolder(viewGroup);
     }
 
-    /*
-     * 获取到推荐文章的数据之后初始化自动滚动的ViewPager
-     * @see
-     * com.tech.frontier.ui.interfaces.BaseViewInterface#fetchedData(java.lang
-     * .Object)
-     */
-    @Override
-    public void fetchedData(List<Recommend> result) {
-        initAutoScrollViewPager(headerViewHolder, result);
-    }
-
-    private void initAutoScrollViewPager(HeaderViewHolder headerViewHolder, List<Recommend> result) {
-        if (result == null || result.size() == 0) {
-            return;
-        }
-        mRecommends.clear();
-        mRecommends.addAll(result);
-
-        AutoScrollViewPager viewPager = headerViewHolder.autoScrollViewPager;
-        if (mImagePagerAdapter == null) {
-            mImagePagerAdapter = new HeaderRecommendAdapter(viewPager, mRecommends);
-            mImagePagerAdapter.setOnItemClickListener(mRecommendListener);
-            // 设置ViewPager
-            viewPager.setInterval(5000);
-            if (result.size() > 0) {
-                viewPager.startAutoScroll();
-                viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2
-                        % result.size());
-            }
-            viewPager.setAdapter(mImagePagerAdapter);
-        } else {
-            mImagePagerAdapter.notifyDataSetChanged();
-        }
-
-        headerViewHolder.mIndicator.setViewPager(viewPager);
-    }
-
-    public void setRecommendClickListener(OnItemClickListener<Recommend> mRecommendListener) {
-        this.mRecommendListener = mRecommendListener;
+    public void setRecommendClickListener(OnItemClickListener<Recommend> listener) {
+        mRecmItemClickListener = listener;
     }
 
     /*
@@ -170,9 +124,9 @@ public class ArticleWithHeaderAdapter extends ArticleAdapter
      * 
      * @author mrsimple
      */
-    static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        AutoScrollViewPager autoScrollViewPager;
-        CirclePageIndicator mIndicator;
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        public AutoScrollViewPager autoScrollViewPager;
+        public CirclePageIndicator mIndicator;
 
         public HeaderViewHolder(View view) {
             super(view);

@@ -17,8 +17,7 @@
         <FrameLayout
             android:id="@+id/articles_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true" />
+            android:layout_height="match_parent" />
 
         <!-- 侧滑菜单内容 -->
 
@@ -36,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:background="@drawable/user_bg"
+                android:clickable="true"
                 android:padding="10dp" >
 
                 <!-- 用户头像界面 -->

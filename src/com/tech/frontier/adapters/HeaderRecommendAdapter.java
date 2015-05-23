@@ -41,6 +41,11 @@ import com.tech.frontier.listeners.OnItemClickListener;
 
 import java.util.List;
 
+/**
+ * 广告栏的Adapter
+ * 
+ * @author mrsimple
+ */
 public class HeaderRecommendAdapter extends RecyclingPagerAdapter {
 
     private Context context;
