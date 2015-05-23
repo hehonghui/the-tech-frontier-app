@@ -131,6 +131,9 @@ public class ArticleDetailPresenter extends NetBasePresenter<ArticleDetailView> 
     }
 
     public void isFavorited(String postId) {
+        if (TextUtils.isEmpty(postId)) {
+            return;
+        }
         mFavoriteDBAPI.isFavorited(postId, new DataListener<Boolean>() {
 
             @Override

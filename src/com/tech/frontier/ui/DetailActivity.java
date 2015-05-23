@@ -75,8 +75,10 @@ public class DetailActivity extends BaseActionBarActivity implements ArticleDeta
         initArticleUrl();
         if (!TextUtils.isEmpty(mTargetUrl)) { // 加载推荐的链接
             mWebView.loadUrl(mTargetUrl);
-        } else { // 加载文章
+        } else if (!TextUtils.isEmpty(mPostId)) { // 加载文章
             mPresenter.fetchArticleContent(mPostId);
+        } else {
+            mWebView.loadDataWithBaseURL("", "<h3>大哥,你的页面没找到呐~</h3>", "text/html", "utf-8", "");
         }
 
         mSharePresenter = new SharePresenter(getApplicationContext());

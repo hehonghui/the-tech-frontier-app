@@ -14,6 +14,7 @@ import com.tech.frontier.adapters.MenuAdapter;
 import com.tech.frontier.entities.Article;
 import com.tech.frontier.entities.MenuItem;
 import com.tech.frontier.entities.UserInfo;
+import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.net.mgr.RequestQueueMgr;
 import com.tech.frontier.ui.frgms.AboutFragment;
 import com.tech.frontier.ui.frgms.ArticlesFragment;
@@ -89,8 +90,7 @@ public class ArticlesActivity extends BaseActionBarActivity {
         menuItems.add(new MenuItem("关于", R.drawable.about));
         menuItems.add(new MenuItem("注销", R.drawable.exit));
         MenuAdapter menuAdapter = new MenuAdapter(menuItems);
-        menuAdapter.setOnItemClickListener(new MenuAdapter.OnItemClickListener() {
-
+        menuAdapter.setOnItemClickListener(new OnItemClickListener<MenuItem>() {
             @Override
             public void onClick(MenuItem item) {
                 clickMenuItem(item);

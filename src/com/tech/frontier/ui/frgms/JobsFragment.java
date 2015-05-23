@@ -24,10 +24,14 @@
 
 package com.tech.frontier.ui.frgms;
 
+import android.content.Intent;
+
 import com.android.volley.VolleyError;
 import com.tech.frontier.adapters.JobAdapter;
 import com.tech.frontier.entities.Job;
+import com.tech.frontier.listeners.OnItemClickListener;
 import com.tech.frontier.presenters.JobPresenter;
+import com.tech.frontier.ui.DetailActivity;
 import com.tech.frontier.ui.interfaces.JobViewInterface;
 
 import java.util.List;
@@ -65,6 +69,15 @@ public class JobsFragment extends RecyclerViewFragment<Job> implements JobViewIn
     @Override
     protected void initAdapter() {
         mAdapter = new JobAdapter(mDataSet);
+        mAdapter.setItemClickListener(new OnItemClickListener<Job>() {
+
+            @Override
+            public void onClick(Job item) {
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("url", item.url);
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 

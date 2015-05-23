@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.tech.frontier.R;
 import com.tech.frontier.adapters.MenuAdapter.MenuViewHolder;
 import com.tech.frontier.entities.MenuItem;
+import com.tech.frontier.listeners.OnItemClickListener;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ import java.util.List;
 public class MenuAdapter extends Adapter<MenuViewHolder> {
 
     List<MenuItem> mMenus;
-    OnItemClickListener mClickListener;
+    OnItemClickListener<MenuItem> mClickListener;
 
     public MenuAdapter(List<MenuItem> dataSet) {
         mMenus = dataSet;
@@ -81,7 +82,7 @@ public class MenuAdapter extends Adapter<MenuViewHolder> {
         return new MenuViewHolder(itemView);
     }
 
-    public void setOnItemClickListener(OnItemClickListener mClickListener) {
+    public void setOnItemClickListener(OnItemClickListener<MenuItem> mClickListener) {
         this.mClickListener = mClickListener;
     }
 
@@ -92,12 +93,8 @@ public class MenuAdapter extends Adapter<MenuViewHolder> {
         public MenuViewHolder(View itemView) {
             super(itemView);
             userImageView = (ImageView) itemView.findViewById(R.id.menu_icon_imageview);
-          
+
             nameTextView = (TextView) itemView.findViewById(R.id.menu_text_tv);
         }
-    }
-
-    public static interface OnItemClickListener {
-        public void onClick(MenuItem item);
     }
 }
