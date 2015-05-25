@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.tech.frontier.ui.ArticlesActivity" >
+    tools:context="org.tech.frontier.ui.ArticlesActivity" >
 
     <include layout="@layout/toolbar_layout" />
 
@@ -40,7 +40,7 @@
 
                 <!-- 用户头像界面 -->
 
-                <com.tech.frontier.widgets.CircleImageView
+                <org.tech.frontier.widgets.CircleImageView
                     android:id="@+id/user_icon_imageview"
                     android:layout_width="80dp"
                     android:layout_height="80dp"

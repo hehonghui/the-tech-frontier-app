@@ -38,7 +38,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.tech.frontier.R;
+import org.tech.frontier.R;
 
 /**
  * Draws circles (one for each view). The current view position is filled and

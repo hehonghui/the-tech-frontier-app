@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="160dp" >
 
-    <com.tech.frontier.widgets.AutoScrollViewPager
+    <org.tech.frontier.widgets.AutoScrollViewPager
         android:id="@+id/slide_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
